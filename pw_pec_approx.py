@@ -3,7 +3,7 @@ import sys
 from funcs import *
 
 if len(sys.argv) < 3:
-	exit('Usage: python pw_pec_approx.py <file with point-wise pec> <file with initial parameters>')
+	exit('Usage: python pw_pec_approx.py <file with point-wise pec|example: pec.txt> <file with initial parameters|example: init_params.txt>')
 
 f_pw_pec = sys.argv[1]
 f_init_par = sys.argv[2]
