@@ -3,14 +3,14 @@ import sys
 from funcs import *
 
 if len(sys.argv) < 3:
-	exit('Usage: python level_cacl_pw_pec <file with point-wise pec|example: pec.txt> <file with parameters level calc|example: vr_level_calc_params.txt>')
+	exit('Usage: python level_cacl_pw_pec.py <file with parameters level calc|example: vr_level_calc_params.txt> <file with point-wise pec|example: pec.txt>')
 
-f_pw_pec = sys.argv[1]
-f_vr_par = sys.argv[2]
+f_vr_par = sys.argv[1]
+f_pw_pec = sys.argv[2]
 
-# print input 
-print_input_file(f_pw_pec)
+# print input
 print_input_file(f_vr_par)
+print_input_file(f_pw_pec)
 
 # read files
 rp, up = read_pw_curve(f_pw_pec)

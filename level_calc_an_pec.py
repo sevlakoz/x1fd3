@@ -3,14 +3,14 @@ import sys
 from funcs import *
 
 if len(sys.argv) < 3:
-	exit('Usage: python level_cacl_pw_pec <file with fitted parameters|example: emo_params.txt>  <file with parameters level calc|example: vr_level_calc_params.txt>')
+	exit('Usage: python level_cacl_an_pec.py <file with parameters level calc|example: vr_level_calc_params.txt> <file with fitted parameters|example: emo_params.txt>')
 
-f_fit_par = sys.argv[1]
-f_vr_par = sys.argv[2]
+f_vr_par = sys.argv[1]
+f_fit_par = sys.argv[2]
 
-# print input 
-print_input_file(f_fit_par)
+# print input
 print_input_file(f_vr_par)
+print_input_file(f_fit_par)
 
 # read files
 params = read_pec_pars(f_fit_par)
