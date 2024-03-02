@@ -6,6 +6,7 @@ Set of tiny programs to deal with the adiabatic $X^1\Sigma^+$ state of diatomic 
 * level_calc_an_pec - vib.-rot. level calculation of given analytic PEC
 * spectrum_calc_pw_pec - vib.-rot. level calculation of given point-wise PEC and point-wise DM
 * spectrum_calc_an_pec - vib.-rot. level calculation of given analytic PEC and point-wise DM
+* fit_pec_to_exp_levels - fit analytic PEC to reproduce given exp. vib.-rot. levels
 
 ## Usage
 ```bash
