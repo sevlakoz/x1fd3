@@ -259,3 +259,21 @@ def vr_solver(ptype, params, rp =[], up = []):
 	return levels
 
 #=======================================================================
+
+def me_calc(params, levels, rd, fd):
+	
+	matrix_elements = {}
+	
+	# cubic spline to find DM values
+	r_grid = levels[0][0].r_grid 
+	spl_dip = splrep(rd, fd)
+	d_grid = splev(r_grid, spl_dip)
+	
+	for j2 in range(0, params['jmax'] + 1):
+		matrix_elements[j2] = {}
+		for j1 in range(0, params['jmax'] + 1):
+			matrix_elements[j2][j1] = np.sum(levels[j1][params['v1']].wavef_grid * levels[j2][params['v2']].wavef_grid * d_grid)
+	
+	return matrix_elements
+
+#=======================================================================
