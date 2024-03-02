@@ -33,5 +33,4 @@ print('\nFitted PEC\n')
 print_pecs(rp, up, params)
 print('\nFitted parameters\n')
 print_params(params)
-print('\n=== End of point-wise PEC approximation ===\n')
 
