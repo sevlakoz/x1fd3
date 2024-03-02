@@ -44,7 +44,6 @@ print()
 print_pecs(rp, up, params)
 
 # fit
-
 params, message, success = exp_fit(params, rp, up, expdata)
 if success:
 	print(f'\nPEC fit done: {message}')
