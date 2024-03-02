@@ -3,7 +3,7 @@ import sys
 from funcs import *
 
 if len(sys.argv) < 3:
-	exit('Usage: python level_cacl_pw_pec.py <file with parameters level calc|example: vr_level_calc_params.txt> <file with point-wise pec|example: pec.txt>')
+	exit('Usage: python level_cacl_pw_pec.py <file with parameters for level calc|example: vr_level_calc_params.txt> <file with point-wise pec|example: pec.txt>')
 
 f_vr_par = sys.argv[1]
 f_pw_pec = sys.argv[2]
