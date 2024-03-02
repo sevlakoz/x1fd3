@@ -4,6 +4,8 @@ Set of tiny programs to deal with the adiabatic $X^1\Sigma^+$ state of diatomic 
 * pw_pec_approx - PEC approximation with EMO function
 * level_calc_pw_pec - vib.-rot. level calculation of given point-wise PEC
 * level_calc_an_pec - vib.-rot. level calculation of given analytic PEC
+* spectrum_calc_pw_pec - vib.-rot. level calculation of given point-wise PEC and point-wise DM
+* spectrum_calc_an_pec - vib.-rot. level calculation of given analytic PEC and point-wise DM
 
 ## Usage
 ```bash
