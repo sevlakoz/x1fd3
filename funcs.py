@@ -135,7 +135,7 @@ def emo(r, de, re, rref, q, beta):
 
 def print_pecs(rp, up, params):
 	
-	print(f'                 R,A         U(p-w),cm-1         U({params["type"]}),cm-1          delta,cm-1')
+	print(f'                 R,A         U(p-w),cm-1         U({params["ptype"]}),cm-1          delta,cm-1')
 	for r, u in zip(rp, up):
 		if params['ptype'] == 'EMO':
 			ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
@@ -144,7 +144,7 @@ def print_pecs(rp, up, params):
 #=======================================================================
 
 def print_params(params):
-	print(f"[{params['type']}]")
+	print(f"[{params['ptype']}]")
 	print(f"de    {params['de']}")
 	print(f"re    {params['re']}")
 	print(f"rref  {params['rref']}")
@@ -152,6 +152,7 @@ def print_params(params):
 	print('beta  ', end = '')
 	for b in params['beta']:
 		print(f'{b}\n      ', end = '')
+	print()
 
 
 #=======================================================================
@@ -275,5 +276,62 @@ def me_calc(params, levels, rd, fd):
 			matrix_elements[j2][j1] = np.sum(levels[j1][params['v1']].wavef_grid * levels[j2][params['v2']].wavef_grid * d_grid)
 	
 	return matrix_elements
+
+#=======================================================================
+
+def read_expdata(fname):
+	
+	input_parser = ConfigParser(delimiters=(' ', '\t'))
+	input_parser.read(fname)
+	
+	expdata = {}
+	n_levels = 0
+	
+	for j in input_parser.sections():
+		tmp = {}
+		for v, e in input_parser[j].items():
+			tmp[int(v)] = float(e)
+			n_levels += 1
+		expdata[int(j)] = tmp
+	
+	if n_levels == 0:
+		exit('fNo energy levels found in {fname}')
+	
+	return expdata
+
+#=======================================================================
+
+def res_exp(guess, params, rp, up, expdata):
+	
+	# fitting parameters to vr solver function
+	params['de'] = guess[0]
+	params['re'] = guess[1]
+	params['beta'] = guess[2:]
+	levels = vr_solver('an', params)
+	
+	# residual calc
+	res = []
+	for j in expdata.keys():
+		for v in expdata[j].keys():
+			res.append((levels[j][v].energy - expdata[j][v]) / 0.1)
+	for r, u in zip(rp, up):
+		ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
+		e = max(u / 100., 100.)
+		res.append((ua - u) / e)
+	
+	
+	return res
+
+#=======================================================================
+
+def exp_fit(params, rp, up, expdata):
+	
+	guess = [params['de'], params['re']]
+	guess.extend(params['beta'])
+	add_args = (params, rp, up, expdata)
+	
+	res_1 = least_squares(res_exp, guess, args = add_args)
+	
+	return params, res_1.message, res_1.success
 
 #=======================================================================
