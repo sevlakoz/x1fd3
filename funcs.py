@@ -87,7 +87,7 @@ def read_pec_pars(fname):
 
 def read_vr_calc_pars(fname, rtype):
 	
-	if not rtype in ['ENERGY', 'SPECTRUM']:
+	if not rtype in ['ENERGY', 'SPECTRUM', 'FIT']:
 		exit(f'ERROR:  Uknown run type "{rtype}"')
 	
 	input_parser = ConfigParser(delimiters=(' ', '\t'))
@@ -109,7 +109,8 @@ def read_vr_calc_pars(fname, rtype):
 	
 	params_check = {
 		'ENERGY': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax']),
-		'SPECTRUM': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax', 'v1', 'v2'])
+		'SPECTRUM': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax', 'v1', 'v2']),
+		'FIT': set(['mass1', 'mass2', 'rmin', 'rmax'])
 	}
 	
 	if set(params.keys()) != params_check[rtype]:
@@ -178,13 +179,16 @@ def pec_fit(rp, up, params):
 	guess = [params['de'], params['re']]
 	guess.extend(params['beta'])
 	add_args = (rp, up, params)
+	
 	res_1 = least_squares(res_pec_fit, guess, args = add_args)
 	
-	params['de'] = res_1.x[0]
-	params['re'] = res_1.x[1]
-	params['beta'] = np.array(list(res_1.x[2:]))
+	tmp = {} | params
 	
-	return params, res_1.message, res_1.success
+	tmp['de'] = res_1.x[0]
+	tmp['re'] = res_1.x[1]
+	tmp['beta'] = np.array(list(res_1.x[2:]))
+	
+	return tmp, res_1.message, res_1.success
 
 #=======================================================================
 
@@ -304,18 +308,23 @@ def read_expdata(fname):
 def res_exp(guess, params, rp, up, expdata):
 	
 	# fitting parameters to vr solver function
-	params['de'] = guess[0]
-	params['re'] = guess[1]
-	params['beta'] = guess[2:]
-	levels = vr_solver('an', params)
+	tmp = {} | params
+	
+	tmp['de'] = guess[0]
+	tmp['re'] = guess[1]
+	tmp['beta'] = guess[2:]
+	
+	levels = vr_solver('an', tmp)
 	
 	# residual calc
 	res = []
+	
 	for j in expdata.keys():
 		for v in expdata[j].keys():
 			res.append((levels[j][v].energy - expdata[j][v]) / 0.1)
+	
 	for r, u in zip(rp, up):
-		ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
+		ua = emo(r, tmp['de'], tmp['re'], tmp['rref'], tmp['q'], tmp['beta'])
 		e = max(u / 100., 100.)
 		res.append((ua - u) / e)
 	
@@ -332,6 +341,12 @@ def exp_fit(params, rp, up, expdata):
 	
 	res_1 = least_squares(res_exp, guess, args = add_args)
 	
-	return params, res_1.message, res_1.success
+	tmp = {} | params
+	
+	tmp['de'] = res_1.x[0]
+	tmp['re'] = res_1.x[1]
+	tmp['beta'] = np.array(list(res_1.x[2:]))
+	
+	return tmp, res_1.message, res_1.success
 
 #=======================================================================
