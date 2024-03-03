@@ -136,11 +136,11 @@ def emo(r, de, re, rref, q, beta):
 
 def print_pecs(rp, up, params):
 	
-	print(f'                 R,A         U(p-w),cm-1         U({params["ptype"]}),cm-1          delta,cm-1')
+	print(f'       R,A         U(p-w),cm-1         U({params["ptype"]}),cm-1          delta,cm-1')
 	for r, u in zip(rp, up):
 		if params['ptype'] == 'EMO':
 			ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
-		print(f'{r:20.5f}{u:20.5f}{ua:20.5f}{u - ua:20.5f}')
+		print(f'{r:10.5f}{u:20.5f}{ua:20.5f}{u - ua:20.5f}')
 
 #=======================================================================
 
