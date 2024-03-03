@@ -29,15 +29,7 @@ print('=== Fit PEC to reproduce exp. data ===\n')
 # print initial guess
 print('Initial guess')
 levels = vr_solver('an', params)
-print(f'\n   J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1')
-for j in expdata.keys():
-	if j > params['jmax']:
-		continue
-	for v in expdata[j].keys():
-		ee = expdata[j][v]
-		ec = levels[j][v].energy
-		print(f'{j:4d}{v:4d}{ee:15.8f}{ec:15.5f}{ee - ec:15.5f}')
-print()
+print_levels_n_expdata(params, levels, expdata)
 print_pecs(rp, up, params)
 
 # fit
@@ -50,15 +42,7 @@ else:
 # print final results
 print('Fit results')
 levels = vr_solver('an', params)
-print(f'\n   J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1')
-for j in expdata.keys():
-	if j > params['jmax']:
-		continue
-	for v in expdata[j].keys():
-		ee = expdata[j][v]
-		ec = levels[j][v].energy
-		print(f'{j:4d}{v:4d}{ee:15.8f}{ec:15.5f}{ee - ec:15.5f}')
-print()
+print_levels_n_expdata(params, levels, expdata)
 print_pecs(rp, up, params)
 print('\nFitted parameters\n')
 print_params(params)

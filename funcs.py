@@ -7,6 +7,7 @@ from scipy.interpolate import splrep, splev
 from scipy.linalg import eigh_tridiagonal
 
 #=======================================================================
+#=======================================================================
 
 @dataclass
 class Level:
@@ -15,6 +16,7 @@ class Level:
 	r_grid: np.ndarray
 	wavef_grid: np.ndarray
 
+#=======================================================================
 #=======================================================================
 
 def print_input_file(fname):
@@ -27,6 +29,65 @@ def print_input_file(fname):
 	else:
 		exit(f'ERROR: No such file: {fname}')
 
+#=======================================================================
+
+def print_pecs(rp, up, params):
+	
+	print(f'       R,A         U(p-w),cm-1         U({params["ptype"]}),cm-1          delta,cm-1')
+	for r, u in zip(rp, up):
+		if params['ptype'] == 'EMO':
+			ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
+		print(f'{r:10.5f}{u:20.5f}{ua:20.5f}{u - ua:20.5f}')
+
+#=======================================================================
+
+def print_params(params):
+	print(f"[{params['ptype']}]")
+	print(f"de    {params['de']}")
+	print(f"re    {params['re']}")
+	print(f"rref  {params['rref']}")
+	print(f"q     {params['q']}")
+	print('beta  ', end = '')
+	for b in params['beta']:
+		print(f'{b}\n      ', end = '')
+	print()
+
+#=======================================================================
+
+def print_levels(levels):
+	print('\n=== Energy levels ===')
+	for j in levels.keys():
+		print(f'\nJ = {j}\n  v    Energy,cm-1        Bv,cm-1')
+		for v, lev in levels[j].items():
+			print(f'{v:3d}{lev.energy:15.5f}{lev.rot_const:15.8f}')
+
+#=======================================================================
+
+def print_matrix_elements(params, matrix_elements):
+	print("\n=== Intergals <f(v'J')|d|f(v''J'')>,D ===\n")
+	print(f"v'' = {params['v1']}")
+	print(f"v'  = {params['v2']}\n")
+	for j2 in range(0, params['jmax'] + 1):
+		print(f"J' = {j2}")
+		print(f" J''   <f'|d|f''>,D")
+		for j1 in range(0, params['jmax'] + 1):
+			print(f"{j1:4d}{matrix_elements[j2][j1]:15.5e}")
+		print()
+
+#=======================================================================
+
+def print_levels_n_expdata(params, levels, expdata):
+	print(f'\n   J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1')
+	for j in expdata.keys():
+		if j > params['jmax']:
+			continue
+		for v in expdata[j].keys():
+			ee = expdata[j][v]
+			ec = levels[j][v].energy
+			print(f'{j:4d}{v:4d}{ee:15.5f}{ec:15.5f}{ee - ec:15.5f}')
+	print()
+
+#=======================================================================
 #=======================================================================
 
 def read_pw_curve(fname):
@@ -131,30 +192,6 @@ def emo(r, de, re, rref, q, beta):
 		beta_pol += beta[n] * y**n
 		
 	return de * (1 - np.exp(-beta_pol * (r - re)))**2
-
-#=======================================================================
-
-def print_pecs(rp, up, params):
-	
-	print(f'       R,A         U(p-w),cm-1         U({params["ptype"]}),cm-1          delta,cm-1')
-	for r, u in zip(rp, up):
-		if params['ptype'] == 'EMO':
-			ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
-		print(f'{r:10.5f}{u:20.5f}{ua:20.5f}{u - ua:20.5f}')
-
-#=======================================================================
-
-def print_params(params):
-	print(f"[{params['ptype']}]")
-	print(f"de    {params['de']}")
-	print(f"re    {params['re']}")
-	print(f"rref  {params['rref']}")
-	print(f"q     {params['q']}")
-	print('beta  ', end = '')
-	for b in params['beta']:
-		print(f'{b}\n      ', end = '')
-	print()
-
 
 #=======================================================================
 

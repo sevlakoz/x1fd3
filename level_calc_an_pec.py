@@ -18,8 +18,4 @@ params = params | read_vr_calc_pars(f_vr_par, 'ENERGY')
 
 # calc and print vr levels
 levels = vr_solver('an', params)
-print('\n=== Energy levels ===')
-for j in levels.keys():
-	print(f'\nJ = {j}\n  v    Energy,cm-1        Bv,cm-1')
-	for v, lev in levels[j].items():
-		print(f'{v:3d}{lev.energy:15.5f}{lev.rot_const:15.8f}')
+print_levels(levels)
