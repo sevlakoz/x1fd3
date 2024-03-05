@@ -205,7 +205,8 @@ def res_pec_fit(guess, rp, up, params):
 	for r, u in zip(rp, up):
 		if params['ptype'] == 'EMO':
 			ua = emo(r, de, re, params['rref'], params['q'], beta)
-		res.append((ua - u) / 100.)
+		e = max(u / 100., 100.)
+		res.append((ua - u) / e)
 	
 	return res
 
