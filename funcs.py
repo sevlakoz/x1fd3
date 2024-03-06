@@ -20,6 +20,7 @@ class Level:
 #=======================================================================
 
 def print_input_file(fname):
+	
 	if os.path.isfile(fname):
 		print(f'\n=== Input file: {fname} ===\n')
 		with open(fname) as inp:
@@ -42,11 +43,13 @@ def print_pecs(rp, up, params):
 #=======================================================================
 
 def print_params(params):
+	
 	print(f"[{params['ptype']}]")
 	print(f"de    {params['de']}")
 	print(f"re    {params['re']}")
 	print(f"rref  {params['rref']}")
 	print(f"q     {params['q']}")
+	
 	print('beta  ', end = '')
 	for b in params['beta']:
 		print(f'{b}\n      ', end = '')
@@ -55,6 +58,7 @@ def print_params(params):
 #=======================================================================
 
 def print_levels(levels):
+	
 	print('\n=== Energy levels ===')
 	for j in levels.keys():
 		print(f'\nJ = {j}\n  v    Energy,cm-1        Bv,cm-1')
@@ -64,9 +68,11 @@ def print_levels(levels):
 #=======================================================================
 
 def print_matrix_elements(params, matrix_elements):
+	
 	print("\n=== Intergals <f(v'J')|d|f(v''J'')>,D ===\n")
 	print(f"v'' = {params['v1']}")
 	print(f"v'  = {params['v2']}\n")
+	
 	for j2 in range(0, params['jmax'] + 1):
 		print(f"J' = {j2}")
 		print(f" J''   <f'|d|f''>,D")
@@ -77,6 +83,7 @@ def print_matrix_elements(params, matrix_elements):
 #=======================================================================
 
 def print_levels_n_expdata(params, levels, expdata):
+	
 	print(f'\n   J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1')
 	for j in expdata.keys():
 		if j > params['jmax']:
@@ -120,12 +127,12 @@ def read_pec_pars(fname):
 	if len(input_parser.sections()) > 1:
 		exit(f'ERROR: Two or more analytic functions given in "{fname}"')
 	
-	pot = input_parser.sections()[0]
+	ptype = input_parser.sections()[0]
 	
-	if not pot in ['EMO']:
-		exit(f'ERROR:  Uknown potential type "{pot}"')
+	if not ptype in ['EMO']:
+		exit(f'ERROR:  Uknown potential type "{ptype}"')
 	
-	for keyword, value in input_parser[pot].items():
+	for keyword, value in input_parser[ptype].items():
 		if keyword in ('q'):
 			params[keyword] = int(value)
 		elif keyword in ('re', 'de', 'rref'):
@@ -137,10 +144,10 @@ def read_pec_pars(fname):
 		'EMO': set(['re', 'de', 'rref', 'q', 'beta'])
 	}
 	
-	if set(params.keys()) != params_check[pot]:
-		exit(f'ERROR:  for {pot} the following parameters must be given: {params_check[pot]}')
+	if set(params.keys()) != params_check[ptype]:
+		exit(f'ERROR:  for {ptype} the following parameters must be given: {params_check[ptype]}')
 	
-	params['ptype'] = pot
+	params['ptype'] = ptype
 	
 	return params
 
@@ -160,7 +167,7 @@ def read_vr_calc_pars(fname, rtype):
 		exit(f'ERROR: Two or more sets of parameters given in "{fname}"')
 	
 	if input_parser.sections()[0] != rtype:
-		exit(f'ERROR: run type in "{fname}" is not consistent with actual run type')
+		exit(f'ERROR: run type in "{fname}" is not consistent with the actual run type')
 	
 	for keyword, value in input_parser[rtype].items():
 		if keyword in ('jmax', 'v1', 'v2'):
@@ -202,6 +209,7 @@ def res_pec_fit(guess, rp, up, params):
 	beta = guess[2:]
 	
 	res = []
+	
 	for r, u in zip(rp, up):
 		if params['ptype'] == 'EMO':
 			ua = emo(r, de, re, params['rref'], params['q'], beta)
@@ -337,7 +345,7 @@ def read_expdata(fname):
 		expdata[int(j)] = tmp
 	
 	if n_levels == 0:
-		exit('fNo energy levels found in {fname}')
+		exit(f'No energy levels found in {fname}')
 	
 	return expdata
 
