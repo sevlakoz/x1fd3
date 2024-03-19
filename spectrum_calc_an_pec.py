@@ -3,7 +3,10 @@ import sys
 from funcs import *
 
 if len(sys.argv) < 4:
-	exit('Usage: python spectrum_cacl_an_pec.py <file with parameters for spectrum calc|example: vr_spectrum_calc_params.txt> <file with fitted parameters|example: emo_params.txt> <file with point-wise dm|example: dm.txt>')
+	exit('''Usage: python spectrum_cacl_an_pec.py <1> <2> <3>
+       <1> = file with parameters for spectrum calc | example: vr_spectrum_calc_params.txt
+       <2> = file with fitted parameters            | example: emo_params.txt
+       <3> = file with point-wise dm                | example: dm.txt''')
 
 f_vr_par = sys.argv[1]
 f_fit_par = sys.argv[2]
