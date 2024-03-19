@@ -67,7 +67,7 @@ def print_levels(levels):
 
 #=======================================================================
 
-def print_matrix_elements(params, frequencies, matrix_elements):
+def print_matrix_elements(params, levels, matrix_elements):
 	
 	print("\n=== Transition frequencies & Intergals <f(v'J')|d|f(v''J'')>,D ===\n")
 	print(f"v'' = {params['v1']}")
@@ -75,9 +75,12 @@ def print_matrix_elements(params, frequencies, matrix_elements):
 	
 	for j2 in range(0, params['jmax'] + 1):
 		print(f"J' = {j2}")
-		print(f" J''    E'-E'',cm-1   <f'|d|f''>,D")
+		print(f" J''       E'',cm-1    E'-E'',cm-1   <f'|d|f''>,D")
 		for j1 in range(0, params['jmax'] + 1):
-			print(f"{j1:4d}{frequencies[j2][j1]:15.5f}{matrix_elements[j2][j1]:15.5e}")
+			e2 = levels[j2][params['v2']].energy 
+			e1 = levels[j1][params['v1']].energy
+			freq =  e2 - e1
+			print(f"{j1:4d}{e1:15.5f}{freq:15.5f}{matrix_elements[j2][j1]:15.5e}")
 		print()
 
 #=======================================================================
@@ -313,7 +316,6 @@ def vr_solver(ptype, params, rp =[], up = []):
 
 def me_calc(params, levels, rd, fd):
 	
-	frequencies = {}
 	matrix_elements = {}
 	
 	# cubic spline to find DM values
@@ -322,13 +324,11 @@ def me_calc(params, levels, rd, fd):
 	d_grid = splev(r_grid, spl_dip)
 	
 	for j2 in range(params['jmax'] + 1):
-		frequencies[j2] = {}
 		matrix_elements[j2] = {}
 		for j1 in range(params['jmax'] + 1):
-			frequencies[j2][j1] = levels[j2][params['v2']].energy - levels[j1][params['v1']].energy
 			matrix_elements[j2][j1] = np.sum(levels[j1][params['v1']].wavef_grid * levels[j2][params['v2']].wavef_grid * d_grid)
 	
-	return frequencies, matrix_elements
+	return matrix_elements
 
 #=======================================================================
 
