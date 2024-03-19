@@ -24,6 +24,6 @@ levels = vr_solver('an', params)
 print_levels(levels)
 
 # calc and print integrals
-matrix_elements = me_calc(params, levels, rd, fd)
-print_matrix_elements(params, matrix_elements)
+frequencies, matrix_elements = me_calc(params, levels, rd, fd)
+print_matrix_elements(params, frequencies, matrix_elements)
 
