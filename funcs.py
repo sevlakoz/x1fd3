@@ -69,18 +69,17 @@ def print_levels(levels):
 
 def print_matrix_elements(params, levels, matrix_elements):
 	
-	print("\n=== Transition frequencies & Intergals <f(v'J')|d|f(v''J'')>,D ===\n")
+	print("\n=== Transitions & Intergals <f(v'J')|d|f(v''J'')>,D ===\n")
 	print(f"v'' = {params['v1']}")
 	print(f"v'  = {params['v2']}\n")
 	
 	for j2 in range(0, params['jmax'] + 1):
 		print(f"J' = {j2}")
-		print(f" J''       E'',cm-1    E'-E'',cm-1   <f'|d|f''>,D")
+		print(f" J''        E',cm-1       E'',cm-1   <f'|d|f''>,D")
 		for j1 in range(0, params['jmax'] + 1):
 			e2 = levels[j2][params['v2']].energy 
 			e1 = levels[j1][params['v1']].energy
-			freq =  e2 - e1
-			print(f"{j1:4d}{e1:15.5f}{freq:15.5f}{matrix_elements[j2][j1]:15.5e}")
+			print(f"{j1:4d}{e2:15.5f}{e1:15.5f}{matrix_elements[j2][j1]:15.5e}")
 		print()
 
 #=======================================================================
