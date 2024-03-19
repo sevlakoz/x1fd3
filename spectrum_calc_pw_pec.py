@@ -26,4 +26,3 @@ print_levels(levels)
 # calc and print integrals
 frequencies, matrix_elements = me_calc(params, levels, rd, fd)
 print_matrix_elements(params, frequencies, matrix_elements)
-
