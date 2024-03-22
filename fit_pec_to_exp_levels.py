@@ -7,7 +7,7 @@ if len(sys.argv) < 5:
        <1> = file with parameters for level calc | example: vr_fit_params.txt
        <2> = file with pre-fitted parameters     | example: emo_params.txt
        <3> = file with point-wise pec            | example: pec.txt
-       <4> = file with exp. vr levels            | example: levels.txt''')
+       <4> = file with exp. vib.-rot. levels     | example: levels.txt''')
 
 f_vr_par = sys.argv[1]
 f_fit_par = sys.argv[2]
