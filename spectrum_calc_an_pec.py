@@ -22,9 +22,8 @@ params = read_pec_pars(f_fit_par)
 params = params | read_vr_calc_pars(f_vr_par, 'SPECTRUM')
 rd, fd = read_pw_curve(f_pw_dm)
 
-# calc and print vr levels
+# calc vr levels
 levels = vr_solver('an', params)
-print_levels(levels)
 
 # calc and print integrals
 matrix_elements = me_calc(params, levels, rd, fd)

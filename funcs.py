@@ -34,7 +34,8 @@ def print_input_file(fname):
 
 def print_pecs(rp, up, params):
 	
-	print(f'       R,A         U(p-w),cm-1         U({params["ptype"]}),cm-1          delta,cm-1')
+	hdr = f'U({params["ptype"]}),cm-1'
+	print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{hdr:>20}{"delta,cm-1":>20}')
 	for r, u in zip(rp, up):
 		if params['ptype'] == 'EMO':
 			ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
@@ -61,7 +62,7 @@ def print_levels(levels):
 	
 	print('\n=== Energy levels ===')
 	for j in levels.keys():
-		print(f'\nJ = {j}\n  v    Energy,cm-1        Bv,cm-1')
+		print(f'\nJ = {j}\n{"v":>3}{"E,cm-1":>15}{"Bv,cm-1":>15}')
 		for v, lev in levels[j].items():
 			print(f'{v:3d}{lev.energy:15.5f}{lev.rot_const:15.8f}')
 
@@ -69,14 +70,14 @@ def print_levels(levels):
 
 def print_matrix_elements(params, levels, matrix_elements):
 	
-	print("\n=== Transitions & Intergals <f(v'J')|d|f(v''J'')>,D ===\n")
+	print("\n=== Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===\n")
 	print(f"v'' = {params['v1']}")
 	print(f"v'  = {params['v2']}\n")
 	
-	for j2 in range(0, params['jmax'] + 1):
+	for j2 in range(params['jmax'] + 1):
 		print(f"J' = {j2}")
-		print(f" J''        E',cm-1       E'',cm-1   <f'|d|f''>,D")
-		for j1 in range(0, params['jmax'] + 1):
+		print(f'''{"J''":>4}{"E',cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
+		for j1 in range(params['jmax'] + 1):
 			e2 = levels[j2][params['v2']].energy 
 			e1 = levels[j1][params['v1']].energy
 			print(f"{j1:4d}{e2:15.5f}{e1:15.5f}{matrix_elements[j2][j1]:15.5e}")
@@ -86,7 +87,7 @@ def print_matrix_elements(params, levels, matrix_elements):
 
 def print_levels_n_expdata(params, levels, expdata):
 	
-	print(f'\n   J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1')
+	print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
 	for j in expdata.keys():
 		if j > params['jmax']:
 			continue
@@ -275,7 +276,7 @@ def vr_solver(ptype, params, rp =[], up = []):
 	levels = {}
 	
 	# loop over J to calculate level energies
-	for j in range(0, params['jmax'] + 1):
+	for j in range(params['jmax'] + 1):
 		# 1/R^2
 		oneByR2 = r_grid**-2
 	
