@@ -739,14 +739,13 @@ mode = tk.StringVar()
 # mode selector
 
 ttk.Label(
-	text = f'{"Select runtype mode":^213}',
+	text = f'{"Select runtype mode":^217}',
 	font = ('bold', 16),
-	borderwidth = 3,
+	borderwidth = 2,
 	relief = 'solid'
 ).grid(
 	row = 0, 
-	column = 0,
-	columnspan = 4
+	column = 0
 )
 
 
@@ -757,8 +756,7 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 1, 
-	column = 0,
-	columnspan = 4
+	column = 0
 )
 
 ttk.Radiobutton(
@@ -768,8 +766,7 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 2, 
-	column = 0,
-	columnspan = 4
+	column = 0
 )
 
 
@@ -780,8 +777,7 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 3, 
-	column = 0,
-	columnspan = 4
+	column = 0
 )
 
 ttk.Radiobutton(
@@ -791,8 +787,7 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 4, 
-	column = 0,
-	columnspan = 4
+	column = 0
 )
 
 
@@ -814,19 +809,19 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 6, 
-	column = 0,
-	columnspan = 4
+	column = 0
 )
 
 frame = ttk.Frame()
+frame.columnconfigure(0, minsize = 600)
 
 # input files
 
 hdr_input_files = ttk.Label(
 	frame,
-	text = f'{"Select input files":^218}',
+	text = f'{"Select input files":^222}',
 	font = ('bold', 16),
-	borderwidth = 3,
+	borderwidth = 2,
 	relief = 'solid'
 )
 
@@ -839,21 +834,13 @@ lbl_pw_pec = tk.Label(
 
 file_pw_pec = ttk.Entry(
 	frame,
-	width = 100,
+	width = 110,
 )
 
 open_pw_pec = ttk.Button(
 	frame,
 	text = 'Open a file',
 	command = lambda: select_file(file_pw_pec)
-)
-
-hdr_out_file = ttk.Label(
-	frame,
-	text = f'{"Select out file":^219}',
-	font = ('bold', 16),
-	borderwidth = 3,
-	relief = 'solid'
 )
 
 # VR levels calc params
@@ -865,7 +852,7 @@ lbl_lev_calc = tk.Label(
 
 file_lev_calc = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_lev_calc = ttk.Button(
@@ -883,7 +870,7 @@ lbl_sp_calc = tk.Label(
 
 file_sp_calc = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_sp_calc = ttk.Button(
@@ -901,7 +888,7 @@ lbl_fit_calc = tk.Label(
 
 file_fit_calc = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_fit_calc = ttk.Button(
@@ -919,7 +906,7 @@ lbl_init_pars = tk.Label(
 
 file_init_pars = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_init_pars = ttk.Button(
@@ -937,7 +924,7 @@ lbl_fitted_pars = tk.Label(
 
 file_fitted_pars = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_fitted_pars = ttk.Button(
@@ -955,7 +942,7 @@ lbl_pw_dip = tk.Label(
 
 file_pw_dip = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_pw_dip = ttk.Button(
@@ -973,7 +960,7 @@ lbl_exp = tk.Label(
 
 file_exp = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_exp = ttk.Button(
@@ -987,9 +974,9 @@ open_exp = ttk.Button(
 
 hdr_out = ttk.Label(
 	frame,
-	text = f'{"Select out file":^219}',
+	text = f'{"Select out file":^223}',
 	font = ('bold', 16),
-	borderwidth = 3,
+	borderwidth = 2,
 	relief = 'solid'
 )
 
@@ -1000,7 +987,7 @@ lbl_out = tk.Label(
 
 file_out = ttk.Entry(
 	frame,
-	width = 100
+	width = 110
 )
 
 open_out = ttk.Button(
@@ -1019,18 +1006,25 @@ vscroll = tk.Scrollbar(
 message_window = tk.Text(
 	frame,
 	width = 200, 
-	height = 20, 
+	height = 20,
+	state = 'disabled',
 	yscrollcommand = vscroll.set
 )
 
 # run
 
+style = ttk.Style()
+style.configure('my.TButton', font = ('bold', 16), foreground = 'red')
+
 run = ttk.Button(
 	frame,
 	text = 'RUN',
 	width = 50,
+	style = 'my.TButton',
 	command = lambda: run_calc(mode)
 )
+
+
 
 # main loop
 
