@@ -10,7 +10,7 @@ CLI versions:
 * spectrum_calc_an_pec.py - vib.-rot. spectrum calculation for given analytic PEC and point-wise DM
 * fit_pec_to_exp_levels.py - fit analytic PEC to reproduce given exp. vib.-rot. levels
 
-GUI.py - GUI warpper for all version
+GUI.py - GUI wrapper for all versions
 
 ## Usage
 ```bash
