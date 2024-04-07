@@ -244,7 +244,8 @@ def select_file(obj):
 
 	fname = filedialog.askopenfilename(
 		title = 'Open a file',
-		filetypes = filetypes)
+		filetypes = filetypes
+	)
 	
 	if os.getcwd() == os.path.dirname(fname):
 		fname = os.path.basename(fname)
