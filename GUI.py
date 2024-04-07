@@ -1013,8 +1013,7 @@ message_window = tk.Text(
 
 # run
 
-style = ttk.Style()
-style.configure('my.TButton', font = ('bold', 16), foreground = 'red')
+style = ttk.Style().configure('my.TButton', font = ('bold', 16), foreground = 'red')
 
 run = ttk.Button(
 	frame,
