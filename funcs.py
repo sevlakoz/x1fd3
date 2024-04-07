@@ -113,6 +113,9 @@ def read_pw_curve(fname):
 			r.append(float(line[0]))
 			c.append(float(line[1]))
 	
+	if len(r) == 0:
+		exit(f'No PEC point found in {fname}')
+	
 	r = np.array(r)
 	c = np.array(c)
 	
