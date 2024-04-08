@@ -756,7 +756,8 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 1, 
-	column = 0
+	column = 0,
+	columnspan = 4
 )
 
 ttk.Radiobutton(
@@ -766,7 +767,8 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 2, 
-	column = 0
+	column = 0,
+	columnspan = 4
 )
 
 
@@ -777,7 +779,8 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 3, 
-	column = 0
+	column = 0,
+	columnspan = 4
 )
 
 ttk.Radiobutton(
@@ -787,7 +790,8 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 4, 
-	column = 0
+	column = 0,
+	columnspan = 4
 )
 
 
@@ -809,7 +813,8 @@ ttk.Radiobutton(
 	command = lambda: select_mode(mode)
 ).grid(
 	row = 6, 
-	column = 0
+	column = 0,
+	columnspan = 4
 )
 
 frame = ttk.Frame()
@@ -1005,7 +1010,7 @@ vscroll = tk.Scrollbar(
 
 message_window = tk.Text(
 	frame,
-	width = 200, 
+	width = 100, 
 	height = 20,
 	state = 'disabled',
 	yscrollcommand = vscroll.set
