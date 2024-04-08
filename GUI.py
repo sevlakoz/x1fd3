@@ -1010,7 +1010,7 @@ vscroll = tk.Scrollbar(
 
 message_window = tk.Text(
 	frame,
-	width = 100, 
+	width = 200, 
 	height = 20,
 	state = 'disabled',
 	yscrollcommand = vscroll.set
