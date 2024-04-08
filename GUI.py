@@ -207,7 +207,8 @@ def select_mode(mode):
 	message_window.grid(
 		row = 112, 
 		column = 0, 
-		columnspan = 3
+		columnspan = 3, 
+		sticky = tk.W + tk.E
 	)
 	
 	run.grid(
@@ -745,7 +746,8 @@ ttk.Label(
 	relief = 'solid'
 ).grid(
 	row = 0, 
-	column = 0
+	column = 0,
+	columnspan = 4
 )
 
 
