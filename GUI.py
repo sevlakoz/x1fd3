@@ -225,9 +225,9 @@ def select_mode(mode):
 
 #=======================================================================
 
-def print_message(string):
+def print_message(string, prnt = True):
 	
-	if 'ERROR' in string and sys.stdout != sys.__stdout__:
+	if prnt:
 		print(string)
 	
 	message_window.configure(state = 'normal')
@@ -261,10 +261,10 @@ def run_calc(mode):
 	fname = file_out.get()
 	if fname:
 		if os.path.isfile(fname) and os.path.getsize(fname) > 0:
-			print_message(f'ERROR: non-empty out file "{fname}" already exists\n')
+			print_message(f'ERROR: non-empty out file "{fname}" already exists\n', False)
 			return
 	else:
-		print_message('ERROR: out file not specified\n')
+		print_message('ERROR: out file not specified\n', False)
 		return
 	out = open(fname, 'w')
 	
@@ -706,7 +706,7 @@ def run_calc(mode):
 			return
 		
 		# print final results
-		print('Fit results')
+		print('\nFit results')
 		try:
 			levels = vr_solver('an', params)
 		except BaseException as ex:
@@ -721,7 +721,7 @@ def run_calc(mode):
 	
 	#---
 	
-	print_message(f'SUCCESS! See "{fname}" for results\n')
+	print_message(f'SUCCESS! See "{fname}" for results\n', False)
 	
 	sys.stdout = sys.__stdout__
 	out.close()
