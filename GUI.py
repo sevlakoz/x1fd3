@@ -22,26 +22,37 @@ def select_mode(mode):
 		columnspan = 4
 	)
 	
+	ttk.Separator(
+		frame,
+		orient = 'horizontal'
+	).grid(
+		row = 101, 
+		column = 0,
+		columnspan = 4,
+		sticky = 'ew'
+	)
+	
 	if mode.get() in [
 		'pw_pec_approx',
 		'lev_calc_pw',
 		'sp_calc_pw',
 		'fit_pec_to_exp'
 	]:
-			lbl_pw_pec.grid(
-				row = 101, 
-				column = 0
-			)
-			
-			file_pw_pec.grid(
-				row = 101, 
-				column = 1
-			)
-			
-			open_pw_pec.grid(
-				row = 101, 
-				column = 2
-			)
+		lbl_pw_pec.grid(
+			row = 102, 
+			column = 0,
+			sticky = 'e'
+		)
+		
+		file_pw_pec.grid(
+			row = 102, 
+			column = 1
+		)
+		
+		open_pw_pec.grid(
+			row = 102, 
+			column = 2
+		)
 	
 	if mode.get() in [
 		'lev_calc_pw',
@@ -49,17 +60,18 @@ def select_mode(mode):
 	]:
 		
 		lbl_lev_calc.grid(
-			row = 102, 
-			column = 0
+			row = 103, 
+			column = 0,
+			sticky = 'e'
 		)
 		
 		file_lev_calc.grid(
-			row = 102, 
+			row = 103, 
 			column = 1
 		)
 		
 		open_lev_calc.grid(
-			row = 102, 
+			row = 103, 
 			column = 2
 		)
 	
@@ -69,17 +81,18 @@ def select_mode(mode):
 	]:
 		
 		lbl_sp_calc.grid(
-			row = 103, 
-			column = 0
+			row = 104, 
+			column = 0,
+			sticky = 'e'
 		)
 		
 		file_sp_calc.grid(
-			row = 103, 
+			row = 104, 
 			column = 1
 		)
 		
 		open_sp_calc.grid(
-			row = 103, 
+			row = 104, 
 			column = 2
 		)
 	
@@ -88,17 +101,18 @@ def select_mode(mode):
 	]:
 		
 		lbl_fit_calc.grid(
-			row = 104, 
-			column = 0
+			row = 105, 
+			column = 0,
+			sticky = 'e'
 		)
 		
 		file_fit_calc.grid(
-			row = 104, 
+			row = 105, 
 			column = 1
 		)
 		
 		open_fit_calc.grid(
-			row = 104, 
+			row = 105, 
 			column = 2
 		)
 	
@@ -106,17 +120,18 @@ def select_mode(mode):
 		'pw_pec_approx'
 	]:
 		lbl_init_pars.grid(
-			row = 105, 
-			column = 0
+			row = 106, 
+			column = 0,
+			sticky = 'e'
 		)
 		
 		file_init_pars.grid(
-			row = 105, 
+			row = 106, 
 			column = 1
 		)
 		
 		open_init_pars.grid(
-			row = 105, 
+			row = 106, 
 			column = 2
 		)
 	
@@ -126,17 +141,18 @@ def select_mode(mode):
 		'fit_pec_to_exp'
 	]:
 		lbl_fitted_pars.grid(
-			row = 106, 
-			column = 0
+			row = 107, 
+			column = 0,
+			sticky = 'e'
 		)
 		
 		file_fitted_pars.grid(
-			row = 106, 
+			row = 107, 
 			column = 1
 		)
 		
 		open_fitted_pars.grid(
-			row = 106, 
+			row = 107, 
 			column = 2
 		)
 	
@@ -144,38 +160,40 @@ def select_mode(mode):
 		'sp_calc_pw',
 		'sp_calc_an'
 	]:
-			lbl_pw_dip.grid(
-				row = 107, 
-				column = 0
-			)
-			
-			file_pw_dip.grid(
-				row = 107, 
-				column = 1
-			)
-			
-			open_pw_dip.grid(
-				row = 107, 
-				column = 2
-			)
+		lbl_pw_dip.grid(
+			row = 108, 
+			column = 0,
+			sticky = 'e'
+		)
+		
+		file_pw_dip.grid(
+			row = 108, 
+			column = 1
+		)
+		
+		open_pw_dip.grid(
+			row = 108, 
+			column = 2
+		)
 	
 	if mode.get() in [
 		'fit_pec_to_exp'
 	]:
-			lbl_exp.grid(
-				row = 108, 
-				column = 0
-			)
-			
-			file_exp.grid(
-				row = 108, 
-				column = 1
-			)
-			
-			open_exp.grid(
-				row = 108, 
-				column = 2
-			)
+		lbl_exp.grid(
+			row = 109, 
+			column = 0,
+			sticky = 'e'
+		)
+		
+		file_exp.grid(
+			row = 109, 
+			column = 1
+		)
+		
+		open_exp.grid(
+			row = 109, 
+			column = 2
+		)
 	
 	hdr_out.grid(
 		row = 110, 
@@ -183,36 +201,47 @@ def select_mode(mode):
 		columnspan = 4
 	)
 	
-	lbl_out.grid(
+	ttk.Separator(
+		frame,
+		orient = 'horizontal'
+	).grid(
 		row = 111, 
-		column = 0
+		column = 0,
+		columnspan = 4,
+		sticky = 'ew'
+	)
+	
+	lbl_out.grid(
+		row = 112, 
+		column = 0,
+		sticky = 'e'
 	)
 	
 	file_out.grid(
-		row = 111, 
+		row = 112, 
 		column = 1
 	)
 	
 	open_out.grid(
-		row = 111, 
+		row = 112, 
 		column = 2
 	)
 	
 	vscroll.grid(
-		row = 112, 
+		row = 113, 
 		column = 3, 
 		sticky = tk.N + tk.S
 	)
 	
 	message_window.grid(
-		row = 112, 
+		row = 113, 
 		column = 0, 
 		columnspan = 3, 
 		sticky = tk.W + tk.E
 	)
 	
 	run.grid(
-		row = 113, 
+		row = 114, 
 		column = 0,
 		columnspan = 4
 	)
@@ -248,8 +277,9 @@ def select_file(obj):
 		filetypes = filetypes
 	)
 	
-	if os.getcwd() == os.path.dirname(fname):
-		fname = os.path.basename(fname)
+	if fname:
+		if os.getcwd() == os.path.dirname(fname):
+			fname = os.path.basename(fname)
 	
 	obj.delete(0, 'end')
 	obj.insert(0, fname)
@@ -734,22 +764,29 @@ def run_calc(mode):
 
 root = tk.Tk()
 root.title('x1fd3')
+root.resizable(False, False)
 
 mode = tk.StringVar()
 
 # mode selector
 
 ttk.Label(
-	text = f'{"Select runtype mode":^217}',
-	font = ('bold', 16),
-	borderwidth = 2,
-	relief = 'solid'
+	text = 'Select runtype mode',
+	font = ('bold', 16)
 ).grid(
 	row = 0, 
 	column = 0,
 	columnspan = 4
 )
 
+ttk.Separator(
+	orient = 'horizontal'
+).grid(
+	row = 1, 
+	column = 0,
+	columnspan = 4,
+	sticky = 'ew'
+)
 
 ttk.Radiobutton(
 	text = 'Point-wise PEC approximation with EMO', 
@@ -757,9 +794,9 @@ ttk.Radiobutton(
 	variable = mode, 
 	command = lambda: select_mode(mode)
 ).grid(
-	row = 1, 
-	column = 0,
-	columnspan = 4
+	row = 2, 
+	column = 2,
+	sticky = 'w'
 )
 
 ttk.Radiobutton(
@@ -768,9 +805,9 @@ ttk.Radiobutton(
 	variable = mode, 
 	command = lambda: select_mode(mode)
 ).grid(
-	row = 2, 
-	column = 0,
-	columnspan = 4
+	row = 3, 
+	column = 2,
+	sticky = 'w'
 )
 
 
@@ -780,9 +817,9 @@ ttk.Radiobutton(
 	variable = mode, 
 	command = lambda: select_mode(mode)
 ).grid(
-	row = 3, 
-	column = 0,
-	columnspan = 4
+	row = 4, 
+	column = 2,
+	sticky = 'w'
 )
 
 ttk.Radiobutton(
@@ -791,9 +828,9 @@ ttk.Radiobutton(
 	variable = mode, 
 	command = lambda: select_mode(mode)
 ).grid(
-	row = 4, 
-	column = 0,
-	columnspan = 4
+	row = 5, 
+	column = 2,
+	sticky = 'w'
 )
 
 
@@ -803,9 +840,9 @@ ttk.Radiobutton(
 	variable = mode, 
 	command = lambda: select_mode(mode)
 ).grid(
-	row = 5, 
-	column = 0,
-	columnspan = 4
+	row = 6, 
+	column = 2,
+	sticky = 'w'
 )
 
 ttk.Radiobutton(
@@ -814,9 +851,9 @@ ttk.Radiobutton(
 	variable = mode, 
 	command = lambda: select_mode(mode)
 ).grid(
-	row = 6, 
-	column = 0,
-	columnspan = 4
+	row = 7, 
+	column = 2,
+	sticky = 'w'
 )
 
 frame = ttk.Frame()
@@ -826,10 +863,8 @@ frame.columnconfigure(0, minsize = 600)
 
 hdr_input_files = ttk.Label(
 	frame,
-	text = f'{"Select input files":^222}',
-	font = ('bold', 16),
-	borderwidth = 2,
-	relief = 'solid'
+	text = 'Select input files',
+	font = ('bold', 16)
 )
 
 # PW pec
@@ -981,10 +1016,8 @@ open_exp = ttk.Button(
 
 hdr_out = ttk.Label(
 	frame,
-	text = f'{"Select out file":^223}',
-	font = ('bold', 16),
-	borderwidth = 2,
-	relief = 'solid'
+	text = 'Select out file',
+	font = ('bold', 16)
 )
 
 lbl_out = tk.Label(
