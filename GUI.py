@@ -812,7 +812,7 @@ ttk.Radiobutton(
 
 
 ttk.Radiobutton(
-	text = 'Vib.-rot. levels calculation with analytic PEC', 
+	text = 'Vib.-rot. levels calculation with analytic PEC (EMO)', 
 	value = 'lev_calc_an', 
 	variable = mode, 
 	command = lambda: select_mode(mode)
@@ -835,7 +835,7 @@ ttk.Radiobutton(
 
 
 ttk.Radiobutton(
-	text = 'Vib.-rot. spectrum calculation with analytic PEC', 
+	text = 'Vib.-rot. spectrum calculation with analytic PEC (EMO)', 
 	value = 'sp_calc_an', 
 	variable = mode, 
 	command = lambda: select_mode(mode)
@@ -846,7 +846,7 @@ ttk.Radiobutton(
 )
 
 ttk.Radiobutton(
-	text = 'Analytic PEC fitting to reproduce given exp. vib.-rot. levels', 
+	text = 'Analytic PEC (EMO) fitting to reproduce experimental vib.-rot. levels', 
 	value = 'fit_pec_to_exp', 
 	variable = mode, 
 	command = lambda: select_mode(mode)
