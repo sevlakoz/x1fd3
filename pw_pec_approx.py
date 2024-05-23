@@ -4,8 +4,8 @@ from funcs import *
 
 if len(sys.argv) < 3:
 	exit('''Usage: python pw_pec_approx.py <1> <2>
-       <1> = file with point-wise pec     | example: pec.txt
-       <2> = file with initial parameters | example: init_params.txt''')
+       <1> = file with point-wise pec     | example: pw_pec.txt
+       <2> = file with initial parameters | example: init_emo_params.txt''')
 
 f_pw_pec = sys.argv[1]
 f_init_par = sys.argv[2]
@@ -16,7 +16,7 @@ print_input_file(f_init_par)
 
 # read files
 rp, up = read_pw_curve(f_pw_pec)
-params = read_pec_pars(f_init_par)
+params = read_pec_params(f_init_par)
 
 # print initial guess
 print('=== Point-wise PEC approximation ===\n')

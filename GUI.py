@@ -11,7 +11,9 @@ from tkinter import ttk
 #=======================================================================
 #=======================================================================
 
-def select_mode(mode):
+def select_mode(
+		mode
+	):
 	
 	for widget in frame.winfo_children():
 		widget.grid_forget()
@@ -119,18 +121,18 @@ def select_mode(mode):
 	if mode.get() in [
 		'pw_pec_approx'
 	]:
-		lbl_init_pars.grid(
+		lbl_init_params.grid(
 			row = 106, 
 			column = 0,
 			sticky = 'e'
 		)
 		
-		file_init_pars.grid(
+		file_init_params.grid(
 			row = 106, 
 			column = 1
 		)
 		
-		open_init_pars.grid(
+		open_init_params.grid(
 			row = 106, 
 			column = 2
 		)
@@ -140,18 +142,18 @@ def select_mode(mode):
 		'sp_calc_an',
 		'fit_pec_to_exp'
 	]:
-		lbl_fitted_pars.grid(
+		lbl_fitted_params.grid(
 			row = 107, 
 			column = 0,
 			sticky = 'e'
 		)
 		
-		file_fitted_pars.grid(
+		file_fitted_params.grid(
 			row = 107, 
 			column = 1
 		)
 		
-		open_fitted_pars.grid(
+		open_fitted_params.grid(
 			row = 107, 
 			column = 2
 		)
@@ -255,7 +257,10 @@ def select_mode(mode):
 
 #=======================================================================
 
-def print_message(string, prnt = True):
+def print_message(
+		string, 
+		prnt = True
+	):
 	
 	if prnt:
 		print(string)
@@ -266,7 +271,10 @@ def print_message(string, prnt = True):
 
 #=======================================================================
 
-def select_file(obj):
+def select_file(
+		obj
+	):
+	
 	filetypes = (
 		('text files', '*.txt'),
 		('All files', '*.*')
@@ -287,7 +295,9 @@ def select_file(obj):
 
 #=======================================================================
 
-def run_calc(mode):
+def run_calc(
+		mode
+	):
 	
 	fname = file_out.get()
 	if fname:
@@ -306,7 +316,7 @@ def run_calc(mode):
 	if mode.get() == 'pw_pec_approx':
 		
 		f_pw_pec = file_pw_pec.get()
-		f_init_par = file_init_pars.get()
+		f_init_par = file_init_params.get()
 		
 		# print input
 		try:
@@ -336,7 +346,7 @@ def run_calc(mode):
 			return
 		
 		try:
-			params = read_pec_pars(f_init_par)
+			params = read_pec_params(f_init_par)
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read initial EMO parameters: {str(ex)}\n')
 			out.flush()
@@ -405,7 +415,7 @@ def run_calc(mode):
 			return
 		
 		try:
-			params = read_vr_calc_pars(f_vr_par, 'ENERGY')
+			params = read_vr_calc_params(f_vr_par, 'ENERGY')
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
 			out.flush()
@@ -427,7 +437,7 @@ def run_calc(mode):
 	if mode.get() == 'lev_calc_an':
 		
 		f_vr_par = file_lev_calc.get()
-		f_fit_par = file_fitted_pars.get()
+		f_fit_par = file_fitted_params.get()
 		
 		# print input
 		try:
@@ -450,14 +460,14 @@ def run_calc(mode):
 		
 		# read files
 		try:
-			params = read_vr_calc_pars(f_vr_par, 'ENERGY')
+			params = read_vr_calc_params(f_vr_par, 'ENERGY')
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
 			out.flush()
 			return
 		
 		try:
-			params = params | read_pec_pars(f_fit_par)
+			params = params | read_pec_params(f_fit_par)
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
 			out.flush()
@@ -527,7 +537,7 @@ def run_calc(mode):
 			return
 		
 		try:
-			params = read_vr_calc_pars(f_vr_par, 'SPECTRUM')
+			params = read_vr_calc_params(f_vr_par, 'SPECTRUM')
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
 			out.flush()
@@ -557,7 +567,7 @@ def run_calc(mode):
 	if mode.get() == 'sp_calc_an':
 		
 		f_vr_par = file_sp_calc.get()
-		f_fit_par = file_fitted_pars.get()
+		f_fit_par = file_fitted_params.get()
 		f_pw_dm = file_pw_dip.get()
 		
 		# print input
@@ -590,14 +600,14 @@ def run_calc(mode):
 		
 		# read files
 		try:
-			params = read_vr_calc_pars(f_vr_par, 'SPECTRUM')
+			params = read_vr_calc_params(f_vr_par, 'SPECTRUM')
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
 			out.flush()
 			return
 		
 		try:
-			params = params | read_pec_pars(f_fit_par)
+			params = params | read_pec_params(f_fit_par)
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
 			out.flush()
@@ -634,7 +644,7 @@ def run_calc(mode):
 	if mode.get() == 'fit_pec_to_exp':
 		
 		f_vr_par = file_fit_calc.get()
-		f_fit_par = file_fitted_pars.get()
+		f_fit_par = file_fitted_params.get()
 		f_pw_pec = file_pw_pec.get()
 		f_epx_lev = file_exp.get()
 		
@@ -684,14 +694,14 @@ def run_calc(mode):
 			return
 		
 		try:
-			params = read_vr_calc_pars(f_vr_par, 'FIT')
+			params = read_vr_calc_params(f_vr_par, 'FIT')
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read parameter for PEC fit to exp. levels: {str(ex)}\n')
 			out.flush()
 			return
 		
 		try:
-			params = params | read_pec_pars(f_fit_par)
+			params = params | read_pec_params(f_fit_par)
 		except BaseException as ex:
 			print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
 			out.flush()
@@ -871,7 +881,7 @@ hdr_input_files = ttk.Label(
 
 lbl_pw_pec = tk.Label(
 	frame,
-	text = 'Point-wise PEC, example: pec.txt'
+	text = 'Point-wise PEC, example: pw_pec.txt'
 )
 
 file_pw_pec = ttk.Entry(
@@ -939,40 +949,40 @@ open_fit_calc = ttk.Button(
 	command = lambda: select_file(file_fit_calc)
 )
 
-# init EMO pars
+# init EMO params
 
-lbl_init_pars = tk.Label(
+lbl_init_params = tk.Label(
 	frame,
-	text = 'Initial EMO parameters for PEC approxomation, example: init_params.txt'
+	text = 'Initial EMO parameters for PEC approxomation, example: init_emo_params.txt'
 )
 
-file_init_pars = ttk.Entry(
+file_init_params = ttk.Entry(
 	frame,
 	width = 110
 )
 
-open_init_pars = ttk.Button(
+open_init_params = ttk.Button(
 	frame,
 	text = 'Open a file',
-	command = lambda: select_file(file_init_pars)
+	command = lambda: select_file(file_init_params)
 )
 
-# fitted EMO pars
+# fitted EMO params
 
-lbl_fitted_pars = tk.Label(
+lbl_fitted_params = tk.Label(
 	frame,
-	text = 'Fitted EMO parameters for levels/spectrum calculation, example: emo_params.txt'
+	text = 'Fitted EMO parameters for levels/spectrum calculation, example: fitted_emo_params.txt'
 )
 
-file_fitted_pars = ttk.Entry(
+file_fitted_params = ttk.Entry(
 	frame,
 	width = 110
 )
 
-open_fitted_pars = ttk.Button(
+open_fitted_params = ttk.Button(
 	frame,
 	text = 'Open a file',
-	command = lambda: select_file(file_fitted_pars)
+	command = lambda: select_file(file_fitted_params)
 )
 
 # dipole

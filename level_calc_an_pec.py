@@ -5,7 +5,7 @@ from funcs import *
 if len(sys.argv) < 3:
 	exit('''Usage: python level_cacl_an_pec.py <1> <2>
        <1> = file with parameters for level calc | example: vr_level_calc_params.txt
-       <2> = file with fitted parameters         | example: emo_params.txt''')
+       <2> = file with fitted parameters         | example: fitted_emo_params.txt''')
 
 f_vr_par = sys.argv[1]
 f_fit_par = sys.argv[2]
@@ -15,8 +15,8 @@ print_input_file(f_vr_par)
 print_input_file(f_fit_par)
 
 # read files
-params = read_pec_pars(f_fit_par)
-params = params | read_vr_calc_pars(f_vr_par, 'ENERGY')
+params = read_pec_params(f_fit_par)
+params = params | read_vr_calc_params(f_vr_par, 'ENERGY')
 
 # calc and print vr levels
 levels = vr_solver('an', params)

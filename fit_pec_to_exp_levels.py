@@ -5,8 +5,8 @@ from funcs import *
 if len(sys.argv) < 5:
 	exit('''Usage: python fit_pec_to_exp_levels.py <1> <2> <3> <4>
        <1> = file with parameters for level calc | example: vr_fit_params.txt
-       <2> = file with pre-fitted parameters     | example: emo_params.txt
-       <3> = file with point-wise pec            | example: pec.txt
+       <2> = file with pre-fitted parameters     | example: fitted_emo_params.txt
+       <3> = file with point-wise pec            | example: pw_pec.txt
        <4> = file with exp. vib.-rot. levels     | example: levels.txt''')
 
 f_vr_par = sys.argv[1]
@@ -22,8 +22,8 @@ print_input_file(f_epx_lev)
 
 # read files
 rp, up = read_pw_curve(f_pw_pec)
-params = read_pec_pars(f_fit_par)
-params = params | read_vr_calc_pars(f_vr_par, 'FIT')
+params = read_pec_params(f_fit_par)
+params = params | read_vr_calc_params(f_vr_par, 'FIT')
 expdata = read_expdata(f_epx_lev)
 
 params['jmax'] = max(expdata.keys())

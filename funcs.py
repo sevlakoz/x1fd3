@@ -19,7 +19,9 @@ class Level:
 #=======================================================================
 #=======================================================================
 
-def print_input_file(fname):
+def print_input_file(
+		fname
+	):
 	
 	if os.path.isfile(fname):
 		print(f'\n=== Input file: {fname} ===\n')
@@ -32,10 +34,15 @@ def print_input_file(fname):
 
 #=======================================================================
 
-def print_pecs(rp, up, params):
+def print_pecs(
+		rp, 
+		up, 
+		params
+	):
 	
 	hdr = f'U({params["ptype"]}),cm-1'
 	print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{hdr:>20}{"delta,cm-1":>20}')
+	# loop over r
 	for r, u in zip(rp, up):
 		if params['ptype'] == 'EMO':
 			ua = emo(r, params['de'], params['re'], params['rref'], params['q'], params['beta'])
@@ -43,7 +50,9 @@ def print_pecs(rp, up, params):
 
 #=======================================================================
 
-def print_params(params):
+def print_params(
+		params
+	):
 	
 	print(f"[{params['ptype']}]")
 	print(f"de    {params['de']}")
@@ -58,7 +67,9 @@ def print_params(params):
 
 #=======================================================================
 
-def print_levels(levels):
+def print_levels(
+		levels
+	):
 	
 	print('\n=== Energy levels ===')
 	for j in levels.keys():
@@ -68,7 +79,11 @@ def print_levels(levels):
 
 #=======================================================================
 
-def print_matrix_elements(params, levels, matrix_elements):
+def print_matrix_elements(
+		params, 
+		levels, 
+		matrix_elements
+	):
 	
 	print("\n=== Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===\n")
 	print(f"v'' = {params['v1']}")
@@ -85,7 +100,11 @@ def print_matrix_elements(params, levels, matrix_elements):
 
 #=======================================================================
 
-def print_levels_n_expdata(params, levels, expdata):
+def print_levels_n_expdata(
+		params, 
+		levels, 
+		expdata
+	):
 	
 	print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
 	for j in expdata.keys():
@@ -100,11 +119,14 @@ def print_levels_n_expdata(params, levels, expdata):
 #=======================================================================
 #=======================================================================
 
-def read_pw_curve(fname):
+def read_pw_curve(
+		fname
+	):
 	
 	r = []
 	c = []
 	
+	# read pec
 	with open(fname) as inp:
 		for line in inp:
 			if line.lstrip() == '' or line.lstrip()[0] == '#':
@@ -113,6 +135,7 @@ def read_pw_curve(fname):
 			r.append(float(line[0]))
 			c.append(float(line[1]))
 	
+	# check
 	if len(r) == 0:
 		exit(f'No PEC point found in {fname}')
 	
@@ -123,7 +146,9 @@ def read_pw_curve(fname):
 
 #=======================================================================
 
-def read_pec_pars(fname):
+def read_pec_params(
+		fname
+	):
 	
 	input_parser = ConfigParser(delimiters=(' ', '\t'))
 	input_parser.read(fname)
@@ -159,7 +184,10 @@ def read_pec_pars(fname):
 
 #=======================================================================
 
-def read_vr_calc_pars(fname, rtype):
+def read_vr_calc_params(
+		fname, 
+		rtype
+	):
 	
 	if not rtype in ['ENERGY', 'SPECTRUM', 'FIT']:
 		exit(f'ERROR:  Uknown run type "{rtype}"')
@@ -167,6 +195,7 @@ def read_vr_calc_pars(fname, rtype):
 	input_parser = ConfigParser(delimiters=(' ', '\t'))
 	input_parser.read(fname)
 	
+	# read calc params
 	params = {}
 	
 	if len(input_parser.sections()) > 1:
@@ -196,24 +225,39 @@ def read_vr_calc_pars(fname, rtype):
 
 #=======================================================================
 
-def emo(r, de, re, rref, q, beta):
+def emo(
+		r, 
+		de, 
+		re, 
+		rref, 
+		q, 
+		beta
+	):
 	
+	# EMO calc
 	y = (r**q - rref**q) / (r**q + rref**q)
 	
 	beta_pol = beta[0]
 	for n in range(1, len(beta)):
 		beta_pol += beta[n] * y**n
-		
+	
 	return de * (1 - np.exp(-beta_pol * (r - re)))**2
 
 #=======================================================================
 
-def res_pec_fit(guess, rp, up, params): 
+def res_pec(
+		guess, 
+		rp, 
+		up, 
+		params
+	): 
 	
+	# fitted params
 	de = guess[0]
 	re = guess[1]
 	beta = guess[2:]
 	
+	# residual calc
 	res = []
 	
 	for r, u in zip(rp, up):
@@ -226,16 +270,22 @@ def res_pec_fit(guess, rp, up, params):
 
 #=======================================================================
 
-def pec_fit(rp, up, params):
+def pec_fit(
+		rp, 
+		up, 
+		params
+	):
 	
+	# fitted params
 	guess = [params['de'], params['re']]
 	guess.extend(params['beta'])
 	add_args = (rp, up, params)
 	
-	res_1 = least_squares(res_pec_fit, guess, args = add_args)
+	# scipy least squares
+	res_1 = least_squares(res_pec, guess, args = add_args)
 	
+	# out
 	tmp = {} | params
-	
 	tmp['de'] = res_1.x[0]
 	tmp['re'] = res_1.x[1]
 	tmp['beta'] = np.array(list(res_1.x[2:]))
@@ -244,7 +294,12 @@ def pec_fit(rp, up, params):
 
 #=======================================================================
 
-def vr_solver(ptype, params, rp =[], up = []):
+def vr_solver(
+		ptype, 
+		params, 
+		rp =[], 
+		up = []
+	):
 	
 	# physical constants
 	au_to_Da = 5.48579909065e-4
@@ -270,25 +325,26 @@ def vr_solver(ptype, params, rp =[], up = []):
 		u_grid = splev(r_grid, spl_pec)
 		emax = u_grid[-1]
 	elif ptype == 'an':
+		# EMO
 		if params['ptype'] == 'EMO':
 			u_grid = np.array(list(map(lambda x: emo(x, params['de'], params['re'], params['rref'], params['q'], params['beta']), r_grid)))
 			emax = params['de']
 	else:
 		exit(f'ERROR:  Uknown pec type "{ptype}"')
 	
+	# loop over J to calculate level energies
 	levels = {}
 	
-	# loop over J to calculate level energies
 	for j in range(params['jmax'] + 1):
 		# 1/R^2
 		oneByR2 = r_grid**-2
-	
+		
 		# diagonal elements (ngrid)
 		diagonal = u_grid / scale + j * (j + 1) * oneByR2 + 2 * step**-2
-	
+		
 		# off-diagonal elements (ngrid-1)
 		off_diag = np.full(ngrid - 1, -step**-2)
-	
+		
 		# SciPy routine to calculate eigenvalues and eigenvectors
 		results = eigh_tridiagonal(
 			diagonal,
@@ -296,7 +352,8 @@ def vr_solver(ptype, params, rp =[], up = []):
 			select= 'v',
 			select_range = (0., emax / scale)
 			)
-	
+		
+		# out
 		levels[j] = {}
 		for v, en in enumerate(results[0]):
 			#correction for fd3 scheme
@@ -317,14 +374,20 @@ def vr_solver(ptype, params, rp =[], up = []):
 
 #=======================================================================
 
-def me_calc(params, levels, rd, fd):
-	
-	matrix_elements = {}
+def me_calc(
+		params, 
+		levels, 
+		rd, 
+		fd
+	):
 	
 	# cubic spline to find DM values
 	r_grid = levels[0][0].r_grid 
 	spl_dip = splrep(rd, fd)
 	d_grid = splev(r_grid, spl_dip)
+	
+	# matrix elements calc
+	matrix_elements = {}
 	
 	for j2 in range(params['jmax'] + 1):
 		matrix_elements[j2] = {}
@@ -335,11 +398,14 @@ def me_calc(params, levels, rd, fd):
 
 #=======================================================================
 
-def read_expdata(fname):
+def read_expdata(
+		fname
+	):
 	
 	input_parser = ConfigParser(delimiters=(' ', '\t'))
 	input_parser.read(fname)
 	
+	# read levels
 	expdata = {}
 	n_levels = 0
 	
@@ -350,6 +416,7 @@ def read_expdata(fname):
 			n_levels += 1
 		expdata[int(j)] = tmp
 	
+	# check
 	if n_levels == 0:
 		exit(f'No energy levels found in {fname}')
 	
@@ -357,9 +424,15 @@ def read_expdata(fname):
 
 #=======================================================================
 
-def res_exp(guess, params, rp, up, expdata):
+def res_exp(
+		guess, 
+		params, 
+		rp, 
+		up, 
+		expdata
+	):
 	
-	# fitting parameters to vr solver function
+	# fitted params
 	tmp = {} | params
 	
 	tmp['de'] = guess[0]
@@ -371,10 +444,12 @@ def res_exp(guess, params, rp, up, expdata):
 	# residual calc
 	res = []
 	
+	# exp levels
 	for j in expdata.keys():
 		for v in expdata[j].keys():
 			res.append((levels[j][v].energy - expdata[j][v]) / 0.1)
 	
+	# pec
 	for r, u in zip(rp, up):
 		ua = emo(r, tmp['de'], tmp['re'], tmp['rref'], tmp['q'], tmp['beta'])
 		e = max(u / 100., 100.)
@@ -385,16 +460,23 @@ def res_exp(guess, params, rp, up, expdata):
 
 #=======================================================================
 
-def exp_fit(params, rp, up, expdata):
+def exp_fit(
+		params, 
+		rp, 
+		up, 
+		expdata
+	):
 	
+	# fitted params
 	guess = [params['de'], params['re']]
 	guess.extend(params['beta'])
 	add_args = (params, rp, up, expdata)
 	
+	# scipy least squares
 	res_1 = least_squares(res_exp, guess, args = add_args)
 	
+	# out
 	tmp = {} | params
-	
 	tmp['de'] = res_1.x[0]
 	tmp['re'] = res_1.x[1]
 	tmp['beta'] = np.array(list(res_1.x[2:]))
