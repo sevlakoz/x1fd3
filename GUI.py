@@ -1,12 +1,10 @@
 import os
-
 import sys
-
-from funcs import *
-
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
+
+from funcs import *
 
 #=======================================================================
 #=======================================================================
@@ -307,8 +305,8 @@ def run_calc(
 	else:
 		print_message('ERROR: out file not specified\n', False)
 		return
-	out = open(fname, 'w')
 	
+	out = open(fname, 'w')
 	sys.stdout = out
 	
 	#---

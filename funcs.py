@@ -192,10 +192,10 @@ def read_vr_calc_params(
 	if not rtype in ['ENERGY', 'SPECTRUM', 'FIT']:
 		exit(f'ERROR:  Uknown run type "{rtype}"')
 	
+	# read calc params
 	input_parser = ConfigParser(delimiters=(' ', '\t'))
 	input_parser.read(fname)
 	
-	# read calc params
 	params = {}
 	
 	if len(input_parser.sections()) > 1:
@@ -211,9 +211,9 @@ def read_vr_calc_params(
 			params[keyword] = float(value)
 	
 	params_check = {
-		'ENERGY': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax']),
+		'ENERGY':   set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax']),
 		'SPECTRUM': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax', 'v1', 'v2']),
-		'FIT': set(['mass1', 'mass2', 'rmin', 'rmax'])
+		'FIT':      set(['mass1', 'mass2', 'rmin', 'rmax'])
 	}
 	
 	if set(params.keys()) != params_check[rtype]:
@@ -336,11 +336,9 @@ def vr_solver(
 	levels = {}
 	
 	for j in range(params['jmax'] + 1):
-		# 1/R^2
-		oneByR2 = r_grid**-2
 		
 		# diagonal elements (ngrid)
-		diagonal = u_grid / scale + j * (j + 1) * oneByR2 + 2 * step**-2
+		diagonal = u_grid / scale + j * (j + 1) / r_grid**2 + 2 * step**-2
 		
 		# off-diagonal elements (ngrid-1)
 		off_diag = np.full(ngrid - 1, -step**-2)
@@ -351,23 +349,25 @@ def vr_solver(
 			off_diag,
 			select= 'v',
 			select_range = (0., emax / scale)
-			)
+		)
 		
 		# out
 		levels[j] = {}
 		for v, en in enumerate(results[0]):
-			#correction for fd3 scheme
-			fd_cor = step**2 / scale / 12 * np.sum((results[1][:, v] * (u_grid - en * scale))**2)
+			wf = results[1][:, v]
+			
+			# correction for fd3 scheme
+			fd_cor = step**2 / scale / 12 * np.sum(
+				(wf * (u_grid - en * scale))**2
+			)
+			
+			# vr level
 			lev = Level(
-				# energy
 				en * scale + fd_cor,
-				# Bv
-				scale * np.sum(results[1][:, v]**2 * oneByR2),
-				# grid
+				scale * np.sum(wf**2 / r_grid**2), 
 				r_grid,
-				# WF
-				results[1][:, v]
-				)
+				wf
+			)
 			levels[j][v] = lev
 	
 	return levels
