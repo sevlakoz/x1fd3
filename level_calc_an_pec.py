@@ -3,9 +3,11 @@ import sys
 from funcs import *
 
 if len(sys.argv) < 3:
-	exit('''Usage: python level_cacl_an_pec.py <1> <2>
-       <1> = file with parameters for level calc | example: vr_level_calc_params.txt
-       <2> = file with fitted parameters         | example: fitted_emo_params.txt''')
+    exit(
+    '''Usage: python level_cacl_an_pec.py <1> <2>
+    <1> = file with parameters for level calc | example: vr_level_calc_params.txt
+    <2> = file with fitted parameters         | example: fitted_emo_params.txt'''
+    )
 
 f_vr_par = sys.argv[1]
 f_fit_par = sys.argv[2]
