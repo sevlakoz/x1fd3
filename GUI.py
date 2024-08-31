@@ -10,8 +10,8 @@ from funcs import *
 #=======================================================================
 
 def select_mode(
-		mode
-	):
+		mode: tk.StringVar
+	) -> None:
 	
 	for widget in frame.winfo_children():
 		widget.grid_forget()
@@ -256,9 +256,9 @@ def select_mode(
 #=======================================================================
 
 def print_message(
-		string, 
-		prnt = True
-	):
+		string: str, 
+		prnt: bool = True
+	) -> None:
 	
 	if prnt:
 		print(string)
@@ -270,8 +270,8 @@ def print_message(
 #=======================================================================
 
 def select_file(
-		obj
-	):
+		obj: ttk.Entry
+	) -> None:
 	
 	filetypes = (
 		('text files', '*.txt'),
@@ -294,8 +294,8 @@ def select_file(
 #=======================================================================
 
 def run_calc(
-		mode
-	):
+		mode: tk.StringVar
+	) -> None:
 	
 	fname = file_out.get()
 	if fname:
