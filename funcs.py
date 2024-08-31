@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from configparser import ConfigParser
 from typing import Dict, Any, List, Tuple
 import numpy as np
+import numpy.typing as npt
 from scipy.optimize import least_squares  # type: ignore
 from scipy.interpolate import splrep, splev  # type: ignore
 from scipy.linalg import eigh_tridiagonal  # type: ignore
@@ -15,8 +16,8 @@ from scipy.linalg import eigh_tridiagonal  # type: ignore
 class Level:
     energy: float
     rot_const: float
-    r_grid: np.ndarray[float, np.dtype[Any]]
-    wavef_grid: np.ndarray[float, np.dtype[Any]]
+    r_grid: npt.NDArray[np.float_]
+    wavef_grid: npt.NDArray[np.float_]
 
 
 # =======================================================================
@@ -39,8 +40,8 @@ def print_input_file(fname: str) -> None:
 
 
 def print_pecs(
-    rp: np.ndarray[float, np.dtype[Any]],
-    up: np.ndarray[float, np.dtype[Any]],
+    rp: npt.NDArray[np.float_],
+    up: npt.NDArray[np.float_],
     params: Dict[str, Any],
 ) -> None:
 
@@ -138,7 +139,7 @@ def print_levels_n_expdata(
 
 def read_pw_curve(
     fname: str,
-) -> Tuple[np.ndarray[float, np.dtype[Any]], np.ndarray[float, np.dtype[Any]]]:
+) -> Tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
 
     r = []
     c = []
@@ -264,8 +265,8 @@ def emo(
 
 def res_pec(
     guess: List[float],
-    rp: np.ndarray[float, np.dtype[Any]],
-    up: np.ndarray[float, np.dtype[Any]],
+    rp: npt.NDArray[np.float_],
+    up: npt.NDArray[np.float_],
     params: Dict[str, Any],
 ) -> List[float]:
 
@@ -290,8 +291,8 @@ def res_pec(
 
 
 def pec_fit(
-    rp: np.ndarray[float, np.dtype[Any]],
-    up: np.ndarray[float, np.dtype[Any]],
+    rp: npt.NDArray[np.float_],
+    up: npt.NDArray[np.float_],
     params: Dict[str, Any],
 ) -> Tuple[Dict[str, Any], str, bool]:
 
@@ -318,8 +319,8 @@ def pec_fit(
 def vr_solver(
     ptype: str,
     params: Dict[str, Any],
-    rp: np.ndarray[float, np.dtype[Any]] = np.zeros(1, dtype=float),
-    up: np.ndarray[float, np.dtype[Any]] = np.zeros(1, dtype=float),
+    rp: npt.NDArray[np.float_] = np.zeros(1, dtype=float),
+    up: npt.NDArray[np.float_] = np.zeros(1, dtype=float),
 ) -> Dict[int, Dict[int, Level]]:
 
     # physical constants
@@ -406,8 +407,8 @@ def vr_solver(
 def me_calc(
     params: Dict[str, Any],
     levels: Dict[int, Dict[int, Level]],
-    rd: np.ndarray[float, np.dtype[Any]],
-    fd: np.ndarray[float, np.dtype[Any]],
+    rd: npt.NDArray[np.float_],
+    fd: npt.NDArray[np.float_],
 ) -> Dict[int, Dict[int, Level]]:
 
     # cubic spline to find DM values
@@ -462,8 +463,8 @@ def read_expdata(fname: str) -> Dict[int, Dict[int, float]]:
 def res_exp(
     guess: List[float],
     params: Dict[str, Any],
-    rp: np.ndarray[float, np.dtype[Any]],
-    up: np.ndarray[float, np.dtype[Any]],
+    rp: npt.NDArray[np.float_],
+    up: npt.NDArray[np.float_],
     expdata: Dict[int, Dict[int, float]],
 ) -> List[float]:
 
@@ -498,8 +499,8 @@ def res_exp(
 
 def exp_fit(
     params: Dict[str, Any],
-    rp: np.ndarray[float, np.dtype[Any]],
-    up: np.ndarray[float, np.dtype[Any]],
+    rp: npt.NDArray[np.float_],
+    up: npt.NDArray[np.float_],
     expdata: Dict[int, Dict[int, float]],
 ) -> Tuple[Dict[str, Any], str, bool]:
 
