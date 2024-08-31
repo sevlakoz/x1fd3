@@ -273,7 +273,7 @@ def emo(
     y = (r_inp**params['q'] - params['rref']**params['q']) / \
         (r_inp**params['q'] + params['rref']**params['q'])
 
-    beta_pol = 0
+    beta_pol = 0.
     for n, beta in enumerate(params['beta']):
         beta_pol += beta * y**n
 
