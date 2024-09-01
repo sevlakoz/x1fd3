@@ -35,17 +35,26 @@ class PWcurve:
         '''
         init = read from file
         '''
-        self.rval = []
-        self.cval = []
+        self.rval: List[float] = []
+        self.cval: List[float] = []
 
         if fname:
-            with open(fname, encoding="utf-8") as inp:
-                for line in inp:
-                    if line.lstrip() == '' or line.lstrip()[0] == '#':
-                        continue
-                    line = line.split()   # type: ignore
-                    self.rval.append(float(line[0]))
-                    self.cval.append(float(line[1]))
+            self.read_file(fname)
+
+    def read_file(
+        self,
+        fname: str
+    ) -> None:
+        '''
+        read points from file
+        '''
+        with open(fname, encoding = 'utf-8') as inp:
+            for line in inp:
+                if line.lstrip() == '' or line.lstrip()[0] == '#':
+                    continue
+                line = line.split()   # type: ignore
+                self.rval.append(float(line[0]))
+                self.cval.append(float(line[1]))
 
         self.rval = np.array(self.rval)   # type: ignore
         self.cval = np.array(self.cval)   # type: ignore
