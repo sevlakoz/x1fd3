@@ -60,7 +60,7 @@ class PWcurve:
         if r_grid[0] < self.rval[0] or r_grid[-1] > self.rval[-1]:
             print(f'WARNING: grid for spline out of range, [{r_grid[0]}, {r_grid[-1]}] not in [{self.rval[0]}, {self.rval[-1]}]')
         spl_pec = splrep(self.rval, self.cval)
-        c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)
+        c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
         return c_grid
 
 #=======================================================================
