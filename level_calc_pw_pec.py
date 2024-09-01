@@ -1,6 +1,7 @@
 import sys
 
-from funcs import *
+from funcs import print_input_file, PWcurve,\
+                  read_vr_calc_params, vr_solver, print_levels
 
 if len(sys.argv) < 3:
     exit(

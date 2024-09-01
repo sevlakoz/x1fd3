@@ -1,6 +1,7 @@
 import sys
 
-from funcs import *
+from funcs import print_input_file, PWcurve, read_pec_params,\
+                  print_pecs, pec_fit, print_params
 
 if len(sys.argv) < 3:
     exit(
@@ -30,7 +31,7 @@ params, message, success = pec_fit(pec, params)
 if success:
     print(f'\nPoint-wise PEC approximation done: {message}')
 else:
-    exit(f'\nPoint-wise PEC approximation FAILED: {message}')
+    sys.exit(f'\nPoint-wise PEC approximation FAILED: {message}')
 
 # final approximation
 print('\nFitted PEC\n')

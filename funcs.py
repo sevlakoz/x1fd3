@@ -19,8 +19,8 @@ class Level:
     '''
     energy: float
     rot_const: float
-    r_grid: npt.NDArray[np.float_]
-    wavef_grid: npt.NDArray[np.float_]
+    r_grid: npt.NDArray[np.float64]
+    wavef_grid: npt.NDArray[np.float64]
 
 #=======================================================================
 
@@ -37,9 +37,9 @@ class PWcurve:
         '''
         self.rval = []
         self.cval = []
-        
+
         if fname:
-            with open(fname) as inp:
+            with open(fname, encoding="utf-8") as inp:
                 for line in inp:
                     if line.lstrip() == '' or line.lstrip()[0] == '#':
                         continue
@@ -52,13 +52,13 @@ class PWcurve:
 
     def spline(
         self,
-        r_grid: npt.NDArray[np.float_]
-    ) -> npt.NDArray[np.float_]:
+        r_grid: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
         '''
         cubic spline with range check
         '''
         if r_grid[0] < self.rval[0] or r_grid[-1] > self.rval[-1]:
-            print(f'WARNING: grid for spline out of range, [{r_grid[0]}, {r_grid[-1]}] not in [{self.rval[0]}, {self.rval[-1]}]')
+            print(f'WARNING: grid for spline out of range - [{r_grid[0]}, {r_grid[-1]}] not in [{self.rval[0]}, {self.rval[-1]}]')
         spl_pec = splrep(self.rval, self.cval)
         c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
         return c_grid
@@ -74,7 +74,7 @@ def print_input_file(
     '''
     if os.path.isfile(fname):
         print(f'\n=== Input file: {fname} ===\n')
-        with open(fname) as inp:
+        with open(fname, encoding="utf-8") as inp:
             for line in inp:
                 print(line, end = '')
         print(f'\n=== End of input file: {fname} ===\n')
@@ -97,6 +97,8 @@ def print_pecs(
     for r_inp, u_inp in zip(pec.rval, pec.cval):
         if params['ptype'] == 'EMO':
             u_cal = emo(r_inp, params)
+        else:
+            sys.exit(f"ERROR: {params['ptype']} not implemented")
         print(f'{r_inp:10.5f}{u_inp:20.5f}{u_cal:20.5f}{u_inp - u_cal:20.5f}')
 
 #=======================================================================
@@ -138,7 +140,7 @@ def print_levels(
 def print_matrix_elements(
         params: Dict[str, Any],
         levels: Dict[int, Dict[int, Level]],
-        matrix_elements: Dict[int, Dict[int, Level]]
+        matrix_elements: Dict[int, Dict[int, np.float64]]
     ) -> None:
     '''
     print calculated matrix elements of given dipole function in custom format
@@ -302,6 +304,8 @@ def res_pec(
     for r_inp, u_inp in zip(pec.rval, pec.cval):
         if params['ptype'] == 'EMO':
             u_cal = emo(r_inp, tmp)
+        else:
+            sys.exit(f"ERROR: {params['ptype']} not implemented")
         err = max(u_inp / 100., 100.)
         res.append((u_cal - u_inp) / err)
 
@@ -376,7 +380,7 @@ def vr_solver(
                         )
             emax = params['de']
     else:
-        sys.exit(f'ERROR:  Uknown pec type "{ptype}"')
+        sys.exit(f'ERROR: Uknown pec type "{ptype}"')
 
     # loop over J to calculate level energies
     levels: Dict[int, Dict[int, Level]] = {}
@@ -424,7 +428,7 @@ def me_calc(
         params: Dict[str, Any],
         levels: Dict[int, Dict[int, Level]],
         dm: PWcurve
-    ) ->  Dict[int, Dict[int, Level]]:
+    ) ->  Dict[int, Dict[int, np.float64]]:
     '''
     calculate matrix elements of given dipole function
     '''
@@ -434,7 +438,7 @@ def me_calc(
     d_grid = dm.spline(r_grid)
 
     # matrix elements calc
-    matrix_elements: Dict[int, Dict[int, Level]] = {}
+    matrix_elements: Dict[int, Dict[int, np.float64]] = {}
 
     for j2 in range(params['jmax'] + 1):
         matrix_elements[j2] = {}

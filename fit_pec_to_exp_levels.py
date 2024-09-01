@@ -1,6 +1,8 @@
 import sys
 
-from funcs import *
+from funcs import print_input_file, PWcurve, read_pec_params,\
+                  read_vr_calc_params,read_expdata, vr_solver,\
+                  print_levels_n_expdata, print_pecs, exp_fit, print_params
 
 if len(sys.argv) < 5:
     exit(

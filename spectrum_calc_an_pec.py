@@ -1,6 +1,7 @@
 import sys
 
-from funcs import *
+from funcs import print_input_file, read_pec_params, read_vr_calc_params,\
+                  PWcurve, vr_solver, me_calc, print_matrix_elements
 
 if len(sys.argv) < 4:
     exit(

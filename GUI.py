@@ -4,7 +4,10 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 
-from funcs import *
+from funcs import print_input_file, PWcurve, read_pec_params, print_pecs,\
+                  pec_fit, print_params, read_vr_calc_params, vr_solver,\
+                  print_levels, me_calc, print_matrix_elements, read_expdata,\
+                  print_levels_n_expdata, exp_fit
 
 #=======================================================================
 #=======================================================================
