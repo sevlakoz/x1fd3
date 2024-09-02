@@ -2,7 +2,7 @@ import sys
 
 from funcs import print_input_file, PWcurve, read_pec_params,\
                   read_vr_calc_params,read_expdata, vr_solver,\
-                  print_levels_n_expdata, print_pecs, exp_fit, print_params
+                  print_levels_n_expdata, print_pecs, exp_fit, print_pec_params
 
 if len(sys.argv) < 5:
     exit(
@@ -53,4 +53,4 @@ levels = vr_solver('an', params)
 print_levels_n_expdata(params, levels, expdata)
 print_pecs(pec, params)
 print('\nFitted parameters\n')
-print_params(params)
+print_pec_params(params)

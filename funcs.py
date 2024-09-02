@@ -115,7 +115,7 @@ def print_pecs(
 
 #=======================================================================
 
-def print_params(
+def print_pec_params(
         params: Dict[str, Any]
     ) -> None:
     '''
