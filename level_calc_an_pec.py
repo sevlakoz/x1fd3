@@ -1,10 +1,10 @@
 import sys
 
 from funcs import print_input_file, read_pec_params,\
-                  read_vr_calc_params, vr_solver, print_levels
+                  read_vr_calc_params, Levels
 
 if len(sys.argv) < 3:
-    exit(
+    sys.exit(
     '''Usage: python level_cacl_an_pec.py <1> <2>
     <1> = file with parameters for level calc | example: vr_level_calc_params.txt
     <2> = file with fitted parameters         | example: fitted_emo_params.txt'''
@@ -22,5 +22,5 @@ params = read_pec_params(f_fit_par)
 params = params | read_vr_calc_params(f_vr_par, 'ENERGY')
 
 # calc and print vr levels
-levels = vr_solver('an', params)
-print_levels(levels)
+levels = Levels('an', params)
+levels.print()

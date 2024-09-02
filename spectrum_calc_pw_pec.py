@@ -1,10 +1,10 @@
 import sys
 
 from funcs import print_input_file, PWcurve, read_vr_calc_params,\
-                  vr_solver, me_calc, print_matrix_elements
+                  Levels, MatrixElements
 
 if len(sys.argv) < 4:
-    exit(
+    sys.exit(
     '''Usage: python spectrum_cacl_pw_pec.py <1> <2> <3>
     <1> = file with parameters for spectrum calc | example: vr_spectrum_calc_params.txt
     <2> = file with point-wise pec               | example: pw_pec.txt
@@ -26,8 +26,8 @@ dm = PWcurve(f_pw_dm)
 params = read_vr_calc_params(f_vr_par, 'SPECTRUM')
 
 # calc vr levels
-levels = vr_solver('pw', params, pec)
+levels = Levels('pw', params, pec)
 
 # calc and print integrals
-matrix_elements = me_calc(params, levels, dm)
-print_matrix_elements(params, levels, matrix_elements)
+matrix_elements = MatrixElements(params, levels, dm)
+matrix_elements.print()

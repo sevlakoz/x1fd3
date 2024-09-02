@@ -1,10 +1,10 @@
 import sys
 
 from funcs import print_input_file, PWcurve,\
-                  read_vr_calc_params, vr_solver, print_levels
+                  read_vr_calc_params, Levels
 
 if len(sys.argv) < 3:
-    exit(
+    sys.exit(
     '''Usage: python level_cacl_pw_pec.py <1> <2>
     <1> = file with parameters for level calc | example: vr_level_calc_params.txt
     <2> = file with point-wise pec            | example: pw_pec.txt'''
@@ -22,5 +22,5 @@ pec = PWcurve(f_pw_pec)
 params = read_vr_calc_params(f_vr_par, 'ENERGY')
 
 # calc and print vr levels
-levels = vr_solver('pw', params, pec)
-print_levels(levels)
+levels = Levels('pw', params, pec)
+levels.print()

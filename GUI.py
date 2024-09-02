@@ -5,9 +5,8 @@ from tkinter import filedialog
 from tkinter import ttk
 
 from funcs import print_input_file, PWcurve, read_pec_params, print_pecs,\
-                  pec_fit, print_params, read_vr_calc_params, vr_solver,\
-                  print_levels, me_calc, print_matrix_elements, read_expdata,\
-                  print_levels_n_expdata, exp_fit
+                  pec_fit, print_pec_params, read_vr_calc_params, read_expdata,\
+                  print_levels_n_expdata, exp_fit, Levels, MatrixElements
 
 #=======================================================================
 #=======================================================================
@@ -390,7 +389,7 @@ def run_calc(
         print('\nFitted PEC\n')
         print_pecs(pec, params)
         print('\nFitted parameters\n')
-        print_params(params)
+        print_pec_params(params)
         out.flush()
 
     #---
@@ -436,13 +435,13 @@ def run_calc(
 
         # calc and print vr levels
         try:
-            levels = vr_solver('pw', params, pec)
+            levels = Levels('pw', params, pec)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
             out.flush()
             return
 
-        print_levels(levels)
+        levels.print()
         out.flush()
 
     #---
@@ -489,13 +488,13 @@ def run_calc(
 
         # calc and print vr levels
         try:
-            levels = vr_solver('an', params)
+            levels = Levels('an', params)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
             out.flush()
             return
 
-        print_levels(levels)
+        levels.print()
         out.flush()
 
     #---
@@ -558,7 +557,7 @@ def run_calc(
 
         # calc vr levels
         try:
-            levels = vr_solver('pw', params, pec)
+            levels = Levels('pw', params, pec)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
             out.flush()
@@ -566,13 +565,13 @@ def run_calc(
 
         # calc and print integrals
         try:
-            matrix_elements = me_calc(params, levels, dm)
+            matrix_elements = MatrixElements(params, levels, dm)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n')
             out.flush()
             return
 
-        print_matrix_elements(params, levels, matrix_elements)
+        matrix_elements.print()
         out.flush()
 
     #---
@@ -635,7 +634,7 @@ def run_calc(
 
         # calc vr levels
         try:
-            levels = vr_solver('an', params)
+            levels = Levels('an', params)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
             out.flush()
@@ -643,13 +642,13 @@ def run_calc(
 
         # calc and print integrals
         try:
-            matrix_elements = me_calc(params, levels, dm)
+            matrix_elements = MatrixElements(params, levels, dm)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n')
             out.flush()
             return
 
-        print_matrix_elements(params, levels, matrix_elements)
+        matrix_elements.print()
         out.flush()
 
     #---
@@ -734,13 +733,13 @@ def run_calc(
         # print initial guess
         print('Initial guess')
         try:
-            levels = vr_solver('an', params)
+            levels = Levels('an', params)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
             out.flush()
             return
 
-        print_levels_n_expdata(params, levels, expdata)
+        print_levels_n_expdata(params, levels.energy, expdata)
         print_pecs(pec, params)
         out.flush()
 
@@ -762,15 +761,15 @@ def run_calc(
         # print final results
         print('\nFit results')
         try:
-            levels = vr_solver('an', params)
+            levels = Levels('an', params)
         except BaseException as ex:
             print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
             out.flush()
             return
-        print_levels_n_expdata(params, levels, expdata)
+        print_levels_n_expdata(params, levels.energy, expdata)
         print_pecs(pec, params)
         print('\nFitted parameters\n')
-        print_params(params)
+        print_pec_params(params)
         out.flush()
 
     #---

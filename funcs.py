@@ -33,7 +33,7 @@ class PWcurve:
         fname: str = ''
     ) -> None:
         '''
-        init = read from file
+        init = read data if file provided 
         '''
         self.rval: List[float] = []
         self.cval: List[float] = []
@@ -74,6 +74,164 @@ class PWcurve:
         spl_pec = splrep(self.rval, self.cval)
         c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
         return c_grid
+
+#=======================================================================
+
+class Levels:
+    '''
+    class for vib-rot level
+    '''
+    def __init__(
+        self,
+        ptype: str,
+        params: Dict[str, Any],
+        pec: PWcurve = PWcurve()
+    ) -> None:
+        '''
+        init = calculate vib-rot levels for given set of parameters / point-wise pec
+        '''
+        self.energy: Dict[int, Dict[int, float]] = {}
+        self.rot_const: Dict[int, Dict[int, float]] = {}
+        self.wavef_grid: Dict[int, Dict[int, npt.NDArray[np.float64]]] = {}
+        self.r_grid: npt.NDArray[np.float64] = np.array([])
+
+        # physical constants
+        au_to_Da = 5.48579909065e-4
+        au_to_cm = 219474.63067
+        a0_to_A = 0.529177210903
+
+        # grid point number
+        ngrid = 50000
+
+        # reduced mass
+        mu = params['mass1'] * params['mass2'] / (params['mass1'] + params['mass2'])
+
+        # h^2 / (2*mu) [cm-1 * A^2]
+        scale = au_to_Da * au_to_cm * a0_to_A**2 / (2 * mu)
+
+        # grid
+        step = (params['rmax'] - params['rmin']) / (ngrid - 1)
+        r_grid = np.linspace(params['rmin'], params['rmax'], ngrid)
+
+        if ptype == 'pw':
+            # cubic spline for pec
+            u_grid = pec.spline(r_grid)
+            emax = u_grid[-1]
+        elif ptype == 'an':
+            # EMO
+            if params['ptype'] == 'EMO':
+                u_grid = np.array(
+                    list(
+                        map(lambda x: emo(x, params), r_grid)
+                    )
+                )
+                emax = params['de']
+        else:
+            sys.exit(f'ERROR: Uknown pec type "{ptype}"')
+
+        # loop over J to calculate level energies
+
+        for j in range(params['jmax'] + 1):
+
+            # diagonal elements (ngrid)
+            diagonal = u_grid / scale + j * (j + 1) / r_grid**2 + 2 * step**-2
+
+            # off-diagonal elements (ngrid-1)
+            off_diag = np.full(ngrid - 1, -step**-2)
+
+            # SciPy routine to calculate eigenvalues and eigenvectors
+            results = eigh_tridiagonal(
+                diagonal,
+                off_diag,
+                select = 'v',
+                select_range = (0., emax / scale)
+            )
+
+            self.energy[j] = {}
+            self.rot_const[j] = {}
+            self.wavef_grid[j] = {}
+
+            for v, en in enumerate(results[0]):
+                wf = results[1][:, v]
+
+                # correction for fd3 scheme
+                fd_cor = step**2 / scale / 12 * np.sum(
+                    (wf * (u_grid - en * scale))**2
+                )
+
+                self.energy[j][v] = en * scale + fd_cor
+                self.rot_const[j][v] = scale * np.sum(wf**2 / r_grid**2)
+                self.wavef_grid[j][v] = wf
+        self.r_grid = r_grid
+
+    def print(
+        self,
+    ) -> None:
+        '''
+        print vib-rot levels from dict in custom format
+        '''
+        print('\n=== Energy levels ===')
+        for j in self.energy.keys():
+            print(f'\nJ = {j}\n{"v":>3}{"E,cm-1":>15}{"Bv,cm-1":>15}')
+            for v in self.energy[j].keys():
+                print(f'{v:3d}{self.energy[j][v]:15.5f}{self.rot_const[j][v]:15.8f}')
+
+#=======================================================================
+
+class MatrixElements:
+    '''
+    class for matrix elements
+    '''
+    def __init__(
+        self,
+        params: Dict[str, Any],
+        levels: Levels,
+        dm: PWcurve
+    ) -> None:
+        '''
+        init = calculate matrix elements of given dipole function
+        '''
+        self.v1: int = params['v1']
+        self.v2: int = params['v2']
+
+        self.energy1: Dict[int, Dict[int, float]] = {}
+        self.energy2: Dict[int, Dict[int, float]] = {}
+        self.matrix_elements: Dict[int, Dict[int, np.float64]] = {}
+
+        # cubic spline to find DM values
+        d_grid = dm.spline(levels.r_grid)
+
+        # matrix elements calc
+        for j2 in levels.energy.keys():
+            self.energy1[j2] = {}
+            self.energy2[j2] = {}
+            self.matrix_elements[j2] = {}
+            for j1 in levels.energy.keys():
+                self.energy1[j2][j1] = levels.energy[j1][self.v1]
+                self.energy2[j2][j1] = levels.energy[j2][self.v2]
+                self.matrix_elements[j2][j1] = np.sum(
+                    levels.wavef_grid[j1][self.v1] *
+                    levels.wavef_grid[j2][self.v2] *
+                    d_grid
+                )
+    def print(
+        self
+    ) -> None:
+        '''
+        print calculated matrix elements of given dipole function in custom format
+        '''
+        print("\n=== Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===\n")
+        print(f"v'' = {self.v1}")
+        print(f"v'  = {self.v2}\n")
+
+        for j2 in self.matrix_elements.keys():
+            print(f"J' = {j2}")
+            print(f'''{"J''":>4}{"E',cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
+            for j1 in self.matrix_elements.keys():
+                en2 = self.energy2[j2][j1]
+                en1 = self.energy1[j2][j1]
+                print(f"{j1:4d}{en2:15.5f}{en1:15.5f}{self.matrix_elements[j2][j1]:15.5e}")
+            print()
 
 #=======================================================================
 #=======================================================================
@@ -134,47 +292,9 @@ def print_pec_params(
 
 #=======================================================================
 
-def print_levels(
-        levels: Dict[int, Dict[int, Level]]
-    ) -> None:
-    '''
-    print vib-rot levels from dict in custom format
-    '''
-
-    print('\n=== Energy levels ===')
-    for j in levels.keys():
-        print(f'\nJ = {j}\n{"v":>3}{"E,cm-1":>15}{"Bv,cm-1":>15}')
-        for v, lev in levels[j].items():
-            print(f'{v:3d}{lev.energy:15.5f}{lev.rot_const:15.8f}')
-
-#=======================================================================
-
-def print_matrix_elements(
-        params: Dict[str, Any],
-        levels: Dict[int, Dict[int, Level]],
-        matrix_elements: Dict[int, Dict[int, np.float64]]
-    ) -> None:
-    '''
-    print calculated matrix elements of given dipole function in custom format
-    '''
-    print("\n=== Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===\n")
-    print(f"v'' = {params['v1']}")
-    print(f"v'  = {params['v2']}\n")
-
-    for j2 in range(params['jmax'] + 1):
-        print(f"J' = {j2}")
-        print(f'''{"J''":>4}{"E',cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
-        for j1 in range(params['jmax'] + 1):
-            en2 = levels[j2][params['v2']].energy
-            en1 = levels[j1][params['v1']].energy
-            print(f"{j1:4d}{en2:15.5f}{en1:15.5f}{matrix_elements[j2][j1]:15.5e}")
-        print()
-
-#=======================================================================
-
 def print_levels_n_expdata(
         params: Dict[str, Any],
-        levels: Dict[int, Dict[int, Level]],
+        caldata: Dict[int, Dict[int, float]],
         expdata: Dict[int, Dict[int, float]]
     ) -> None:
     '''
@@ -186,7 +306,7 @@ def print_levels_n_expdata(
             continue
         for v in expdata[j].keys():
             en_exp = expdata[j][v]
-            en_cal = levels[j][v].energy
+            en_cal = caldata[j][v]
             print(f'{j:4d}{v:4d}{en_exp:15.5f}{en_cal:15.5f}{en_exp - en_cal:15.5f}')
     print()
 
@@ -351,120 +471,6 @@ def pec_fit(
 
 #=======================================================================
 
-def vr_solver(
-        ptype: str,
-        params: Dict[str, Any],
-        pec: PWcurve = PWcurve()
-    ) -> Dict[int, Dict[int, Level]]:
-    '''
-    calculates vib-rot levels for given set of parameters / point-wise pec
-    '''
-
-    # physical constants
-    au_to_Da = 5.48579909065e-4
-    au_to_cm = 219474.63067
-    a0_to_A = 0.529177210903
-
-    # grid point number
-    ngrid = 50000
-
-    # reduced mass
-    mu = params['mass1'] * params['mass2'] / (params['mass1'] + params['mass2'])
-
-    # h^2 / (2*mu) [cm-1 * A^2]
-    scale = au_to_Da * au_to_cm * a0_to_A**2 / (2 * mu)
-
-    # grid
-    step = (params['rmax'] - params['rmin']) / (ngrid - 1)
-    r_grid = np.linspace(params['rmin'], params['rmax'], ngrid)
-
-    if ptype == 'pw':
-        # cubic spline for pec
-        u_grid = pec.spline(r_grid)
-        emax = u_grid[-1]
-    elif ptype == 'an':
-        # EMO
-        if params['ptype'] == 'EMO':
-            u_grid = np.array(
-                        list(
-                                map(lambda x: emo(x, params), r_grid)
-                            )
-                        )
-            emax = params['de']
-    else:
-        sys.exit(f'ERROR: Uknown pec type "{ptype}"')
-
-    # loop over J to calculate level energies
-    levels: Dict[int, Dict[int, Level]] = {}
-
-    for j in range(params['jmax'] + 1):
-
-        # diagonal elements (ngrid)
-        diagonal = u_grid / scale + j * (j + 1) / r_grid**2 + 2 * step**-2
-
-        # off-diagonal elements (ngrid-1)
-        off_diag = np.full(ngrid - 1, -step**-2)
-
-        # SciPy routine to calculate eigenvalues and eigenvectors
-        results = eigh_tridiagonal(
-            diagonal,
-            off_diag,
-            select= 'v',
-            select_range = (0., emax / scale)
-        )
-
-        # out
-        levels[j] = {}
-        for v, en in enumerate(results[0]):
-            wf = results[1][:, v]
-
-            # correction for fd3 scheme
-            fd_cor = step**2 / scale / 12 * np.sum(
-                (wf * (u_grid - en * scale))**2
-            )
-
-            # vr level
-            lev = Level(
-                en * scale + fd_cor,
-                scale * np.sum(wf**2 / r_grid**2),
-                r_grid,
-                wf
-            )
-            levels[j][v] = lev
-
-    return levels
-
-#=======================================================================
-
-def me_calc(
-        params: Dict[str, Any],
-        levels: Dict[int, Dict[int, Level]],
-        dm: PWcurve
-    ) ->  Dict[int, Dict[int, np.float64]]:
-    '''
-    calculate matrix elements of given dipole function
-    '''
-
-    # cubic spline to find DM values
-    r_grid = levels[0][0].r_grid
-    d_grid = dm.spline(r_grid)
-
-    # matrix elements calc
-    matrix_elements: Dict[int, Dict[int, np.float64]] = {}
-
-    for j2 in range(params['jmax'] + 1):
-        matrix_elements[j2] = {}
-        for j1 in range(params['jmax'] + 1):
-            matrix_elements[j2][j1] = np.sum(
-                levels[j1][params['v1']].wavef_grid *
-                levels[j2][params['v2']].wavef_grid *
-                d_grid
-            )
-
-    return matrix_elements
-
-#=======================================================================
-
 def read_expdata(
         fname: str
     ) -> Dict[int, Dict[int, float]]:
@@ -511,7 +517,7 @@ def res_exp(
     tmp['re'] = guess[1]
     tmp['beta'] = guess[2:]
 
-    levels = vr_solver('an', tmp, pec)
+    levels = Levels('an', tmp, pec)
 
     # residual calc
     res = []
@@ -519,7 +525,7 @@ def res_exp(
     # exp levels
     for j in expdata.keys():
         for v in expdata[j].keys():
-            res.append((levels[j][v].energy - expdata[j][v]) / 0.1)
+            res.append((levels.energy[j][v] - expdata[j][v]) / 0.1)
 
     # pec
     for r_inp, u_inp in zip(pec.rval, pec.cval):

@@ -1,11 +1,11 @@
 import sys
 
 from funcs import print_input_file, PWcurve, read_pec_params,\
-                  read_vr_calc_params,read_expdata, vr_solver,\
+                  read_vr_calc_params,read_expdata, Levels,\
                   print_levels_n_expdata, print_pecs, exp_fit, print_pec_params
 
 if len(sys.argv) < 5:
-    exit(
+    sys.exit(
     '''Usage: python fit_pec_to_exp_levels.py <1> <2> <3> <4>
     <1> = file with parameters for level calc | example: vr_fit_params.txt
     <2> = file with pre-fitted parameters     | example: fitted_emo_params.txt
@@ -36,8 +36,8 @@ print('=== Fit PEC to reproduce exp. data ===\n')
 
 # print initial guess
 print('Initial guess')
-levels = vr_solver('an', params)
-print_levels_n_expdata(params, levels, expdata)
+levels = Levels('an', params)
+print_levels_n_expdata(params, levels.energy, expdata)
 print_pecs(pec, params)
 
 # fit
@@ -45,12 +45,12 @@ params, message, success = exp_fit(params, pec, expdata)
 if success:
     print(f'\nPEC fit done: {message}')
 else:
-    exit(f'\nPEC fit FAILED: {message}')
+    sys.exit(f'\nPEC fit FAILED: {message}')
 
 # print final results
 print('Fit results')
-levels = vr_solver('an', params)
-print_levels_n_expdata(params, levels, expdata)
+levels = Levels('an', params)
+print_levels_n_expdata(params, levels.energy, expdata)
 print_pecs(pec, params)
 print('\nFitted parameters\n')
 print_pec_params(params)

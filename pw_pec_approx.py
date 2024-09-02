@@ -4,7 +4,7 @@ from funcs import print_input_file, PWcurve, read_pec_params,\
                   print_pecs, pec_fit, print_pec_params
 
 if len(sys.argv) < 3:
-    exit(
+    sys.exit(
     '''Usage: python pw_pec_approx.py <1> <2>
     <1> = file with point-wise pec     | example: pw_pec.txt
     <2> = file with initial parameters | example: init_emo_params.txt'''

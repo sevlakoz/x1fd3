@@ -1,7 +1,7 @@
 import sys
 
 from funcs import print_input_file, read_pec_params, read_vr_calc_params,\
-                  PWcurve, vr_solver, me_calc, print_matrix_elements
+                  PWcurve, Levels, MatrixElements
 
 if len(sys.argv) < 4:
     exit(
@@ -26,8 +26,8 @@ params = params | read_vr_calc_params(f_vr_par, 'SPECTRUM')
 dm = PWcurve(f_pw_dm)
 
 # calc vr levels
-levels = vr_solver('an', params)
+levels = Levels('an', params)
 
 # calc and print integrals
-matrix_elements = me_calc(params, levels, dm)
-print_matrix_elements(params, levels, matrix_elements)
+matrix_elements = MatrixElements(params, levels, dm)
+matrix_elements.print()
