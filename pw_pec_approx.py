@@ -38,4 +38,3 @@ print('\nFitted PEC\n')
 print_pecs(pec, params)
 print('\nFitted parameters\n')
 print_pec_params(params)
-
