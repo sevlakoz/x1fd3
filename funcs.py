@@ -12,18 +12,6 @@ from scipy.linalg import eigh_tridiagonal     # type: ignore
 #=======================================================================
 #=======================================================================
 
-@dataclass
-class Level:
-    '''
-    class for vib-rot level
-    '''
-    energy: float
-    rot_const: float
-    r_grid: npt.NDArray[np.float64]
-    wavef_grid: npt.NDArray[np.float64]
-
-#=======================================================================
-
 class PWcurve:
     '''
     class for point-wise curve
