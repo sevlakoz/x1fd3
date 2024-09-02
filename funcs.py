@@ -48,6 +48,9 @@ class PWcurve:
         '''
         read points from file
         '''
+        self.rval = []
+        self.cval = []
+
         with open(fname, encoding = 'utf-8') as inp:
             for line in inp:
                 if line.lstrip() == '' or line.lstrip()[0] == '#':
