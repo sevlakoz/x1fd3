@@ -2,7 +2,7 @@ import sys
 
 from funcs import print_input_file, PWcurve, read_pec_params,\
                   read_vr_calc_params,read_expdata, Levels,\
-                  print_levels_n_expdata, print_pecs, exp_fit, print_pec_params
+                  print_pecs, exp_fit, print_pec_params
 
 if len(sys.argv) < 5:
     sys.exit(
@@ -37,7 +37,7 @@ print('=== Fit PEC to reproduce exp. data ===\n')
 # print initial guess
 print('Initial guess')
 levels = Levels('an', params)
-print_levels_n_expdata(params, levels.energy, expdata)
+levels.print_with_expdata(expdata)
 print_pecs(pec, params)
 
 # fit
@@ -50,7 +50,7 @@ else:
 # print final results
 print('Fit results')
 levels = Levels('an', params)
-print_levels_n_expdata(params, levels.energy, expdata)
+levels.print_with_expdata(expdata)
 print_pecs(pec, params)
 print('\nFitted parameters\n')
 print_pec_params(params)

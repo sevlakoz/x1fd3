@@ -6,7 +6,7 @@ from tkinter import ttk
 
 from funcs import print_input_file, PWcurve, read_pec_params, print_pecs,\
                   pec_fit, print_pec_params, read_vr_calc_params, read_expdata,\
-                  print_levels_n_expdata, exp_fit, Levels, MatrixElements
+                  exp_fit, Levels, MatrixElements
 
 #=======================================================================
 #=======================================================================
@@ -739,7 +739,7 @@ def run_calc(
             out.flush()
             return
 
-        print_levels_n_expdata(params, levels.energy, expdata)
+        levels.print_with_expdata(expdata)
         print_pecs(pec, params)
         out.flush()
 
@@ -766,7 +766,7 @@ def run_calc(
             print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
             out.flush()
             return
-        print_levels_n_expdata(params, levels.energy, expdata)
+        levels.print_with_expdata(expdata)
         print_pecs(pec, params)
         print('\nFitted parameters\n')
         print_pec_params(params)

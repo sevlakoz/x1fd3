@@ -158,11 +158,26 @@ class Levels:
         print vib-rot levels from dict in custom format
         '''
         print('\n=== Energy levels ===')
-        for j in self.energy.keys():
+        for j, en_jv in self.energy.items():
             print(f'\nJ = {j}\n{"v":>3}{"E,cm-1":>15}{"Bv,cm-1":>15}')
-            for v in self.energy[j].keys():
-                print(f'{v:3d}{self.energy[j][v]:15.5f}{self.rot_const[j][v]:15.8f}')
+            for v, en_v in en_jv.items():
+                print(f'{v:3d}{en_v:15.5f}{self.rot_const[j][v]:15.8f}')
 
+    def print_with_expdata(
+        self,
+        expdata: Dict[int, Dict[int, float]]
+    ) -> None:
+        '''
+        print cal and exp vib-rot levels in custom format
+        '''
+        print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
+        for j, en_jv in self.energy.items():
+            for v, en_cal in en_jv.items():
+                if j in expdata.keys():
+                    if v in expdata[j].keys():
+                        en_exp = expdata[j][v]
+                        print(f'{j:4d}{v:4d}{en_exp:15.5f}{en_cal:15.5f}{en_exp - en_cal:15.5f}')
+        print()
 #=======================================================================
 
 class MatrixElements:
@@ -211,14 +226,54 @@ class MatrixElements:
         print(f"v'' = {self.v1}")
         print(f"v'  = {self.v2}\n")
 
-        for j2 in self.matrix_elements.keys():
+        for j2, me_j2j1 in self.matrix_elements.items():
             print(f"J' = {j2}")
             print(f'''{"J''":>4}{"E',cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
-            for j1 in self.matrix_elements.keys():
+            for j1, me in me_j2j1.items():
                 en2 = self.energy2[j2][j1]
                 en1 = self.energy1[j2][j1]
-                print(f"{j1:4d}{en2:15.5f}{en1:15.5f}{self.matrix_elements[j2][j1]:15.5e}")
+                print(f"{j1:4d}{en2:15.5f}{en1:15.5f}{me:15.5e}")
             print()
+
+    def _ht(
+        self
+    ) -> None:
+        '''
+        ht comp
+        '''
+
+        jm = max(self.matrix_elements.keys())
+
+        jlist = []
+        for j1 in range(jm, 0, -1):
+            j2 = j1 - 1
+            jlist.append((j2, j1))
+        for j1 in range(jm):
+            j2 = j1 + 1
+            jlist.append((j2, j1))
+        
+        print("*  J' J''           freq             me        Sa            E''            pop            int        Se              A")
+        for j2, j1 in jlist:
+            dj = j2 - j1
+            if dj == 1:
+                lbl = "R"
+                Sa = (j1 + 1) / (2 * j1 + 1)
+                Se =  j2      / (2 * j2 + 1)
+            elif dj == -1:
+                lbl = "P"
+                Sa = j1       / (2 * j1 + 1)
+                Se = (j2 + 1) / (2 * j2 + 1)
+            else:
+                sys.exit('ERROR: wrong dJ')
+
+            e2 = self.energy2[j2][j1]
+            e1 = self.energy1[j2][j1]
+            freq = e2 - e1
+            me = self.matrix_elements[j2][j1]
+            pop = (2 * j1 + 1) * np.exp(-e1 / 0.695 / 298.0)
+            A = 3.137e-7 * me ** 2 * Se * freq ** 3
+            inten = pop * me ** 2 * Sa
+            print(f"{lbl}{j2:4d}{j1:4d}{freq:15.5f}{me:15.5e}{Sa:10.5f}{e1:15.5f}{pop:15.5e}{inten:15.5e}{Se:10.5f}{A:15.5e}")
 
 #=======================================================================
 #=======================================================================
@@ -278,7 +333,7 @@ def print_pec_params(
     print()
 
 #=======================================================================
-
+"""
 def print_levels_n_expdata(
         params: Dict[str, Any],
         caldata: Dict[int, Dict[int, float]],
@@ -296,7 +351,7 @@ def print_levels_n_expdata(
             en_cal = caldata[j][v]
             print(f'{j:4d}{v:4d}{en_exp:15.5f}{en_cal:15.5f}{en_exp - en_cal:15.5f}')
     print()
-
+"""
 #=======================================================================
 
 def read_pec_params(
@@ -464,7 +519,6 @@ def read_expdata(
     '''
     read exp vib-rot levels
     '''
-
     input_parser = ConfigParser(delimiters=(' ', '\t'))
     input_parser.read(fname)
 
