@@ -251,7 +251,7 @@ class MatrixElements:
         for j1 in range(jm):
             j2 = j1 + 1
             jlist.append((j2, j1))
-        
+
         print("*  J' J''           freq             me        Sa            E''            pop            int        Se              A")
         for j2, j1 in jlist:
             dj = j2 - j1
@@ -332,26 +332,6 @@ def print_pec_params(
         print(f'{beta}\n      ', end = '')
     print()
 
-#=======================================================================
-"""
-def print_levels_n_expdata(
-        params: Dict[str, Any],
-        caldata: Dict[int, Dict[int, float]],
-        expdata: Dict[int, Dict[int, float]]
-    ) -> None:
-    '''
-    print given set of exp vib-rot levels in custom format
-    '''
-    print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
-    for j in expdata.keys():
-        if j > params['jmax']:
-            continue
-        for v in expdata[j].keys():
-            en_exp = expdata[j][v]
-            en_cal = caldata[j][v]
-            print(f'{j:4d}{v:4d}{en_exp:15.5f}{en_cal:15.5f}{en_exp - en_cal:15.5f}')
-    print()
-"""
 #=======================================================================
 
 def read_pec_params(
