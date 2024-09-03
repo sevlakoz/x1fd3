@@ -544,9 +544,11 @@ def res_exp(
     res = []
 
     # exp levels
-    for j in expdata.keys():
-        for v in expdata[j].keys():
-            res.append((levels.energy[j][v] - expdata[j][v]) / 0.1)
+    for j, en_jv in expdata.items():
+        for v, en_v in en_jv.items():
+            if j in levels.energy.keys():
+                if v in levels.energy[j].keys():
+                    res.append((levels.energy[j][v] - en_v) / 0.1)
 
     # pec
     for r_inp, u_inp in zip(pec.rval, pec.cval):
