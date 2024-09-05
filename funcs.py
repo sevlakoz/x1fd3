@@ -176,8 +176,8 @@ class Levels:
         print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
         for j, en_jv in self.energy.items():
             for v, en_cal in en_jv.items():
-                if j in expdata.keys():
-                    if v in expdata[j].keys():
+                if j in expdata:
+                    if v in expdata[j]:
                         en_exp = expdata[j][v]
                         print(f'{j:4d}{v:4d}{en_exp:15.5f}{en_cal:15.5f}{en_exp - en_cal:15.5f}')
         print()
@@ -551,8 +551,8 @@ def res_exp(
     # exp levels
     for j, en_jv in expdata.items():
         for v, en_v in en_jv.items():
-            if j in levels.energy.keys():
-                if v in levels.energy[j].keys():
+            if j in levels.energy:
+                if v in levels.energy[j]:
                     res.append((levels.energy[j][v] - en_v) / 0.1)
 
     # pec

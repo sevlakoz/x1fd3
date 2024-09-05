@@ -11,9 +11,7 @@ from funcs import print_input_file, PWcurve, print_pecs,\
 #=======================================================================
 #=======================================================================
 
-def select_mode(
-        mode: tk.StringVar
-    ) -> None:
+def select_mode() -> None:
     '''
     mode selector for main window
     '''
@@ -304,9 +302,7 @@ def select_file(
 
 #=======================================================================
 
-def run_calc(
-        mode: tk.StringVar
-    ) -> None:
+def run_calc() -> None:
     '''
     run selected calculation
     '''
@@ -320,7 +316,7 @@ def run_calc(
         print_message('ERROR: out file not specified\n', False)
         return
 
-    out = open(fname, 'w')
+    out = open(fname, 'w', encoding = 'utf-8')
     sys.stdout = out
 
     #---
@@ -820,7 +816,7 @@ ttk.Radiobutton(
     text = 'Point-wise PEC approximation with EMO',
     value = 'pw_pec_approx',
     variable = mode,
-    command = lambda: select_mode(mode)
+    command = lambda: select_mode()
 ).grid(
     row = 2,
     column = 2,
@@ -831,7 +827,7 @@ ttk.Radiobutton(
     text = 'Vib.-rot. levels calculation with point-wise PEC',
     value = 'lev_calc_pw',
     variable = mode,
-    command = lambda: select_mode(mode)
+    command = lambda: select_mode()
 ).grid(
     row = 3,
     column = 2,
@@ -843,7 +839,7 @@ ttk.Radiobutton(
     text = 'Vib.-rot. levels calculation with analytic PEC (EMO)',
     value = 'lev_calc_an',
     variable = mode,
-    command = lambda: select_mode(mode)
+    command = lambda: select_mode()
 ).grid(
     row = 4,
     column = 2,
@@ -854,7 +850,7 @@ ttk.Radiobutton(
     text = 'Vib.-rot. spectrum calculation with point-wise PEC',
     value = 'sp_calc_pw',
     variable = mode,
-    command = lambda: select_mode(mode)
+    command = lambda: select_mode()
 ).grid(
     row = 5,
     column = 2,
@@ -866,7 +862,7 @@ ttk.Radiobutton(
     text = 'Vib.-rot. spectrum calculation with analytic PEC (EMO)',
     value = 'sp_calc_an',
     variable = mode,
-    command = lambda: select_mode(mode)
+    command = lambda: select_mode()
 ).grid(
     row = 6,
     column = 2,
@@ -877,7 +873,7 @@ ttk.Radiobutton(
     text = 'Analytic PEC (EMO) fitting to reproduce experimental vib.-rot. levels',
     value = 'fit_pec_to_exp',
     variable = mode,
-    command = lambda: select_mode(mode)
+    command = lambda: select_mode()
 ).grid(
     row = 7,
     column = 2,
@@ -1088,7 +1084,7 @@ run = ttk.Button(
     text = 'RUN',
     width = 50,
     style = 'my.TButton',
-    command = lambda: run_calc(mode)
+    command = lambda: run_calc()
 )
 
 
