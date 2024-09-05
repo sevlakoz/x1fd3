@@ -1,6 +1,6 @@
 import sys
 
-from funcs import print_input_file, read_pec_params, read_vr_calc_params,\
+from funcs import print_input_file, Parameters,\
                   PWcurve, Levels, MatrixElements
 
 if len(sys.argv) < 4:
@@ -21,8 +21,9 @@ print_input_file(f_fit_par)
 print_input_file(f_pw_dm)
 
 # read files
-params = read_pec_params(f_fit_par)
-params = params | read_vr_calc_params(f_vr_par, 'SPECTRUM')
+params = Parameters()
+params.read_pec_params(f_fit_par)
+params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
 dm = PWcurve(f_pw_dm)
 
 # calc vr levels

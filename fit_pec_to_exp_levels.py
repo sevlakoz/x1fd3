@@ -1,8 +1,7 @@
 import sys
 
-from funcs import print_input_file, PWcurve, read_pec_params,\
-                  read_vr_calc_params,read_expdata, Levels,\
-                  print_pecs, exp_fit, print_pec_params
+from funcs import print_input_file, PWcurve, read_expdata,\
+                  Levels, Parameters, print_pecs, exp_fit
 
 if len(sys.argv) < 5:
     sys.exit(
@@ -26,8 +25,9 @@ print_input_file(f_epx_lev)
 
 # read files
 pec = PWcurve(f_pw_pec)
-params = read_pec_params(f_fit_par)
-params = params | read_vr_calc_params(f_vr_par, 'FIT')
+params = Parameters()
+params.read_pec_params(f_fit_par)
+params.read_vr_calc_params(f_vr_par, 'FIT')
 expdata = read_expdata(f_epx_lev)
 
 params['jmax'] = max(expdata.keys())
@@ -53,4 +53,4 @@ levels = Levels('an', params)
 levels.print_with_expdata(expdata)
 print_pecs(pec, params)
 print('\nFitted parameters\n')
-print_pec_params(params)
+params.print_pec_params()

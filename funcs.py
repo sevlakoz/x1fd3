@@ -276,6 +276,108 @@ class MatrixElements:
             print(f"{lbl}{j2:4d}{j1:4d}{freq:15.5f}{me:15.5e}{Sa:10.5f}{e1:15.5f}{pop:15.5e}{inten:15.5e}{Se:10.5f}{A:15.5e}")
 
 #=======================================================================
+
+class Parameters(dict):
+    '''
+    dict with custom methods for required parameters
+    '''
+    def read_pec_params(
+            self,
+            fname: str
+        ) -> None:
+        '''
+        read params for PEC from file
+        '''
+        input_parser = ConfigParser(delimiters=(' ', '\t'))
+        input_parser.read(fname)
+
+        if len(input_parser.sections()) > 1:
+            sys.exit(f'ERROR: Two or more analytic functions given in "{fname}"')
+
+        ptype = input_parser.sections()[0]
+
+        if not ptype in ['EMO']:
+            sys.exit(f'ERROR:  Uknown potential type "{ptype}"')
+
+        tmp = {}
+
+        for keyword, value in input_parser[ptype].items():
+            if keyword in ('q'):
+                tmp[keyword] = int(value)
+            elif keyword in ('re', 'de', 'rref'):
+                tmp[keyword] = float(value)                              # type: ignore
+            elif keyword in ('beta'):
+                tmp[keyword] = np.array(list(map(float, value.split()))) # type: ignore
+
+        params_check = {
+            'EMO': set(['re', 'de', 'rref', 'q', 'beta'])
+        }
+
+        if set(tmp.keys()) != params_check[ptype]:
+            sys.exit(f'ERROR:  for {ptype} the following parameters must be given: {params_check[ptype]}')
+
+        self.update(tmp)
+        self['ptype'] = ptype
+
+    def read_vr_calc_params(
+            self,
+            fname: str,
+            rtype: str
+        ) -> None:
+        '''
+        read params for vib-rot level calculation from file
+        '''
+        if not rtype in ['ENERGY', 'SPECTRUM', 'FIT']:
+            sys.exit(f'ERROR:  Uknown run type "{rtype}"')
+
+        # read calc params
+        input_parser = ConfigParser(delimiters=(' ', '\t'))
+        input_parser.read(fname)
+
+        if len(input_parser.sections()) > 1:
+            sys.exit(f'ERROR: Two or more sets of parameters given in "{fname}"')
+
+        if input_parser.sections()[0] != rtype:
+            sys.exit(f'ERROR: run type in "{fname}" is not consistent with the actual run type')
+
+        tmp = {}
+
+        for keyword, value in input_parser[rtype].items():
+            if keyword in ('jmax', 'v1', 'v2'):
+                tmp[keyword] = int(value)
+            elif keyword in ('mass1', 'mass2', 'rmin', 'rmax'):
+                tmp[keyword] = float(value)                        # type: ignore
+
+        params_check = {
+            'ENERGY':   set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax']),
+            'SPECTRUM': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax', 'v1', 'v2']),
+            'FIT':      set(['mass1', 'mass2', 'rmin', 'rmax'])
+        }
+
+        if set(tmp.keys()) != params_check[rtype]:
+            sys.exit(f'ERROR:  for {rtype} the only following parameters must be given: {params_check[rtype]}')
+
+        self.update(tmp)
+        self['rtype'] = rtype
+
+    def print_pec_params(
+            self
+        ) -> None:
+        '''
+        print params from dict in custom format
+        '''
+        print(f"[{self['ptype']}]")
+        print(f"de    {self['de']}")
+        print(f"re    {self['re']}")
+        print(f"rref  {self['rref']}")
+        print(f"q     {self['q']}")
+
+        print('beta  ', end = '')
+        for beta in self['beta']:
+            print(f'{beta}\n      ', end = '')
+        print()
+
+#=======================================================================
 #=======================================================================
 
 def print_input_file(
@@ -315,108 +417,6 @@ def print_pecs(
 
 #=======================================================================
 
-def print_pec_params(
-        params: Dict[str, Any]
-    ) -> None:
-    '''
-    print params from dict in custom format
-    '''
-    print(f"[{params['ptype']}]")
-    print(f"de    {params['de']}")
-    print(f"re    {params['re']}")
-    print(f"rref  {params['rref']}")
-    print(f"q     {params['q']}")
-
-    print('beta  ', end = '')
-    for beta in params['beta']:
-        print(f'{beta}\n      ', end = '')
-    print()
-
-#=======================================================================
-
-def read_pec_params(
-        fname: str
-    ) -> Dict[str, Any]:
-    '''
-    read params for PEC from file
-    '''
-    input_parser = ConfigParser(delimiters=(' ', '\t'))
-    input_parser.read(fname)
-
-    params: Dict[str, Any] = {}
-
-    if len(input_parser.sections()) > 1:
-        sys.exit(f'ERROR: Two or more analytic functions given in "{fname}"')
-
-    ptype = input_parser.sections()[0]
-
-    if not ptype in ['EMO']:
-        sys.exit(f'ERROR:  Uknown potential type "{ptype}"')
-
-    for keyword, value in input_parser[ptype].items():
-        if keyword in ('q'):
-            params[keyword] = int(value)
-        elif keyword in ('re', 'de', 'rref'):
-            params[keyword] = float(value)
-        elif keyword in ('beta'):
-            params[keyword] = np.array(list(map(float, value.split())))
-
-    params_check = {
-        'EMO': set(['re', 'de', 'rref', 'q', 'beta'])
-    }
-
-    if set(params.keys()) != params_check[ptype]:
-        sys.exit(f'ERROR:  for {ptype} the following parameters must be given: {params_check[ptype]}')
-
-    params['ptype'] = ptype
-
-    return params
-
-#=======================================================================
-
-def read_vr_calc_params(
-        fname: str,
-        rtype: str
-    ) -> Dict[str, Any]:
-    '''
-    read params for vib-rot level calculation from file
-    '''
-    if not rtype in ['ENERGY', 'SPECTRUM', 'FIT']:
-        sys.exit(f'ERROR:  Uknown run type "{rtype}"')
-
-    # read calc params
-    input_parser = ConfigParser(delimiters=(' ', '\t'))
-    input_parser.read(fname)
-
-    params: Dict[str, Any] = {}
-
-    if len(input_parser.sections()) > 1:
-        sys.exit(f'ERROR: Two or more sets of parameters given in "{fname}"')
-
-    if input_parser.sections()[0] != rtype:
-        sys.exit(f'ERROR: run type in "{fname}" is not consistent with the actual run type')
-
-    for keyword, value in input_parser[rtype].items():
-        if keyword in ('jmax', 'v1', 'v2'):
-            params[keyword] = int(value)
-        elif keyword in ('mass1', 'mass2', 'rmin', 'rmax'):
-            params[keyword] = float(value)
-
-    params_check = {
-        'ENERGY':   set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax']),
-        'SPECTRUM': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax', 'v1', 'v2']),
-        'FIT':      set(['mass1', 'mass2', 'rmin', 'rmax'])
-    }
-
-    if set(params.keys()) != params_check[rtype]:
-        sys.exit(f'ERROR:  for {rtype} the only following parameters must be given: {params_check[rtype]}')
-
-    params['rtype'] = rtype
-
-    return params
-
-#=======================================================================
-
 def emo(
         r_inp: float,
         params: Dict[str, Any]
@@ -440,14 +440,14 @@ def emo(
 def res_pec(
         guess: List[float],
         pec: PWcurve,
-        params: Dict[str, Any]
+        params: Parameters
     ) -> List[float]:
     '''
     residual for pec_fit
     '''
     # fitted params
-    tmp = {} | params
-
+    tmp = Parameters()
+    tmp.update(params)
     tmp['de'] = guess[0]
     tmp['re'] = guess[1]
     tmp['beta'] = guess[2:]
@@ -469,8 +469,8 @@ def res_pec(
 
 def pec_fit(
         pec: PWcurve,
-        params: Dict[str, Any]
-    ) -> Tuple[Dict[str, Any], str, bool]:
+        params: Parameters
+    ) -> Tuple[Parameters, str, bool]:
     '''
     fit pec by EMO function
     '''
@@ -484,7 +484,8 @@ def pec_fit(
     res_1 = least_squares(res_pec, guess, args = add_args)
 
     # out
-    tmp = {} | params
+    tmp = Parameters() #| params
+    tmp.update(params)
     tmp['de'] = res_1.x[0]
     tmp['re'] = res_1.x[1]
     tmp['beta'] = np.array(list(res_1.x[2:]))
@@ -523,7 +524,7 @@ def read_expdata(
 
 def res_exp(
         guess: List[float],
-        params: Dict[str, Any],
+        params: Parameters,
         pec: PWcurve,
         expdata: Dict[int, Dict[int, float]]
     ) -> List[float]:
@@ -532,7 +533,8 @@ def res_exp(
     '''
 
     # fitted params
-    tmp = {} | params
+    tmp = Parameters()
+    tmp.update(params)
 
     tmp['de'] = guess[0]
     tmp['re'] = guess[1]
@@ -556,16 +558,15 @@ def res_exp(
         err = max(u_inp / 100., 100.)
         res.append((u_cal - u_inp) / err)
 
-
     return res
 
 #=======================================================================
 
 def exp_fit(
-        params: Dict[str, Any],
+        params: Parameters,
         pec: PWcurve,
         expdata: Dict[int, Dict[int, float]]
-    ) -> Tuple[Dict[str, Any], str, bool]:
+    ) -> Tuple[Parameters, str, bool]:
     '''
     fit pec to exp vib-rot levels
     '''
@@ -579,7 +580,8 @@ def exp_fit(
     res_1 = least_squares(res_exp, guess, args = add_args)
 
     # out
-    tmp = {} | params
+    tmp = Parameters()
+    tmp.update(params)
     tmp['de'] = res_1.x[0]
     tmp['re'] = res_1.x[1]
     tmp['beta'] = np.array(list(res_1.x[2:]))

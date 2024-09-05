@@ -1,7 +1,6 @@
 import sys
 
-from funcs import print_input_file, read_pec_params,\
-                  read_vr_calc_params, Levels
+from funcs import print_input_file, Parameters, Levels
 
 if len(sys.argv) < 3:
     sys.exit(
@@ -18,8 +17,9 @@ print_input_file(f_vr_par)
 print_input_file(f_fit_par)
 
 # read files
-params = read_pec_params(f_fit_par)
-params = params | read_vr_calc_params(f_vr_par, 'ENERGY')
+params = Parameters()
+params.read_pec_params(f_fit_par)
+params.read_vr_calc_params(f_vr_par, 'ENERGY')
 
 # calc and print vr levels
 levels = Levels('an', params)

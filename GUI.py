@@ -4,8 +4,8 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 
-from funcs import print_input_file, PWcurve, read_pec_params, print_pecs,\
-                  pec_fit, print_pec_params, read_vr_calc_params, read_expdata,\
+from funcs import print_input_file, PWcurve, print_pecs,\
+                  pec_fit, Parameters, read_expdata,\
                   exp_fit, Levels, MatrixElements
 
 #=======================================================================
@@ -358,7 +358,8 @@ def run_calc(
             return
 
         try:
-            params = read_pec_params(f_init_par)
+            params = Parameters()
+            params.read_pec_params(f_init_par)
         except BaseException as ex:
             print_message(f'ERROR: failed to read initial EMO parameters: {str(ex)}\n')
             out.flush()
@@ -389,7 +390,7 @@ def run_calc(
         print('\nFitted PEC\n')
         print_pecs(pec, params)
         print('\nFitted parameters\n')
-        print_pec_params(params)
+        params.print_pec_params()
         out.flush()
 
     #---
@@ -427,7 +428,8 @@ def run_calc(
             return
 
         try:
-            params = read_vr_calc_params(f_vr_par, 'ENERGY')
+            params = Parameters()
+            params.read_vr_calc_params(f_vr_par, 'ENERGY')
         except BaseException as ex:
             print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
             out.flush()
@@ -472,14 +474,15 @@ def run_calc(
 
         # read files
         try:
-            params = read_vr_calc_params(f_vr_par, 'ENERGY')
+            params = Parameters()
+            params.read_vr_calc_params(f_vr_par, 'ENERGY')
         except BaseException as ex:
             print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
             out.flush()
             return
 
         try:
-            params = params | read_pec_params(f_fit_par)
+            params.read_pec_params(f_fit_par)
         except BaseException as ex:
             print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
             out.flush()
@@ -549,7 +552,8 @@ def run_calc(
             return
 
         try:
-            params = read_vr_calc_params(f_vr_par, 'SPECTRUM')
+            params = Parameters()
+            params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
         except BaseException as ex:
             print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
             out.flush()
@@ -612,14 +616,15 @@ def run_calc(
 
         # read files
         try:
-            params = read_vr_calc_params(f_vr_par, 'SPECTRUM')
+            params = Parameters()
+            params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
         except BaseException as ex:
             print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
             out.flush()
             return
 
         try:
-            params = params | read_pec_params(f_fit_par)
+            params.read_pec_params(f_fit_par)
         except BaseException as ex:
             print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
             out.flush()
@@ -706,14 +711,15 @@ def run_calc(
             return
 
         try:
-            params = read_vr_calc_params(f_vr_par, 'FIT')
+            params = Parameters()
+            params.read_vr_calc_params(f_vr_par, 'FIT')
         except BaseException as ex:
             print_message(f'ERROR: failed to read parameter for PEC fit to exp. levels: {str(ex)}\n')
             out.flush()
             return
 
         try:
-            params = params | read_pec_params(f_fit_par)
+            params.read_pec_params(f_fit_par)
         except BaseException as ex:
             print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
             out.flush()
@@ -769,7 +775,7 @@ def run_calc(
         levels.print_with_expdata(expdata)
         print_pecs(pec, params)
         print('\nFitted parameters\n')
-        print_pec_params(params)
+        params.print_pec_params()
         out.flush()
 
     #---

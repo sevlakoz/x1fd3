@@ -1,7 +1,7 @@
 import sys
 
-from funcs import print_input_file, PWcurve, read_pec_params,\
-                  print_pecs, pec_fit, print_pec_params
+from funcs import print_input_file, PWcurve, Parameters,\
+                  print_pecs, pec_fit
 
 if len(sys.argv) < 3:
     sys.exit(
@@ -19,7 +19,8 @@ print_input_file(f_init_par)
 
 # read files
 pec = PWcurve(f_pw_pec)
-params = read_pec_params(f_init_par)
+params = Parameters()
+params.read_pec_params(f_init_par)
 
 # print initial guess
 print('=== Point-wise PEC approximation ===\n')
@@ -37,4 +38,4 @@ else:
 print('\nFitted PEC\n')
 print_pecs(pec, params)
 print('\nFitted parameters\n')
-print_pec_params(params)
+params.print_pec_params()
