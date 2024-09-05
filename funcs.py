@@ -220,7 +220,7 @@ class MatrixElements:
         self
     ) -> None:
         '''
-        print calculated matrix elements of given dipole function in custom format
+        print calculated matrix elements in custom format
         '''
         print("\n=== Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===\n")
         print(f"v'' = {self.v1}")
