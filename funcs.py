@@ -105,14 +105,17 @@ class Levels:
             u_grid = pec.spline(r_grid)
             emax = u_grid[-1]
         elif ptype == 'an':
-            # EMO
-            if params['ptype'] == 'EMO':
+            # analytic: EMO
+            an_ptype = params['ptype']
+            if an_ptype == 'EMO':
                 u_grid = np.array(
                     list(
                         map(lambda x: emo(x, params), r_grid)
                     )
                 )
                 emax = params['de']
+            else:
+                sys.exit(f'ERROR: Uknown analytic pec type "{an_ptype}"')
         else:
             sys.exit(f'ERROR: Uknown pec type "{ptype}"')
 
