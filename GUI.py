@@ -919,7 +919,7 @@ def main() -> None:
         column = 2,
         sticky = 'w'
     )
-   
+
     main_window.frame.columnconfigure(0, minsize = 600)
 
     #
