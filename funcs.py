@@ -200,7 +200,7 @@ class MatrixElements:
         self.v2: int = params['v2']
 
         self.energy1: Dict[int, Dict[int, float]] = {}
-        self.energy2: Dict[int, Dict[int, float]] = {}
+        self.freq: Dict[int, Dict[int, float]] = {}
         self.matrix_elements: Dict[int, Dict[int, np.float64]] = {}
 
         # cubic spline to find DM values
@@ -209,11 +209,11 @@ class MatrixElements:
         # matrix elements calc
         for j2 in levels.energy.keys():
             self.energy1[j2] = {}
-            self.energy2[j2] = {}
+            self.freq[j2] = {}
             self.matrix_elements[j2] = {}
             for j1 in levels.energy.keys():
                 self.energy1[j2][j1] = levels.energy[j1][self.v1]
-                self.energy2[j2][j1] = levels.energy[j2][self.v2]
+                self.freq[j2][j1] = levels.energy[j2][self.v2] - levels.energy[j1][self.v1]
                 self.matrix_elements[j2][j1] = np.sum(
                     levels.wavef_grid[j1][self.v1] *
                     levels.wavef_grid[j2][self.v2] *
@@ -231,11 +231,11 @@ class MatrixElements:
 
         for j2, me_j2j1 in self.matrix_elements.items():
             print(f"J' = {j2}")
-            print(f'''{"J''":>4}{"E',cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
+            print(f'''{"J''":>4}{"freq,cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
             for j1, me in me_j2j1.items():
-                en2 = self.energy2[j2][j1]
                 en1 = self.energy1[j2][j1]
-                print(f"{j1:4d}{en2:15.5f}{en1:15.5f}{me:15.5e}")
+                frq  = self.freq[j2][j1]
+                print(f"{j1:4d}{frq:15.5f}{en1:15.5f}{me:15.5e}")
             print()
 
     def _ht(
@@ -244,7 +244,6 @@ class MatrixElements:
         '''
         ht comp
         '''
-
         jm = max(self.matrix_elements.keys())
 
         jlist = []
@@ -269,14 +268,14 @@ class MatrixElements:
             else:
                 sys.exit('ERROR: wrong dJ')
 
-            e2 = self.energy2[j2][j1]
-            e1 = self.energy1[j2][j1]
-            freq = e2 - e1
+            en1 = self.energy1[j2][j1]
+            frq  = self.freq[j2][j1]
             me = self.matrix_elements[j2][j1]
-            pop = (2 * j1 + 1) * np.exp(-e1 / 0.695 / 298.0)
-            A = 3.137e-7 * me ** 2 * Se * freq ** 3
+
+            pop = (2 * j1 + 1) * np.exp(-en1 / 0.695 / 298.0)
+            A = 3.137e-7 * me**2 * Se * frq**3
             inten = pop * me ** 2 * Sa
-            print(f"{lbl}{j2:4d}{j1:4d}{freq:15.5f}{me:15.5e}{Sa:10.5f}{e1:15.5f}{pop:15.5e}{inten:15.5e}{Se:10.5f}{A:15.5e}")
+            print(f"{lbl}{j2:4d}{j1:4d}{frq:15.5f}{me:15.5e}{Sa:10.5f}{en1:15.5f}{pop:15.5e}{inten:15.5e}{Se:10.5f}{A:15.5e}")
 
 #=======================================================================
 
