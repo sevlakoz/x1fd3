@@ -371,7 +371,7 @@ class MainWindow:
                 print('* Point-wise PEC *')
                 print_input_file(f_pw_pec)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
@@ -380,7 +380,7 @@ class MainWindow:
                 print('* Init EMO parameters *')
                 print_input_file(f_init_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with initial EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
@@ -388,7 +388,7 @@ class MainWindow:
             # read files
             try:
                 pec = PWcurve(f_pw_pec)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
@@ -396,7 +396,7 @@ class MainWindow:
             try:
                 params = Parameters()
                 params.read_pec_params(f_init_par)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read initial EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
@@ -417,7 +417,7 @@ class MainWindow:
                     self.print_message(f'ERROR: point-wise PEC approximation FAILED: {message}\n')
                     out.flush()
                     return
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "pec_fit" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -441,7 +441,7 @@ class MainWindow:
                 print('* Parameter for vib.-rot. levels calculation *')
                 print_input_file(f_vr_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. levels calculation: {str(ex)}\n')
                 out.flush()
                 return
@@ -450,7 +450,7 @@ class MainWindow:
                 print('* Point-wise PEC *')
                 print_input_file(f_pw_pec)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
@@ -458,7 +458,7 @@ class MainWindow:
             # read files
             try:
                 pec = PWcurve(f_pw_pec)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
@@ -466,7 +466,7 @@ class MainWindow:
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'ENERGY')
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
                 out.flush()
                 return
@@ -474,7 +474,7 @@ class MainWindow:
             # calc and print vr levels
             try:
                 levels = Levels('pw', params, pec)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -494,7 +494,7 @@ class MainWindow:
                 print('* Parameter for vib.-rot. levels calculation *')
                 print_input_file(f_vr_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. levels calculation: {str(ex)}\n')
                 out.flush()
                 return
@@ -503,7 +503,7 @@ class MainWindow:
                 print('* Fitted EMO parameters *')
                 print_input_file(f_fit_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
@@ -512,14 +512,14 @@ class MainWindow:
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'ENERGY')
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
                 out.flush()
                 return
 
             try:
                 params.read_pec_params(f_fit_par)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
@@ -528,7 +528,7 @@ class MainWindow:
             # calc and print vr levels
             try:
                 levels = Levels('an', params)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -549,7 +549,7 @@ class MainWindow:
                 print('* Parameters for vib.-rot. spectrum calculation *')
                 print_input_file(f_vr_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
                 out.flush()
                 return
@@ -558,7 +558,7 @@ class MainWindow:
                 print('* Point-wise PEC *')
                 print_input_file(f_pw_pec)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
@@ -567,7 +567,7 @@ class MainWindow:
                 print('* Point-wise dipole moment *')
                 print_input_file(f_pw_dm)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with point-wise dipole moment: {str(ex)}\n')
                 out.flush()
                 return
@@ -575,14 +575,14 @@ class MainWindow:
             # read files
             try:
                 pec = PWcurve(f_pw_pec)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
 
             try:
                 dm = PWcurve(f_pw_dm)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n')
                 out.flush()
                 return
@@ -590,7 +590,7 @@ class MainWindow:
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
                 out.flush()
                 return
@@ -598,7 +598,7 @@ class MainWindow:
             # calc vr levels
             try:
                 levels = Levels('pw', params, pec)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -606,7 +606,7 @@ class MainWindow:
             # calc and print integrals
             try:
                 matrix_elements = MatrixElements(params, levels, dm)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -627,7 +627,7 @@ class MainWindow:
                 print('* Parameters for vib.-rot. spectrum calculation *')
                 print_input_file(f_vr_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
                 out.flush()
                 return
@@ -636,7 +636,7 @@ class MainWindow:
                 print('* Fitted EMO parameters *')
                 print_input_file(f_fit_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
@@ -645,7 +645,7 @@ class MainWindow:
                 print('* Point-wise dipole moment *')
                 print_input_file(f_pw_dm)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with point-wise dipole moment: {str(ex)}\n')
                 out.flush()
                 return
@@ -654,21 +654,21 @@ class MainWindow:
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
                 out.flush()
                 return
 
             try:
                 params.read_pec_params(f_fit_par)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
 
             try:
                 dm = PWcurve(f_pw_dm)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n')
                 out.flush()
                 return
@@ -676,7 +676,7 @@ class MainWindow:
             # calc vr levels
             try:
                 levels = Levels('an', params)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -684,7 +684,7 @@ class MainWindow:
             # calc and print integrals
             try:
                 matrix_elements = MatrixElements(params, levels, dm)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -706,7 +706,7 @@ class MainWindow:
                 print('* Parameters for PEC fit to exp. levels *')
                 print_input_file(f_vr_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with parameter for PEC fit to exp. levels: {str(ex)}\n')
                 out.flush()
                 return
@@ -715,7 +715,7 @@ class MainWindow:
                 print('* Fitted EMO parameters *')
                 print_input_file(f_fit_par)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
@@ -724,7 +724,7 @@ class MainWindow:
                 print('* Point-wise PEC *')
                 print_input_file(f_pw_pec)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
@@ -733,7 +733,7 @@ class MainWindow:
                 print('* Exp. levels *')
                 print_input_file(f_epx_lev)
                 out.flush()
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read input file with exp. vib.-rot. levels: {str(ex)}\n')
                 out.flush()
                 return
@@ -741,7 +741,7 @@ class MainWindow:
             # read files
             try:
                 pec = PWcurve(f_pw_pec)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
@@ -749,21 +749,21 @@ class MainWindow:
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'FIT')
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read parameter for PEC fit to exp. levels: {str(ex)}\n')
                 out.flush()
                 return
 
             try:
                 params.read_pec_params(f_fit_par)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
                 out.flush()
                 return
 
             try:
                 expdata = read_expdata(f_epx_lev)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read exp. vib.-rot. levels: {str(ex)}\n')
                 out.flush()
                 return
@@ -776,7 +776,7 @@ class MainWindow:
             print('Initial guess')
             try:
                 levels = Levels('an', params)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -795,7 +795,7 @@ class MainWindow:
                     self.print_message(f'ERROR: PEC fit to exp. levels FAILED: {message}')
                     out.flush()
                     return
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "exp_fit" function: {str(ex)}\n')
                 out.flush()
                 return
@@ -804,7 +804,7 @@ class MainWindow:
             print('\nFit results')
             try:
                 levels = Levels('an', params)
-            except BaseException as ex:
+            except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
                 out.flush()
                 return
