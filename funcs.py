@@ -254,7 +254,14 @@ class MatrixElements:
             j2 = j1 + 1
             jlist.append((j2, j1))
 
-        print("*  J' J''           freq             me        Sa            E''            pop            int        Se              A")
+        hdrs = ["Branch", "J'", "J''", "freq", "me", "Sa", "E''", "pop", "int", "Se", "A"]
+        wds  = [ 6,        4,    4,     15,     15,   10,   15,    15,    15,    10,   15]
+        fts  = ['',       'd',  'd',  '.5f',  '.5e','.5f','.5f', '.5e', '.5e', '.5f','.5e']
+
+        for wd, hdr in zip(wds, hdrs):
+            print(f'{hdr:>{wd}}', end = '')
+        print()
+
         for j2, j1 in jlist:
             dj = j2 - j1
             if dj == 1:
@@ -275,7 +282,11 @@ class MatrixElements:
             pop = (2 * j1 + 1) * np.exp(-en1 / 0.695 / 298.0)
             A = 3.137e-7 * me**2 * Se * frq**3
             inten = pop * me ** 2 * Sa
-            print(f"{lbl}{j2:4d}{j1:4d}{frq:15.5f}{me:15.5e}{Sa:10.5f}{en1:15.5f}{pop:15.5e}{inten:15.5e}{Se:10.5f}{A:15.5e}")
+
+            vals = [lbl, j2, j1, frq, me, Sa, en1, pop, inten, Se, A]
+            for val, wd, ft in zip(vals, wds, fts):
+                print(f'{val:{wd}{ft}}', end = '')
+            print()
 
 #=======================================================================
 
