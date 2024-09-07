@@ -56,8 +56,11 @@ class PWcurve:
         '''
         cubic spline with range check
         '''
-        if r_grid[0] < self.rval[0] or r_grid[-1] > self.rval[-1]:
-            print(f'WARNING: grid for spline out of range - [{r_grid[0]}, {r_grid[-1]}] not in [{self.rval[0]}, {self.rval[-1]}]')
+        rng_inp = [r_grid[0], r_grid[-1]]
+        rng_self = [self.rval[0], self.rval[-1]]
+        if rng_inp[0] < rng_self[0] or rng_inp[-1] > rng_self[-1]:
+            print(f'WARNING: grid for spline out of range - {rng_inp} not in {rng_self}')
+
         spl_pec = splrep(self.rval, self.cval)
         c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
         return c_grid
@@ -83,9 +86,9 @@ class Levels:
         self.r_grid: npt.NDArray[np.float64] = np.array([])
 
         # physical constants
-        au_to_Da = 5.48579909065e-4
+        au_to_da = 5.48579909065e-4
         au_to_cm = 219474.63067
-        a0_to_A = 0.529177210903
+        a0_to_ang = 0.529177210903
 
         # grid point number
         ngrid = 50000
@@ -94,7 +97,7 @@ class Levels:
         mu = params['mass1'] * params['mass2'] / (params['mass1'] + params['mass2'])
 
         # h^2 / (2*mu) [cm-1 * A^2]
-        scale = au_to_Da * au_to_cm * a0_to_A**2 / (2 * mu)
+        scale = au_to_da * au_to_cm * a0_to_ang**2 / (2 * mu)
 
         # grid
         step = (params['rmax'] - params['rmin']) / (ngrid - 1)
@@ -219,6 +222,7 @@ class MatrixElements:
                     levels.wavef_grid[j2][self.v2] *
                     d_grid
                 )
+
     def print(
         self
     ) -> None:
@@ -266,12 +270,12 @@ class MatrixElements:
             dj = j2 - j1
             if dj == 1:
                 lbl = "R"
-                Sa = (j1 + 1) / (2 * j1 + 1)
-                Se =  j2      / (2 * j2 + 1)
+                sa = (j1 + 1) / (2 * j1 + 1)
+                se =  j2      / (2 * j2 + 1)
             elif dj == -1:
                 lbl = "P"
-                Sa = j1       / (2 * j1 + 1)
-                Se = (j2 + 1) / (2 * j2 + 1)
+                sa = j1       / (2 * j1 + 1)
+                se = (j2 + 1) / (2 * j2 + 1)
             else:
                 sys.exit('ERROR: wrong dJ')
 
@@ -280,10 +284,10 @@ class MatrixElements:
             me = self.matrix_elements[j2][j1]
 
             pop = (2 * j1 + 1) * np.exp(-en1 / 0.695 / 298.0)
-            A = 3.137e-7 * me**2 * Se * frq**3
-            inten = pop * me ** 2 * Sa
+            a = 3.137e-7 * me**2 * se * frq**3
+            inten = pop * me**2 * sa
 
-            vals = [lbl, j2, j1, frq, me, Sa, en1, pop, inten, Se, A]
+            vals = [lbl, j2, j1, frq, me, sa, en1, pop, inten, se, a]
             for val, wd, ft in zip(vals, wds, fts):
                 print(f'{val:{wd}{ft}}', end = '')
             print()
@@ -323,10 +327,10 @@ class Parameters(dict):
                 tmp[keyword] = np.array(list(map(float, value.split()))) # type: ignore
 
         params_check = {
-            'EMO': set(['re', 'de', 'rref', 'q', 'beta'])
+            'EMO': {'re', 'de', 'rref', 'q', 'beta'}
         }
 
-        if set(tmp.keys()) != params_check[ptype]:
+        if tmp.keys() != params_check[ptype]:
             sys.exit(f'ERROR:  for {ptype} the following parameters must be given: {params_check[ptype]}')
 
         self.update(tmp)
@@ -362,12 +366,12 @@ class Parameters(dict):
                 tmp[keyword] = float(value)                        # type: ignore
 
         params_check = {
-            'ENERGY':   set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax']),
-            'SPECTRUM': set(['mass1', 'mass2', 'rmin', 'rmax', 'jmax', 'v1', 'v2']),
-            'FIT':      set(['mass1', 'mass2', 'rmin', 'rmax'])
+            'ENERGY':   {'mass1', 'mass2', 'rmin', 'rmax', 'jmax'},
+            'SPECTRUM': {'mass1', 'mass2', 'rmin', 'rmax', 'jmax', 'v1', 'v2'},
+            'FIT':      {'mass1', 'mass2', 'rmin', 'rmax'}
         }
 
-        if set(tmp.keys()) != params_check[rtype]:
+        if tmp.keys() != params_check[rtype]:
             sys.exit(f'ERROR:  for {rtype} the only following parameters must be given: {params_check[rtype]}')
 
         self.update(tmp)
