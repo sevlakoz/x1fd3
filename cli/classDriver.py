@@ -1,6 +1,6 @@
 import sys
-from typing import List, Dict, Tuple
 import abc
+from typing import List, Dict, Tuple
 
 from base.classPWcurve import PWcurve
 from base.classParameters import Parameters
