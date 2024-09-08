@@ -1,6 +1,8 @@
 import sys
 
-from funcs import print_input_file, Parameters, Levels
+from base.print_funcs import print_input_file
+from base.classParameters import Parameters
+from base.classLevels import Levels
 
 if len(sys.argv) < 3:
     sys.exit(

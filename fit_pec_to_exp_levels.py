@@ -1,7 +1,11 @@
 import sys
 
-from funcs import print_input_file, PWcurve, read_expdata,\
-                  Levels, Parameters, print_pecs, exp_fit
+from base.print_funcs import print_input_file, print_pecs
+from base.fit_funcs import exp_fit
+from base.read_expdata import read_expdata
+from base.classPWcurve import PWcurve
+from base.classLevels import Levels
+from base.classParameters import Parameters
 
 if len(sys.argv) < 5:
     sys.exit(

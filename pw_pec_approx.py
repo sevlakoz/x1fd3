@@ -1,7 +1,9 @@
 import sys
 
-from funcs import print_input_file, PWcurve, Parameters,\
-                  print_pecs, pec_fit
+from base.classPWcurve import PWcurve
+from base.classParameters import Parameters
+from base.print_funcs import print_input_file, print_pecs
+from base.fit_funcs import pec_fit
 
 if len(sys.argv) < 3:
     sys.exit(

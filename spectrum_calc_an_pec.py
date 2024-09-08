@@ -1,7 +1,10 @@
 import sys
 
-from funcs import print_input_file, Parameters,\
-                  PWcurve, Levels, MatrixElements
+from base.print_funcs import print_input_file
+from base.classPWcurve import PWcurve
+from base.classParameters import Parameters
+from base.classLevels import Levels
+from base.classMatrixElements import MatrixElements
 
 if len(sys.argv) < 4:
     exit(
