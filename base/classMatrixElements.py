@@ -2,9 +2,9 @@ import sys
 from typing import Dict
 import numpy as np
 
-from base.classPWcurve import PWcurve
-from base.classLevels import Levels
-from base.classParameters import Parameters
+from .classPWcurve import PWcurve
+from .classLevels import Levels
+from .classParameters import Parameters
 
 class MatrixElements:
     '''

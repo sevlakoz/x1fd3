@@ -4,9 +4,9 @@ import numpy as np
 import numpy.typing as npt
 from scipy.linalg import eigh_tridiagonal     # type: ignore
 
-from base.classPWcurve import PWcurve
-from base.classParameters import Parameters
-from base.emo import emo
+from .classPWcurve import PWcurve
+from .classParameters import Parameters
+from .emo import emo
 
 class Levels:
     '''

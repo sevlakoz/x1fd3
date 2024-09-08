@@ -3,7 +3,6 @@ import numpy as np
 import numpy.typing as npt
 from scipy.interpolate import splrep, splev   # type: ignore
 
-
 class PWcurve:
     '''
     class for point-wise curve

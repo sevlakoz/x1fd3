@@ -4,9 +4,9 @@ function for print not included in any class
 import os
 import sys
 
-from base.classPWcurve import PWcurve
-from base.classParameters import Parameters
-from base.emo import emo
+from .classPWcurve import PWcurve
+from .classParameters import Parameters
+from .emo import emo
 
 def print_input_file(
         fname: str

@@ -4,10 +4,10 @@ residual functions for fit_* functions to provide to scipy.optimize.least_square
 import sys
 from typing import Dict, List
 
-from base.classPWcurve import PWcurve
-from base.classParameters import Parameters
-from base.classLevels import Levels
-from base.emo import emo
+from .classPWcurve import PWcurve
+from .classParameters import Parameters
+from .classLevels import Levels
+from .emo import emo
 
 def res_pec(
         guess: List[float],

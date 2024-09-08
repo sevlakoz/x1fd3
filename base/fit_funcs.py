@@ -6,9 +6,9 @@ from typing import Dict, Tuple
 import numpy as np
 from scipy.optimize import least_squares      # type: ignore
 
-from base.classPWcurve import PWcurve
-from base.classParameters import Parameters
-from base.res_funcs import res_pec, res_exp
+from .classPWcurve import PWcurve
+from .classParameters import Parameters
+from .res_funcs import res_pec, res_exp
 
 def pec_fit(
         pec: PWcurve,
