@@ -1,29 +1,5 @@
 import sys
+from cli.classDriver import Driver_level_calc_pw_pec
 
-from base.print_funcs import print_input_file
-from base.classParameters import Parameters
-from base.classLevels import Levels
-from base.classPWcurve import PWcurve
-
-if len(sys.argv) < 3:
-    sys.exit(
-    '''Usage: python level_cacl_pw_pec.py <1> <2>
-    <1> = file with parameters for level calc | example: vr_level_calc_params.txt
-    <2> = file with point-wise pec            | example: pw_pec.txt'''
-    )
-
-f_vr_par = sys.argv[1]
-f_pw_pec = sys.argv[2]
-
-# print input
-print_input_file(f_vr_par)
-print_input_file(f_pw_pec)
-
-# read files
-pec = PWcurve(f_pw_pec)
-params = Parameters()
-params.read_vr_calc_params(f_vr_par, 'ENERGY')
-
-# calc and print vr levels
-levels = Levels('pw', params, pec)
-levels.print()
+driver = Driver_level_calc_pw_pec(sys.argv[1:])
+driver.run()
