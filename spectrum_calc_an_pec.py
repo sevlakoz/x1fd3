@@ -7,7 +7,7 @@ from base.classLevels import Levels
 from base.classMatrixElements import MatrixElements
 
 if len(sys.argv) < 4:
-    exit(
+    sys.exit(
     '''Usage: python spectrum_cacl_an_pec.py <1> <2> <3>
     <1> = file with parameters for spectrum calc | example: vr_spectrum_calc_params.txt
     <2> = file with fitted parameters            | example: fitted_emo_params.txt
