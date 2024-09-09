@@ -1,5 +1,5 @@
 import sys
-from cli import Driver_pw_pec_approx
+from cli import DriverPecApprox
 
-driver = Driver_pw_pec_approx(sys.argv[1:])
+driver = DriverPecApprox(sys.argv[1:])
 driver.run()

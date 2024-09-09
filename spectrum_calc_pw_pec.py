@@ -1,5 +1,5 @@
 import sys
-from cli import Driver_spectrum_calc_pw_pec
+from cli import DriverSpectrumPW
 
-driver = Driver_spectrum_calc_pw_pec(sys.argv[1:])
+driver = DriverSpectrumPW(sys.argv[1:])
 driver.run()

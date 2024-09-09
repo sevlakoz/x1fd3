@@ -1,5 +1,5 @@
 import sys
-from cli import Driver_level_calc_an_pec
+from cli import DriverLevelsAn
 
-driver = Driver_level_calc_an_pec(sys.argv[1:])
+driver = DriverLevelsAn(sys.argv[1:])
 driver.run()
