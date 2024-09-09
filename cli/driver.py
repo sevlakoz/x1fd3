@@ -56,7 +56,7 @@ class Driver(abc.ABC):
                 '       <1> = file with parameters for level calc | example: vr_fit_params.txt\n' +
                 '       <2> = file with pre-fitted parameters     | example: fitted_emo_params.txt\n' +
                 '       <3> = file with point-wise pec            | example: pw_pec.txt\n' +
-                '       <4> = file with exp. vib.-rot. levels     | example: levels.txt'
+                '       <4> = file with exp. vib.-rot. levels     | example: exp_levels.txt'
             )
         }
 

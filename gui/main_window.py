@@ -260,7 +260,7 @@ class MainWindow:
 
         self.lbl_exp = tk.Label(
             self.frame,
-            text = 'Experimental vib.-rot. levels, example: levels.txt'
+            text = 'Experimental vib.-rot. levels, example: exp_levels.txt'
         )
 
         self.file_exp = ttk.Entry(
