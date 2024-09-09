@@ -2,10 +2,10 @@ import sys
 import abc
 from typing import List, Dict, Tuple
 
-from base.classPWcurve import PWcurve
-from base.classParameters import Parameters
-from base.classLevels import Levels
-from base.classMatrixElements import MatrixElements
+from base.p_w_curve import PWCurve
+from base.parameters import Parameters
+from base.levels import Levels
+from base.matrix_elements import MatrixElements
 from base.print_funcs import print_input_file, print_pecs
 from base.fit_funcs import pec_fit, exp_fit
 from base.read_expdata import read_expdata
@@ -64,8 +64,8 @@ class Driver(abc.ABC):
             )
         }
 
-        self.pec = PWcurve()
-        self.dm = PWcurve()
+        self.pec = PWCurve()
+        self.dm = PWCurve()
         self.params = Parameters()
         self.expdata: Dict[int, Dict[int, float]] = {}
 
@@ -123,7 +123,7 @@ class Driver_pw_pec_approx(Driver):
     def read_files(
         self
     ) -> None:
-        self.pec = PWcurve(self.input_files[0])
+        self.pec = PWCurve(self.input_files[0])
         self.params.read_pec_params(self.input_files[1])
 
     def core(
@@ -153,7 +153,7 @@ class Driver_level_calc_pw_pec(Driver):
         self
     ) -> None:
         self.params.read_vr_calc_params(self.input_files[0], 'ENERGY')
-        self.pec = PWcurve(self.input_files[1])
+        self.pec = PWCurve(self.input_files[1])
 
     def core(
         self
@@ -187,8 +187,8 @@ class Driver_spectrum_calc_pw_pec(Driver):
         self
     ) -> None:
         self.params.read_vr_calc_params(self.input_files[0], 'SPECTRUM')
-        self.pec = PWcurve(self.input_files[1])
-        self.dm = PWcurve(self.input_files[2])
+        self.pec = PWCurve(self.input_files[1])
+        self.dm = PWCurve(self.input_files[2])
 
     def core(
         self
@@ -208,7 +208,7 @@ class Driver_spectrum_calc_an_pec(Driver):
     ) -> None:
         self.params.read_vr_calc_params(self.input_files[0], 'SPECTRUM')
         self.params.read_pec_params(self.input_files[1])
-        self.dm = PWcurve(self.input_files[2])
+        self.dm = PWCurve(self.input_files[2])
 
     def core(
         self
@@ -228,7 +228,7 @@ class Driver_fit_pec_to_exp_levels(Driver):
     ) -> None:
         self.params.read_vr_calc_params(self.input_files[0], 'FIT')
         self.params.read_pec_params(self.input_files[1])
-        self.pec = PWcurve(self.input_files[2])
+        self.pec = PWCurve(self.input_files[2])
         self.expdata = read_expdata(self.input_files[3])
 
     def core(

@@ -4,8 +4,8 @@ function for print not included in any class
 import os
 import sys
 
-from .classPWcurve import PWcurve
-from .classParameters import Parameters
+from .p_w_curve import PWCurve
+from .parameters import Parameters
 from .emo import emo
 
 def print_input_file(
@@ -24,7 +24,7 @@ def print_input_file(
         sys.exit(f'ERROR: No such file: {fname}')
 
 def print_pecs(
-        pec: PWcurve,
+        pec: PWCurve,
         params: Parameters
     ) -> None:
     '''

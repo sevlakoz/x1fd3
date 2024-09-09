@@ -4,14 +4,14 @@ residual functions for fit_* functions to provide to scipy.optimize.least_square
 import sys
 from typing import Dict, List
 
-from .classPWcurve import PWcurve
-from .classParameters import Parameters
-from .classLevels import Levels
+from .p_w_curve import PWCurve
+from .parameters import Parameters
+from .levels import Levels
 from .emo import emo
 
 def res_pec(
         guess: List[float],
-        pec: PWcurve,
+        pec: PWCurve,
         params: Parameters
     ) -> List[float]:
     '''
@@ -41,7 +41,7 @@ def res_pec(
 def res_exp(
         guess: List[float],
         params: Parameters,
-        pec: PWcurve,
+        pec: PWCurve,
         expdata: Dict[int, Dict[int, float]]
     ) -> List[float]:
     '''

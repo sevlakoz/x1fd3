@@ -1,6 +1,6 @@
 import numpy as np
 
-from .classParameters import Parameters
+from .parameters import Parameters
 
 def emo(
         r_inp: float,

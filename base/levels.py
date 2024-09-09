@@ -4,8 +4,8 @@ import numpy as np
 import numpy.typing as npt
 from scipy.linalg import eigh_tridiagonal     # type: ignore
 
-from .classPWcurve import PWcurve
-from .classParameters import Parameters
+from .p_w_curve import PWCurve
+from .parameters import Parameters
 from .emo import emo
 
 class Levels:
@@ -16,7 +16,7 @@ class Levels:
         self,
         ptype: str,
         params: Parameters,
-        pec: PWcurve = PWcurve()
+        pec: PWCurve = PWCurve()
     ) -> None:
         '''
         init = calculate vib-rot levels for given set of parameters / point-wise pec

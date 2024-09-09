@@ -1,7 +1,7 @@
-from .classLevels import Levels
-from .classMatrixElements import MatrixElements
-from .classParameters import Parameters
-from .classPWcurve import PWcurve
+from .levels import Levels
+from .matrix_elements import MatrixElements
+from .parameters import Parameters
+from .p_w_curve import PWCurve
 from .emo import emo
 from .fit_funcs import exp_fit, pec_fit
 from .print_funcs import print_input_file, print_pecs
@@ -11,7 +11,7 @@ __all__ = (
     'Levels',
     'MatrixElements',
     'Parameters',
-    'PWcurve',
+    'PWCurve',
     'emo',
     'exp_fit',
     'pec_fit',

@@ -2,9 +2,9 @@ import sys
 from typing import Dict
 import numpy as np
 
-from .classPWcurve import PWcurve
-from .classLevels import Levels
-from .classParameters import Parameters
+from .p_w_curve import PWCurve
+from .levels import Levels
+from .parameters import Parameters
 
 class MatrixElements:
     '''
@@ -14,7 +14,7 @@ class MatrixElements:
         self,
         params: Parameters,
         levels: Levels,
-        dm: PWcurve
+        dm: PWCurve
     ) -> None:
         '''
         init = calculate matrix elements of given dipole function

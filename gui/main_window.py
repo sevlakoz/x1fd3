@@ -4,10 +4,10 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 
-from base.classPWcurve import PWcurve
-from base.classParameters import Parameters
-from base.classLevels import Levels
-from base.classMatrixElements import MatrixElements
+from base.p_w_curve import PWCurve
+from base.parameters import Parameters
+from base.levels import Levels
+from base.matrix_elements import MatrixElements
 from base.print_funcs import print_input_file, print_pecs
 from base.fit_funcs import pec_fit, exp_fit
 from base.read_expdata import read_expdata
@@ -656,7 +656,7 @@ class MainWindow:
 
             # read files
             try:
-                pec = PWcurve(f_pw_pec)
+                pec = PWCurve(f_pw_pec)
             except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()
@@ -726,7 +726,7 @@ class MainWindow:
 
             # read files
             try:
-                pec = PWcurve(f_pw_pec)
+                pec = PWCurve(f_pw_pec)
             except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()
@@ -843,14 +843,14 @@ class MainWindow:
 
             # read files
             try:
-                pec = PWcurve(f_pw_pec)
+                pec = PWCurve(f_pw_pec)
             except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()
                 return
 
             try:
-                dm = PWcurve(f_pw_dm)
+                dm = PWCurve(f_pw_dm)
             except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n')
                 out.flush()
@@ -936,7 +936,7 @@ class MainWindow:
                 return
 
             try:
-                dm = PWcurve(f_pw_dm)
+                dm = PWCurve(f_pw_dm)
             except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n')
                 out.flush()
@@ -1009,7 +1009,7 @@ class MainWindow:
 
             # read files
             try:
-                pec = PWcurve(f_pw_pec)
+                pec = PWCurve(f_pw_pec)
             except RuntimeError as ex:
                 self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
                 out.flush()

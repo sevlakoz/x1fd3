@@ -6,12 +6,12 @@ from typing import Dict, Tuple
 import numpy as np
 from scipy.optimize import least_squares      # type: ignore
 
-from .classPWcurve import PWcurve
-from .classParameters import Parameters
+from .p_w_curve import PWCurve
+from .parameters import Parameters
 from .res_funcs import res_pec, res_exp
 
 def pec_fit(
-        pec: PWcurve,
+        pec: PWCurve,
         params: Parameters
     ) -> Tuple[Parameters, str, bool]:
     '''
@@ -37,7 +37,7 @@ def pec_fit(
 
 def exp_fit(
         params: Parameters,
-        pec: PWcurve,
+        pec: PWCurve,
         expdata: Dict[int, Dict[int, float]]
     ) -> Tuple[Parameters, str, bool]:
     '''
