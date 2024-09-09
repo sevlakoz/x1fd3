@@ -24,13 +24,13 @@ class Driver(abc.ABC):
                 '       <1> = file with point-wise pec     | example: pw_pec.txt\n' +
                 '       <2> = file with initial parameters | example: init_emo_params.txt'
             ),
-            'LevelsPw': (
+            'LevelsPW': (
                 2,
                 'Usage: python level_cacl_pw_pec.py <1> <2>\n' +
                 '       <1> = file with parameters for level calc | example: vr_level_calc_params.txt\n' +
                 '       <2> = file with point-wise pec            | example: pw_pec.txt'
             ),
-            'LevelAn': (
+            'LevelsAn': (
                 2,
                 'Usage: python level_cacl_an_pec.py <1> <2>\n' +
                 '       <1> = file with parameters for level calc | example: vr_level_calc_params.txt\n' +
