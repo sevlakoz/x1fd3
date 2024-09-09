@@ -1,5 +1,3 @@
-import sys
-
 from base.p_w_curve import PWCurve
 from base.print_funcs import print_pecs
 from base.fit_funcs import pec_fit
@@ -27,7 +25,7 @@ class DriverPecApprox(Driver):
         if success:
             print(f'\nPoint-wise PEC approximation done: {message}')
         else:
-            sys.exit(f'\nPoint-wise PEC approximation FAILED: {message}')
+            raise RuntimeError(f'\nPoint-wise PEC approximation FAILED: {message}')
         # final approximation
         print('\nFitted PEC\n')
         print_pecs(self.pec, self.params)

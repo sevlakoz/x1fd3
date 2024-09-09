@@ -1,4 +1,3 @@
-import sys
 from typing import Dict
 import numpy as np
 
@@ -97,7 +96,7 @@ class MatrixElements:
                 sa = j1       / (2 * j1 + 1)
                 se = (j2 + 1) / (2 * j2 + 1)
             else:
-                sys.exit('ERROR: wrong dJ')
+                raise RuntimeError('ERROR: wrong dJ')
 
             en1 = self.energy1[j2][j1]
             frq  = self.freq[j2][j1]

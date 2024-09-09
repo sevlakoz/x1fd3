@@ -1,7 +1,6 @@
 '''
 residual functions for fit_* functions to provide to scipy.optimize.least_squares
 '''
-import sys
 from typing import Dict, List
 
 from .p_w_curve import PWCurve
@@ -31,7 +30,7 @@ def res_pec(
         if params['ptype'] == 'EMO':
             u_cal = emo(r_inp, tmp)
         else:
-            sys.exit(f"ERROR: {params['ptype']} not implemented")
+            raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
         err = max(u_inp / 100., 100.)
         res.append((u_cal - u_inp) / err)
 

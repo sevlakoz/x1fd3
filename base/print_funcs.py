@@ -1,9 +1,7 @@
 '''
 function for print not included in any class
 '''
-import os
-import sys
-
+from os.path import isfile
 from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .emo import emo
@@ -14,14 +12,14 @@ def print_input_file(
     '''
     print file line-by-line
     '''
-    if os.path.isfile(fname):
+    if isfile(fname):
         print(f'\n=== Input file: {fname} ===\n')
         with open(fname, encoding="utf-8") as inp:
             for line in inp:
                 print(line, end = '')
         print(f'\n=== End of input file: {fname} ===\n')
     else:
-        sys.exit(f'ERROR: No such file: {fname}')
+        raise FileNotFoundError(f'ERROR: No such file: {fname}')
 
 def print_pecs(
         pec: PWCurve,
@@ -38,5 +36,5 @@ def print_pecs(
         if params['ptype'] == 'EMO':
             u_cal = emo(r_inp, params)
         else:
-            sys.exit(f"ERROR: {params['ptype']} not implemented")
+            raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
         print(f'{r_inp:10.5f}{u_inp:20.5f}{u_cal:20.5f}{u_inp - u_cal:20.5f}')

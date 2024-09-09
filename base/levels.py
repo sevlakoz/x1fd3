@@ -1,4 +1,3 @@
-import sys
 from typing import Dict
 import numpy as np
 import numpy.typing as npt
@@ -59,9 +58,9 @@ class Levels:
                 )
                 emax = params['de']
             else:
-                sys.exit(f'ERROR: Uknown analytic pec type "{an_ptype}"')
+                raise RuntimeError(f'ERROR: Uknown analytic pec type "{an_ptype}"')
         else:
-            sys.exit(f'ERROR: Uknown pec type "{ptype}"')
+            raise RuntimeError(f'ERROR: Uknown pec type "{ptype}"')
 
         # loop over J to calculate level energies
 

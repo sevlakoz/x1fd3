@@ -1,5 +1,3 @@
-import sys
-
 from base.p_w_curve import PWCurve
 from base.levels import Levels
 from base.print_funcs import print_pecs
@@ -34,7 +32,7 @@ class DriverFitExp(Driver):
         if success:
             print(f'\nPEC fit done: {message}')
         else:
-            sys.exit(f'\nPEC fit FAILED: {message}')
+            raise RuntimeError(f'\nPEC fit FAILED: {message}')
         # print final results
         print('Fit results')
         levels = Levels('an', self.params)

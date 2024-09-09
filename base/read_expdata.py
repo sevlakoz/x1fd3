@@ -1,4 +1,3 @@
-import sys
 from typing import Dict
 from configparser import ConfigParser
 
@@ -24,6 +23,6 @@ def read_expdata(
 
     # check
     if n_levels == 0:
-        sys.exit(f'No energy levels found in {fname}')
+        raise RuntimeError(f'No energy levels found in {fname}')
 
     return expdata

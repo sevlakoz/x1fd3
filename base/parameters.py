@@ -1,4 +1,3 @@
-import sys
 from configparser import ConfigParser
 from collections import UserDict
 import numpy as np
@@ -19,12 +18,12 @@ class Parameters(UserDict):
         input_parser.read(fname)
 
         if len(input_parser.sections()) > 1:
-            sys.exit(f'ERROR: Two or more analytic functions given in "{fname}"')
+            raise RuntimeError(f'ERROR: Two or more analytic functions given in "{fname}"')
 
         ptype = input_parser.sections()[0]
 
         if not ptype in ['EMO']:
-            sys.exit(f'ERROR:  Uknown potential type "{ptype}"')
+            raise RuntimeError(f'ERROR:  Uknown potential type "{ptype}"')
 
         tmp = {}
 
@@ -41,7 +40,7 @@ class Parameters(UserDict):
         }
 
         if tmp.keys() != params_check[ptype]:
-            sys.exit(f'ERROR:  for {ptype} the following parameters must be given: {params_check[ptype]}')
+            raise RuntimeError(f'ERROR:  for {ptype} the following parameters must be given: {params_check[ptype]}')
 
         self.update(tmp)
         self['ptype'] = ptype
@@ -55,17 +54,17 @@ class Parameters(UserDict):
         read params for vib-rot level calculation from file
         '''
         if not rtype in ['ENERGY', 'SPECTRUM', 'FIT']:
-            sys.exit(f'ERROR:  Uknown run type "{rtype}"')
+            raise RuntimeError(f'ERROR:  Uknown run type "{rtype}"')
 
         # read calc params
         input_parser = ConfigParser(delimiters=(' ', '\t'))
         input_parser.read(fname)
 
         if len(input_parser.sections()) > 1:
-            sys.exit(f'ERROR: Two or more sets of parameters given in "{fname}"')
+            raise RuntimeError(f'ERROR: Two or more sets of parameters given in "{fname}"')
 
         if input_parser.sections()[0] != rtype:
-            sys.exit(f'ERROR: run type in "{fname}" is not consistent with the actual run type')
+            raise RuntimeError(f'ERROR: run type in "{fname}" is not consistent with the actual run type')
 
         tmp = {}
 
@@ -82,7 +81,7 @@ class Parameters(UserDict):
         }
 
         if tmp.keys() != params_check[rtype]:
-            sys.exit(f'ERROR:  for {rtype} the only following parameters must be given: {params_check[rtype]}')
+            raise RuntimeError(f'ERROR:  for {rtype} the only following parameters must be given: {params_check[rtype]}')
 
         self.update(tmp)
         self['rtype'] = rtype

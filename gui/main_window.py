@@ -1,5 +1,6 @@
-import os
 import sys
+from os import getcwd
+from os.path import isfile, getsize, dirname, basename
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
@@ -604,8 +605,8 @@ class MainWindow:
         )
 
         if fname:
-            if os.getcwd() == os.path.dirname(fname):
-                fname = os.path.basename(fname)
+            if getcwd() == dirname(fname):
+                fname = basename(fname)
 
         obj.delete(0, 'end')
         obj.insert(0, fname)
@@ -618,13 +619,14 @@ class MainWindow:
         '''
         fname = self.file_out.get()
         if fname:
-            if os.path.isfile(fname) and os.path.getsize(fname) > 0:
+            if isfile(fname) and getsize(fname) > 0:
                 self.print_message(f'ERROR: non-empty out file "{fname}" already exists\n', False)
                 return
         else:
             self.print_message('ERROR: out file not specified\n', False)
             return
 
+        # redirect stdout to file, because of print in funcs in base module
         out = open(fname, 'w', encoding = 'utf-8')
         sys.stdout = out
 
@@ -1087,5 +1089,6 @@ class MainWindow:
 
         self.print_message(f'SUCCESS! See "{fname}" for results\n', False)
 
+        # back to normal stdout
         sys.stdout = sys.__stdout__
         out.close()

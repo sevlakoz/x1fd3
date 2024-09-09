@@ -1,4 +1,3 @@
-import sys
 import abc
 from typing import List, Dict, Tuple
 
@@ -74,7 +73,7 @@ class Driver(abc.ABC):
         '''
         nf, mes = self.input_error_message[self.mode]
         if len(self.input_files) < nf:
-            sys.exit(mes)
+            raise RuntimeError(mes)
 
     def print_input_files(
         self
