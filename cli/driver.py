@@ -1,11 +1,11 @@
-import abc
+from abc import ABC, abstractmethod
 from typing import List, Dict, Tuple
 
 from base.p_w_curve import PWCurve
 from base.parameters import Parameters
 from base.print_funcs import print_input_file
 
-class Driver(abc.ABC):
+class Driver(ABC):
     '''
     base abs class for driver, 
     contains data for input check and empty vars
@@ -84,7 +84,7 @@ class Driver(abc.ABC):
         for fname in self.input_files:
             print_input_file(fname)
 
-    @abc.abstractmethod
+    @abstractmethod
     def read_files(
         self
     ) -> None:
@@ -92,7 +92,7 @@ class Driver(abc.ABC):
         read files, store to vars, no pattern at all
         '''
 
-    @abc.abstractmethod
+    @abstractmethod
     def core(
         self
     ) -> None:
