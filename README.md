@@ -19,7 +19,7 @@ python GUI.py
 ```
 for GUI version
 
-_or_
+**or**
 
 
 ```bash
