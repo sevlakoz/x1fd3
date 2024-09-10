@@ -28,13 +28,14 @@ def print_pecs(
     '''
     print point-wise and approximated pec
     '''
-    hdr = f'U({params["ptype"]}),cm-1'
-    print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{hdr:>20}{"delta,cm-1":>20}')
+    # pec calc
+    if params['ptype'] == 'EMO':
+        pec_an = emo(pec.rval, params)
+    else:
+        raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
 
-    # loop over r
-    for r_inp, u_inp in zip(pec.rval, pec.cval):
-        if params['ptype'] == 'EMO':
-            u_cal = emo(r_inp, params)
-        else:
-            raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
+    # print with loop over r
+    lbl = f'U({params["ptype"]}),cm-1'
+    print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{lbl:>20}{"delta,cm-1":>20}')
+    for r_inp, u_inp, u_cal in zip(pec.rval, pec.cval, pec_an):
         print(f'{r_inp:10.5f}{u_inp:20.5f}{u_cal:20.5f}{u_inp - u_cal:20.5f}')

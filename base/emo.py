@@ -3,9 +3,9 @@ import numpy as np
 from .parameters import Parameters
 
 def emo(
-        r_inp: float,
+        r_inp: np.ndarray,
         params: Parameters
-    ) -> float:
+    ) -> np.ndarray:
     '''
     calculate EMO value for given r point and params
     '''

@@ -26,11 +26,13 @@ def res_pec(
     # residual calc
     res = []
 
-    for r_inp, u_inp in zip(pec.rval, pec.cval):
-        if params['ptype'] == 'EMO':
-            u_cal = emo(r_inp, tmp)
-        else:
-            raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
+    # pec
+    if params['ptype'] == 'EMO':
+        pec_an = emo(pec.rval, tmp)
+    else:
+        raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
+
+    for u_inp, u_cal in zip(pec.cval, pec_an):
         err = max(u_inp / 100., 100.)
         res.append((u_cal - u_inp) / err)
 
@@ -68,8 +70,12 @@ def res_exp(
                     res.append((levels.energy[j][v] - en_v) / 0.1)
 
     # pec
-    for r_inp, u_inp in zip(pec.rval, pec.cval):
-        u_cal = emo(r_inp, tmp)
+    if params['ptype'] == 'EMO':
+        pec_an = emo(pec.rval, tmp)
+    else:
+        raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
+
+    for u_inp, u_cal in zip(pec.cval, pec_an):
         err = max(u_inp / 100., 100.)
         res.append((u_cal - u_inp) / err)
 

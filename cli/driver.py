@@ -73,7 +73,7 @@ class Driver(ABC):
         '''
         nf, mes = self.input_error_message[self.mode]
         if len(self.input_files) < nf:
-            raise RuntimeError(mes)
+            raise RuntimeError('Missing command line arguments\n' + mes)
 
     def print_input_files(
         self

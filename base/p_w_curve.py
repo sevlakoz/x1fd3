@@ -1,4 +1,3 @@
-from typing import List
 import numpy as np
 import numpy.typing as npt
 from scipy.interpolate import splrep, splev   # type: ignore
@@ -14,8 +13,8 @@ class PWCurve:
         '''
         init = read data if file provided 
         '''
-        self.rval: List[float] = []
-        self.cval: List[float] = []
+        self.rval: np.ndarray = np.array([], dtype = float)
+        self.cval: np.ndarray = np.array([], dtype = float)
 
         if fname:
             self.read_file(fname)
@@ -27,19 +26,19 @@ class PWCurve:
         '''
         read points from file
         '''
-        self.rval = []
-        self.cval = []
+        tmp_rval = []
+        tmp_cval = []
 
         with open(fname, encoding = 'utf-8') as inp:
             for line in inp:
                 if line.lstrip() == '' or line.lstrip()[0] == '#':
                     continue
                 line = line.split()   # type: ignore
-                self.rval.append(float(line[0]))
-                self.cval.append(float(line[1]))
+                tmp_rval.append(float(line[0]))
+                tmp_cval.append(float(line[1]))
 
-        self.rval = np.array(self.rval)   # type: ignore
-        self.cval = np.array(self.cval)   # type: ignore
+        self.rval = np.array(tmp_rval)
+        self.cval = np.array(tmp_cval)
 
     def spline(
         self,

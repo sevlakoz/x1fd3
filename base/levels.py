@@ -51,11 +51,7 @@ class Levels:
             # analytic: EMO
             an_ptype = params['ptype']
             if an_ptype == 'EMO':
-                u_grid = np.array(
-                    list(
-                        map(lambda x: emo(x, params), r_grid)
-                    )
-                )
+                u_grid = emo(r_grid, params)
                 emax = params['de']
             else:
                 raise RuntimeError(f'ERROR: Uknown analytic pec type "{an_ptype}"')
