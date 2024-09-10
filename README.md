@@ -17,9 +17,9 @@ CLI versions:
 ```bash
 python GUI.py
 ```
-for GUI version.
+for GUI version
 
-or
+_or_
 
 
 ```bash
