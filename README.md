@@ -14,3 +14,8 @@ Available modes:
 * SpectrumPW - vib.-rot. spectrum calculation for given point-wise PEC and point-wise DM
 * SpectrumAn - vib.-rot. spectrum calculation for given analytic PEC and point-wise DM
 * ExpFit - fit analytic PEC to reproduce given exp. vib.-rot. levels
+
+## Requirements
+* numpy
+* scipy
+* tkinter (for run GUI mode only)
