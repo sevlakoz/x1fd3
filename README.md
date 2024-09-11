@@ -16,6 +16,7 @@ Available modes:
 * ExpFit - fit analytic PEC to reproduce given exp. vib.-rot. levels
 
 ## Requirements
+* python >= 3.10
 * numpy
 * scipy
 * tkinter (for GUI mode)
