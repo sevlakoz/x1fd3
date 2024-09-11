@@ -15,15 +15,18 @@
 # https://docs.gitlab.com/ee/development/cicd/templates.html
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
+#
+#stages:          # List of stages for jobs, and their order of execution
+#  - test
+#
+#test-job:        # This job runs in the test stage.
+#  stage: test    # It only starts when the job in the build stage completes successfully.
 
-stages:          # List of stages for jobs, and their order of execution
-  - test
+before_script:
+  - apt-get update
+  - apt-get install python3-scipy
 
-test-job:        # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+test:
   script:
-    - echo "start"
-    - pip install scipy
     - diff test/pw_pec_approx.ref <(python3 pw_pec_approx.py pw_pec.txt init_emo_params.txt)
-    - echo "finish"
 
