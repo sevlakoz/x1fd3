@@ -118,5 +118,5 @@ class Levels:
                 if j in expdata:
                     if v in expdata[j]:
                         en_exp = expdata[j][v]
-                        print(f'{j:4d}{v:4d}{en_exp:15.5f}{en_cal:15.5f}{en_exp - en_cal:15.5f}')
+                        print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
         print()

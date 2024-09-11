@@ -58,7 +58,7 @@ class MatrixElements:
             for j1, me in me_j2j1.items():
                 en1 = self.energy1[j2][j1]
                 frq  = self.freq[j2][j1]
-                print(f"{j1:4d}{frq:15.5f}{en1:15.5f}{me:15.5e}")
+                print(f"{j1:4d}{frq:15.3f}{en1:15.3f}{me:15.5e}")
             print()
 
     def _ht(
@@ -79,7 +79,7 @@ class MatrixElements:
 
         hdrs = ["Branch", "J'", "J''", "freq", "me", "Sa", "E''", "pop", "int", "Se", "A"]
         wds  = [ 6,        4,    4,     15,     15,   10,   15,    15,    15,    10,   15]
-        fts  = ['',       'd',  'd',  '.5f',  '.5e','.5f','.5f', '.5e', '.5e', '.5f','.5e']
+        fts  = ['',       'd',  'd',  '.3f',  '.5e','.5f','.3f', '.5e', '.5e', '.5f','.5e']
 
         for wd, hdr in zip(wds, hdrs):
             print(f'{hdr:>{wd}}', end = '')
