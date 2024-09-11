@@ -23,6 +23,6 @@ test-job:        # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - echo "start"
-    - diff test/pw_pec_approx.ref <(python pw_pec_approx.py pw_pec.txt init_emo_params.txt)
+    - diff test/pw_pec_approx.ref <(python3 pw_pec_approx.py pw_pec.txt init_emo_params.txt)
     - echo "finish"
 
