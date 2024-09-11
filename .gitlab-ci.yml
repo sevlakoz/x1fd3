@@ -4,6 +4,6 @@ before_script:
 
 test:
   script:
-    - echo 'OK'
     - diff test/pw_pec_approx.ref <(python3 pw_pec_approx.py pw_pec.txt init_emo_params.txt)
+    - diff test/level_calc_pw_pec.ref <(python level_calc_pw_pec.py vr_level_calc_params.txt pw_pec.txt)
 

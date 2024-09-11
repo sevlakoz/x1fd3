@@ -103,7 +103,7 @@ class Levels:
         for j, en_jv in self.energy.items():
             print(f'\nJ = {j}\n{"v":>3}{"E,cm-1":>15}{"Bv,cm-1":>15}')
             for v, en_v in en_jv.items():
-                print(f'{v:3d}{en_v:15.5f}{self.rot_const[j][v]:15.8f}')
+                print(f'{v:3d}{en_v:15.3f}{self.rot_const[j][v]:15.5f}')
 
     def print_with_expdata(
         self,
