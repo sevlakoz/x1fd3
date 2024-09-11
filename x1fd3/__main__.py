@@ -6,7 +6,7 @@ from x1fd3.cli import DriverLevelsAn
 from x1fd3.cli import DriverSpectrumPW
 from x1fd3.cli import DriverSpectrumAn
 from x1fd3.cli import DriverFitExp
-from x1fd3.gui import MainWindow
+
 
 parser = ArgumentParser()
 
@@ -26,6 +26,7 @@ args = parser.parse_args()
 
 
 if args.mode == 'GUI':
+    from x1fd3.gui import MainWindow
     main_window = MainWindow()
     main_window.root.mainloop()
 else:
