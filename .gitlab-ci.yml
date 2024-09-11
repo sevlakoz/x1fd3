@@ -24,7 +24,7 @@
 
 before_script:
   - apt-get update
-  - apt-get install python3-scipy
+  - apt-get install -y python3-scipy
 
 test:
   script:
