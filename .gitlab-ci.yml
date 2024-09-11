@@ -5,6 +5,7 @@
 before_script:
   - apt-get update
   - apt-get install -y python3-scipy
+  - apt-get install -y python3-tkinter
 
 test:
   script:
