@@ -1,11 +1,12 @@
 import numpy as np
+import numpy.typing as npt
 
 from .parameters import Parameters
 
 def emo(
-        r_inp: np.ndarray,
+        r_inp: npt.NDArray[np.float64],
         params: Parameters
-    ) -> np.ndarray:
+    ) -> npt.NDArray[np.float64]:
     '''
     calculate EMO value for given r point and params
     '''

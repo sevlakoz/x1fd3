@@ -11,7 +11,7 @@ class Driver(ABC):
     '''
     def __init__(
         self,
-        input_files: list
+        input_files: list[str]
     ):
         self.input_files: list[str] = input_files
         self.mode:str = type(self).__name__.replace('Driver', '')
