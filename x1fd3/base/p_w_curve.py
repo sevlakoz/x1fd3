@@ -13,8 +13,8 @@ class PWCurve:
         '''
         init = read data if file provided 
         '''
-        self.rval: np.ndarray = np.array([], dtype = float)
-        self.cval: np.ndarray = np.array([], dtype = float)
+        self.rval: npt.NDArray[np.float64] = np.array([])
+        self.cval: npt.NDArray[np.float64] = np.array([])
 
         if fname:
             self.read_file(fname)
