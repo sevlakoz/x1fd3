@@ -1,4 +1,4 @@
-import sys
+from argparse import ArgumentParser
 
 from x1fd3.cli import DriverPecApprox
 from x1fd3.cli import DriverLevelsPW
@@ -7,46 +7,40 @@ from x1fd3.cli import DriverSpectrumPW
 from x1fd3.cli import DriverSpectrumAn
 from x1fd3.cli import DriverFitExp
 
-mode_av = 'Available modes:\n' +\
-          '    GUI\n' +\
-          '    PecApprox\n' +\
-          '    LevelsPW\n' +\
-          '    LevelsAn\n' +\
-          '    SpectrumPW\n' +\
-          '    SpectrumAn\n' +\
-          '    ExpFit'
 
-if len(sys.argv) < 2:
-    raise RuntimeError(
-        'Missing command line argument: mode\n' +\
-        mode_av
-    )
-else:
-    mode = sys.argv[1]
-    inp_files = sys.argv[2:]
+parser = ArgumentParser()
 
+parser.add_argument(
+    'mode',
+    help = 'run mode',
+    choices = ['GUI', 'PecApprox', 'LevelsPW', 'LevelsAn', 'SpectrumPW', 'SpectrumAn', 'ExpFit']
+)
+
+parser.add_argument(
+    'input_files',
+    help = 'input files for CLI-based modes',
+    nargs = '*'
+)
+
+args = parser.parse_args()
 
 
-if mode == 'GUI':
-    from x1fd3.gui import MainWindow # import here to remove tk dependancy for CLI version
+if args.mode == 'GUI':
+    from x1fd3.gui import MainWindow # import here to remove tk dependancy for CLI versions
     main_window = MainWindow()
     main_window.root.mainloop()
 else:
-    if mode == 'PecApprox':
-        driver = DriverPecApprox(inp_files)
-    elif mode == 'LevelsPW':
-        driver = DriverLevelsPW(inp_files) #type: ignore
-    elif mode == 'LevelsAn':
-        driver = DriverLevelsAn(inp_files) #type: ignore
-    elif mode == 'SpectrumPW':
-        driver = DriverSpectrumPW(inp_files) #type: ignore
-    elif mode == 'SpectrumAn':
-        driver = DriverSpectrumAn(inp_files) #type: ignore
-    elif mode == 'FitExp':
-        driver = DriverFitExp(inp_files) #type: ignore
-    else:
-        raise RuntimeError(
-            'Wrong first command line argument (mode)\n' +\
-            mode_av
-        )
+    match args.mode:
+        case 'PecApprox':
+            driver = DriverPecApprox(args.input_files)
+        case 'LevelsPW':
+            driver = DriverLevelsPW(args.input_files) #type: ignore
+        case 'LevelsAn':
+            driver = DriverLevelsAn(args.input_files) #type: ignore
+        case 'SpectrumPW':
+            driver = DriverSpectrumPW(args.input_files) #type: ignore
+        case 'SpectrumAn':
+            driver = DriverSpectrumAn(args.input_files) #type: ignore
+        case 'FitExp':
+            driver = DriverFitExp(args.input_files) #type: ignore
     driver.run()
