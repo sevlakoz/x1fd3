@@ -1,9 +1,9 @@
 from . import base
 from . import cli
-#from . import gui  #direct import only, because of tk
+from . import gui
 
 __all__ = (
     'base',
-    'cli'
-    #'gui'
+    'cli',
+    'gui'
 )

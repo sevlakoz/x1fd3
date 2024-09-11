@@ -19,4 +19,4 @@ Available modes:
 * python >= 3.10
 * numpy
 * scipy
-* tkinter (for GUI mode)
+* tkinter
