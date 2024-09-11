@@ -1,4 +1,3 @@
-from typing import Dict
 import numpy as np
 
 from .p_w_curve import PWCurve
@@ -21,9 +20,9 @@ class MatrixElements:
         self.v1: int = params['v1']
         self.v2: int = params['v2']
 
-        self.energy1: Dict[int, Dict[int, float]] = {}
-        self.freq: Dict[int, Dict[int, float]] = {}
-        self.matrix_elements: Dict[int, Dict[int, np.float64]] = {}
+        self.energy1: dict[int, dict[int, float]] = {}
+        self.freq: dict[int, dict[int, float]] = {}
+        self.matrix_elements: dict[int, dict[int, np.float64]] = {}
 
         # cubic spline to find DM values
         d_grid = dm.spline(levels.r_grid)

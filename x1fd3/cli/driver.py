@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Tuple
 
 from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
@@ -14,9 +13,9 @@ class Driver(ABC):
         self,
         input_files: list
     ):
-        self.input_files: List[str] = input_files
+        self.input_files: list[str] = input_files
         self.mode:str = type(self).__name__.replace('Driver', '')
-        self.input_error_message: Dict[str, Tuple[int, str]] = {
+        self.input_error_message: dict[str, tuple[int, str]] = {
             'PecApprox': (
                 2,
                 'Usage: python -m x1fd3 PecApprox <1> <2>\n' + 
@@ -62,7 +61,7 @@ class Driver(ABC):
         self.pec = PWCurve()
         self.dm = PWCurve()
         self.params = Parameters()
-        self.expdata: Dict[int, Dict[int, float]] = {}
+        self.expdata: dict[int, dict[int, float]] = {}
 
     def input_check(
         self

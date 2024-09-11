@@ -1,9 +1,8 @@
-from typing import Dict
 from configparser import ConfigParser
 
 def read_expdata(
         fname: str
-    ) -> Dict[int, Dict[int, float]]:
+    ) -> dict[int, dict[int, float]]:
     '''
     read exp vib-rot levels
     '''

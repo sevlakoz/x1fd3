@@ -1,8 +1,6 @@
 '''
 least square fit functions 
 '''
-
-from typing import Dict, Tuple
 import numpy as np
 from scipy.optimize import least_squares      # type: ignore
 
@@ -13,7 +11,7 @@ from .res_funcs import res_pec, res_exp
 def pec_fit(
         pec: PWCurve,
         params: Parameters
-    ) -> Tuple[Parameters, str, bool]:
+    ) -> tuple[Parameters, str, bool]:
     '''
     fit pec by EMO function
     '''
@@ -38,8 +36,8 @@ def pec_fit(
 def exp_fit(
         params: Parameters,
         pec: PWCurve,
-        expdata: Dict[int, Dict[int, float]]
-    ) -> Tuple[Parameters, str, bool]:
+        expdata: dict[int, dict[int, float]]
+    ) -> tuple[Parameters, str, bool]:
     '''
     fit pec to exp vib-rot levels
     '''

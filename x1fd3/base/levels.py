@@ -1,4 +1,3 @@
-from typing import Dict
 import numpy as np
 import numpy.typing as npt
 from scipy.linalg import eigh_tridiagonal     # type: ignore
@@ -20,9 +19,9 @@ class Levels:
         '''
         init = calculate vib-rot levels for given set of parameters / point-wise pec
         '''
-        self.energy: Dict[int, Dict[int, float]] = {}
-        self.rot_const: Dict[int, Dict[int, float]] = {}
-        self.wavef_grid: Dict[int, Dict[int, npt.NDArray[np.float64]]] = {}
+        self.energy: dict[int, dict[int, float]] = {}
+        self.rot_const: dict[int, dict[int, float]] = {}
+        self.wavef_grid: dict[int, dict[int, npt.NDArray[np.float64]]] = {}
         self.r_grid: npt.NDArray[np.float64] = np.array([])
 
         # physical constants
@@ -107,7 +106,7 @@ class Levels:
 
     def print_with_expdata(
         self,
-        expdata: Dict[int, Dict[int, float]]
+        expdata: dict[int, dict[int, float]]
     ) -> None:
         '''
         print cal and exp vib-rot levels in custom format
