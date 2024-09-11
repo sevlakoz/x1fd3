@@ -1,5 +1,5 @@
 
-=== Input file: vr_spectrum_calc_params.txt ===
+=== Input file: input/vr_spectrum_calc_params.txt ===
 
 [SPECTRUM]
 mass1 1.007825
@@ -10,10 +10,10 @@ jmax  10
 v1    0
 v2    1
 
-=== End of input file: vr_spectrum_calc_params.txt ===
+=== End of input file: input/vr_spectrum_calc_params.txt ===
 
 
-=== Input file: pw_pec.txt ===
+=== Input file: input/pw_pec.txt ===
 
  
 # RKR-like PEC for the X1S+ state of HCl from http://dx.doi.org/10.1016/j.jqsrt.2014.08.028
@@ -63,10 +63,10 @@ v2    1
 3.485     37005.7 
 4.67      37214.
 
-=== End of input file: pw_pec.txt ===
+=== End of input file: input/pw_pec.txt ===
 
 
-=== Input file: pw_dm.txt ===
+=== Input file: input/pw_dm.txt ===
 
 
 # The empirical dipole function for the X1S+ state of HCl http://doi.org/10.1016/S0022-4073(00)00059-5
@@ -98,7 +98,7 @@ v2    1
 1.95       1.4441
 2.00       1.4143
 
-=== End of input file: pw_dm.txt ===
+=== End of input file: input/pw_dm.txt ===
 
 WARNING: grid for spline out of range - [0.9, 4.0] not in [0.90898, 4.67]
 WARNING: grid for spline out of range - [0.9, 4.0] not in [0.8, 2.0]

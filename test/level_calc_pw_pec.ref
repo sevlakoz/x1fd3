@@ -1,5 +1,5 @@
 
-=== Input file: vr_level_calc_params.txt ===
+=== Input file: input/vr_level_calc_params.txt ===
 
 [ENERGY]
 mass1 1.007825
@@ -8,10 +8,10 @@ rmin  0.9
 rmax  4.0
 jmax  10
 
-=== End of input file: vr_level_calc_params.txt ===
+=== End of input file: input/vr_level_calc_params.txt ===
 
 
-=== Input file: pw_pec.txt ===
+=== Input file: input/pw_pec.txt ===
 
  
 # RKR-like PEC for the X1S+ state of HCl from http://dx.doi.org/10.1016/j.jqsrt.2014.08.028
@@ -61,7 +61,7 @@ jmax  10
 3.485     37005.7 
 4.67      37214.
 
-=== End of input file: pw_pec.txt ===
+=== End of input file: input/pw_pec.txt ===
 
 WARNING: grid for spline out of range - [0.9, 4.0] not in [0.90898, 4.67]
 

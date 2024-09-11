@@ -1,5 +1,5 @@
 
-=== Input file: vr_fit_params.txt ===
+=== Input file: input/vr_fit_params.txt ===
 
 [FIT]
 mass1 1.007825
@@ -7,10 +7,10 @@ mass2 34.968852
 rmin  0.9
 rmax  4.0
 
-=== End of input file: vr_fit_params.txt ===
+=== End of input file: input/vr_fit_params.txt ===
 
 
-=== Input file: fitted_emo_params.txt ===
+=== Input file: input/fitted_emo_params.txt ===
 
 [EMO]
 de    37430.35910153395
@@ -23,10 +23,10 @@ beta  1.8659827543007734
       0.2964808850036093
 
 
-=== End of input file: fitted_emo_params.txt ===
+=== End of input file: input/fitted_emo_params.txt ===
 
 
-=== Input file: pw_pec.txt ===
+=== Input file: input/pw_pec.txt ===
 
  
 # RKR-like PEC for the X1S+ state of HCl from http://dx.doi.org/10.1016/j.jqsrt.2014.08.028
@@ -76,10 +76,10 @@ beta  1.8659827543007734
 3.485     37005.7 
 4.67      37214.
 
-=== End of input file: pw_pec.txt ===
+=== End of input file: input/pw_pec.txt ===
 
 
-=== Input file: exp_levels.txt ===
+=== Input file: input/exp_levels.txt ===
 
 # Rovibrational levels of X1Sigma+ of 1H35Cl from http://dx.doi.org/10.1016/j.jqsrt.2014.08.028
 # 
@@ -133,7 +133,7 @@ beta  1.8659827543007734
 8 21776.287777
 9 23828.057264
 
-=== End of input file: exp_levels.txt ===
+=== End of input file: input/exp_levels.txt ===
 
 === Fit PEC to reproduce exp. data ===
 

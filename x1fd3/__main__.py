@@ -6,7 +6,6 @@ from x1fd3.cli import DriverLevelsAn
 from x1fd3.cli import DriverSpectrumPW
 from x1fd3.cli import DriverSpectrumAn
 from x1fd3.cli import DriverFitExp
-from x1fd3.gui import MainWindow
 
 mode_av = 'Available modes:\n' +\
           '    GUI\n' +\
@@ -29,6 +28,7 @@ else:
 
 
 if mode == 'GUI':
+    from x1fd3.gui import MainWindow # import here to remove tk dependancy for CLI version
     main_window = MainWindow()
     main_window.root.mainloop()
 else:
