@@ -1,10 +1,10 @@
 # x1fd3
 
-Set of tiny programs to deal with the adiabatic $X^1\Sigma^+$ state of diatomic molecules.
+Tiny program to deal with the adiabatic $X^1\Sigma^+$ state of diatomic molecules.
 
 ## Usage
 ```bash
-python -m x1fd3 mode [input files]
+python -m x1fd3 [mode] [input files]
 ```
 Available modes:
 * GUI - TK wrapper for all other modes 
