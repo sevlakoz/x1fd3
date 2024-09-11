@@ -18,4 +18,4 @@ Available modes:
 ## Requirements
 * numpy
 * scipy
-* tkinter (for run GUI mode only)
+* tkinter (for GUI mode)
