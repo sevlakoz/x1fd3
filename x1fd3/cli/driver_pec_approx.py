@@ -1,6 +1,6 @@
-from base.p_w_curve import PWCurve
-from base.print_funcs import print_pecs
-from base.fit_funcs import pec_fit
+from x1fd3.base.p_w_curve import PWCurve
+from x1fd3.base.print_funcs import print_pecs
+from x1fd3.base.fit_funcs import pec_fit
 from .driver import Driver
 
 class DriverPecApprox(Driver):

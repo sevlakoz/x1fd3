@@ -5,13 +5,13 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 
-from base.p_w_curve import PWCurve
-from base.parameters import Parameters
-from base.levels import Levels
-from base.matrix_elements import MatrixElements
-from base.print_funcs import print_input_file, print_pecs
-from base.fit_funcs import pec_fit, exp_fit
-from base.read_expdata import read_expdata
+from x1fd3.base.p_w_curve import PWCurve
+from x1fd3.base.parameters import Parameters
+from x1fd3.base.levels import Levels
+from x1fd3.base.matrix_elements import MatrixElements
+from x1fd3.base.print_funcs import print_input_file, print_pecs
+from x1fd3.base.fit_funcs import pec_fit, exp_fit
+from x1fd3.base.read_expdata import read_expdata
 
 class MainWindow:
     '''

@@ -1,8 +1,8 @@
-from base.p_w_curve import PWCurve
-from base.levels import Levels
-from base.print_funcs import print_pecs
-from base.fit_funcs import exp_fit
-from base.read_expdata import read_expdata
+from x1fd3.base.p_w_curve import PWCurve
+from x1fd3.base.levels import Levels
+from x1fd3.base.print_funcs import print_pecs
+from x1fd3.base.fit_funcs import exp_fit
+from x1fd3.base.read_expdata import read_expdata
 from .driver import Driver
 
 class DriverFitExp(Driver):
