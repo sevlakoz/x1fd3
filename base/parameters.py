@@ -93,12 +93,12 @@ class Parameters(UserDict):
         print params from dict in custom format
         '''
         print(f"[{self['ptype']}]")
-        print(f"de    {self['de']}")
-        print(f"re    {self['re']}")
-        print(f"rref  {self['rref']}")
+        print(f"de    {self['de']:.3f}")
+        print(f"re    {self['re']:.6f}")
+        print(f"rref  {self['rref']:.6f}")
         print(f"q     {self['q']}")
 
         print('beta  ', end = '')
         for beta in self['beta']:
-            print(f'{beta}\n      ', end = '')
+            print(f'{beta:10.5e}\n      ', end = '')
         print()

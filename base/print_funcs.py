@@ -38,4 +38,4 @@ def print_pecs(
     lbl = f'U({params["ptype"]}),cm-1'
     print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{lbl:>20}{"delta,cm-1":>20}')
     for r_inp, u_inp, u_cal in zip(pec.rval, pec.cval, pec_an):
-        print(f'{r_inp:10.5f}{u_inp:20.5f}{u_cal:20.5f}{u_inp - u_cal:20.5f}')
+        print(f'{r_inp:10.5f}{u_inp:20.3f}{u_cal:20.3f}{u_inp - u_cal:20.3f}')
