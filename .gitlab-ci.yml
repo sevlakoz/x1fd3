@@ -1,6 +1,6 @@
-# not included mode:
-# FitExp - numerically unsatble (by design), system dependent
-# GUI - no idea how automate testing
+# Notes:
+# FitExp - numerically unstable (by design) & system dependent, so check if scipy's least square function returns success
+# GUI - not testing at all
 
 before_script:
   - apt-get update
