@@ -13,7 +13,7 @@ parser = ArgumentParser()
 parser.add_argument(
     'mode',
     help = 'run mode',
-    choices = ['GUI', 'PecApprox', 'LevelsPW', 'LevelsAn', 'SpectrumPW', 'SpectrumAn', 'ExpFit']
+    choices = ['GUI', 'PecApprox', 'LevelsPW', 'LevelsAn', 'SpectrumPW', 'SpectrumAn', 'FitExp']
 )
 
 parser.add_argument(
