@@ -1,3 +1,4 @@
+from typing import ClassVar
 import numpy as np
 import numpy.typing as npt
 from scipy.linalg import eigh_tridiagonal     # type: ignore
@@ -10,6 +11,13 @@ class Levels:
     '''
     class for vib-rot level
     '''
+    # physical constants
+    AU_TO_DA: ClassVar[float] = 5.48579909065e-4
+    AU_TO_CM: ClassVar[float] = 219474.63067
+    A0_TO_ANG: ClassVar[float] = 0.529177210903
+    # grid point number
+    NGRID: ClassVar[int] = 50000
+
     def __init__(
         self,
         ptype: str,
@@ -24,23 +32,15 @@ class Levels:
         self.wavef_grid: dict[int, dict[int, npt.NDArray[np.float64]]] = {}
         self.r_grid: npt.NDArray[np.float64] = np.array([])
 
-        # physical constants
-        au_to_da = 5.48579909065e-4
-        au_to_cm = 219474.63067
-        a0_to_ang = 0.529177210903
-
-        # grid point number
-        ngrid = 50000
-
         # reduced mass
         mu = params['mass1'] * params['mass2'] / (params['mass1'] + params['mass2'])
 
         # h^2 / (2*mu) [cm-1 * A^2]
-        scale = au_to_da * au_to_cm * a0_to_ang**2 / (2 * mu)
+        scale = self.AU_TO_DA * self.AU_TO_CM * self.A0_TO_ANG**2 / (2 * mu)
 
         # grid
-        step = (params['rmax'] - params['rmin']) / (ngrid - 1)
-        r_grid = np.linspace(params['rmin'], params['rmax'], ngrid)
+        step = (params['rmax'] - params['rmin']) / (self.NGRID - 1)
+        r_grid = np.linspace(params['rmin'], params['rmax'], self.NGRID)
 
         if ptype == 'pw':
             # cubic spline for pec
@@ -65,7 +65,7 @@ class Levels:
             diagonal = u_grid / scale + j * (j + 1) / r_grid**2 + 2 * step**-2
 
             # off-diagonal elements (ngrid-1)
-            off_diag = np.full(ngrid - 1, -step**-2)
+            off_diag = np.full(self.NGRID - 1, -step**-2)
 
             # SciPy routine to calculate eigenvalues and eigenvectors
             results = eigh_tridiagonal(
