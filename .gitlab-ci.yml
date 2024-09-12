@@ -14,4 +14,4 @@ test:
     - diff test/level_calc_an_pec.ref    <(python3 -m x1fd3 LevelsAn   input/vr_level_calc_params.txt    input/fitted_emo_params.txt)
     - diff test/spectrum_calc_pw_pec.ref <(python3 -m x1fd3 SpectrumPW input/vr_spectrum_calc_params.txt input/pw_pec.txt              input/pw_dm.txt)
     - diff test/spectrum_calc_an_pec.ref <(python3 -m x1fd3 SpectrumAn input/vr_spectrum_calc_params.txt input/fitted_emo_params.txt   input/pw_dm.txt)
-
+    - python3 -m x1fd3 FitExp input/vr_fit_params.txt input/fitted_emo_params.txt input/pw_pec.txt input/exp_levels.txt | grep 'PEC fit done: `xtol` termination condition is satisfied.'
