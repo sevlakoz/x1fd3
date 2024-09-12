@@ -1,4 +1,4 @@
-import sys
+#import sys
 from os import getcwd
 from os.path import isfile, getsize, dirname, basename
 import tkinter as tk
@@ -9,6 +9,7 @@ from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
 from x1fd3.base.levels import Levels
 from x1fd3.base.matrix_elements import MatrixElements
+from x1fd3.base.logger import Logger
 from x1fd3.base.print_funcs import print_input_file, print_pecs
 from x1fd3.base.fit_funcs import pec_fit, exp_fit
 from x1fd3.base.read_expdata import read_expdata
@@ -51,7 +52,7 @@ class MainWindow:
 
         ttk.Radiobutton(
             text = 'Point-wise PEC approximation with EMO',
-            value = 'pw_pec_approx',
+            value = 'PecApprox',
             variable = self.mode,
             command = self.select_mode
         ).grid(
@@ -62,7 +63,7 @@ class MainWindow:
 
         ttk.Radiobutton(
             text = 'Vib.-rot. levels calculation with point-wise PEC',
-            value = 'lev_calc_pw',
+            value = 'LevelsPW',
             variable = self.mode,
             command = self.select_mode
         ).grid(
@@ -74,7 +75,7 @@ class MainWindow:
 
         ttk.Radiobutton(
             text = 'Vib.-rot. levels calculation with analytic PEC (EMO)',
-            value = 'lev_calc_an',
+            value = 'LevelsAn',
             variable = self.mode,
             command = self.select_mode
         ).grid(
@@ -85,7 +86,7 @@ class MainWindow:
 
         ttk.Radiobutton(
             text = 'Vib.-rot. spectrum calculation with point-wise PEC',
-            value = 'sp_calc_pw',
+            value = 'SpectrumPW',
             variable = self.mode,
             command = self.select_mode
         ).grid(
@@ -97,7 +98,7 @@ class MainWindow:
 
         ttk.Radiobutton(
             text = 'Vib.-rot. spectrum calculation with analytic PEC (EMO)',
-            value = 'sp_calc_an',
+            value = 'SpectrumAn',
             variable = self.mode,
             command = self.select_mode
         ).grid(
@@ -108,7 +109,7 @@ class MainWindow:
 
         ttk.Radiobutton(
             text = 'Analytic PEC (EMO) fitting to reproduce experimental vib.-rot. levels',
-            value = 'fit_pec_to_exp',
+            value = 'FitExp',
             variable = self.mode,
             command = self.select_mode
         ).grid(
@@ -353,10 +354,10 @@ class MainWindow:
         )
 
         if self.mode.get() in [
-            'pw_pec_approx',
-            'lev_calc_pw',
-            'sp_calc_pw',
-            'fit_pec_to_exp'
+            'PecApprox',
+            'LevelsPW',
+            'SpectrumPW',
+            'FitExp'
         ]:
             self.lbl_pw_pec.grid(
                 row = 102,
@@ -375,8 +376,8 @@ class MainWindow:
             )
 
         if self.mode.get() in [
-            'lev_calc_pw',
-            'lev_calc_an'
+            'LevelsPW',
+            'LevelsAn'
         ]:
 
             self.lbl_lev_calc.grid(
@@ -396,8 +397,8 @@ class MainWindow:
             )
 
         if self.mode.get() in [
-            'sp_calc_pw',
-            'sp_calc_an'
+            'SpectrumPW',
+            'SpectrumAn'
         ]:
 
             self.lbl_sp_calc.grid(
@@ -417,7 +418,7 @@ class MainWindow:
             )
 
         if self.mode.get() in [
-            'fit_pec_to_exp'
+            'FitExp'
         ]:
 
             self.lbl_fit_calc.grid(
@@ -437,7 +438,7 @@ class MainWindow:
             )
 
         if self.mode.get() in [
-            'pw_pec_approx'
+            'PecApprox'
         ]:
             self.lbl_init_params.grid(
                 row = 106,
@@ -456,9 +457,9 @@ class MainWindow:
             )
 
         if self.mode.get() in [
-            'lev_calc_an',
-            'sp_calc_an',
-            'fit_pec_to_exp'
+            'LevelsAn',
+            'SpectrumAn',
+            'FitExp'
         ]:
             self.lbl_fitted_params.grid(
                 row = 107,
@@ -477,8 +478,8 @@ class MainWindow:
             )
 
         if self.mode.get() in [
-            'sp_calc_pw',
-            'sp_calc_an'
+            'SpectrumPW',
+            'SpectrumAn'
         ]:
             self.lbl_pw_dip.grid(
                 row = 108,
@@ -497,7 +498,7 @@ class MainWindow:
             )
 
         if self.mode.get() in [
-            'fit_pec_to_exp'
+            'FitExp'
         ]:
             self.lbl_exp.grid(
                 row = 109,
@@ -575,17 +576,17 @@ class MainWindow:
     def print_message(
         self,
         string: str,
-        prnt: bool = True
+        out: Logger = Logger()
     ) -> None:
         '''
-        print to window and to stdout
+        print to window and to out
         '''
-        if prnt:
-            print(string)
-
         self.message_window.configure(state = 'normal')
         self.message_window.insert('end', string)
         self.message_window.configure(state = 'disabled')
+
+        if out.fname:
+            out.print(string)
 
     def select_file(
             self,
@@ -620,163 +621,141 @@ class MainWindow:
         fname = self.file_out.get()
         if fname:
             if isfile(fname) and getsize(fname) > 0:
-                self.print_message(f'ERROR: non-empty out file "{fname}" already exists\n', False)
+                self.print_message(f'ERROR: non-empty out file "{fname}" already exists\n')
                 return
         else:
-            self.print_message('ERROR: out file not specified\n', False)
+            self.print_message('ERROR: out file not specified\n')
             return
 
         # redirect stdout to file, because of print in funcs in base module
-        out = open(fname, 'w', encoding = 'utf-8')
-        sys.stdout = out
+        out = Logger(fname, True)
+        #open(fname, 'w', encoding = 'utf-8')
+        #sys.stdout = out
 
         #---
 
-        if self.mode.get() == 'pw_pec_approx':
+        if self.mode.get() == 'PecApprox':
 
             f_pw_pec = self.file_pw_pec.get()
             f_init_par = self.file_init_params.get()
 
             # print input
             try:
-                print('* Point-wise PEC *')
-                print_input_file(f_pw_pec)
-                out.flush()
+                out.print('* Point-wise PEC *')
+                print_input_file(out, f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Init EMO parameters *')
-                print_input_file(f_init_par)
-                out.flush()
+                out.print('* Init EMO parameters *')
+                print_input_file(out, f_init_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with initial EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with initial EMO parameters: {str(ex)}\n', out)
                 return
 
             # read files
             try:
                 pec = PWCurve(f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n', out)
                 return
 
             try:
                 params = Parameters()
                 params.read_pec_params(f_init_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read initial EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read initial EMO parameters: {str(ex)}\n', out)
                 return
 
             # print initial guess
-            print('=== Point-wise PEC approximation ===\n')
-            print('Initial guess\n')
-            print_pecs(pec, params)
-            out.flush()
+            out.print('=== Point-wise PEC approximation ===\n')
+            out.print('Initial guess\n')
+            print_pecs(out, pec, params)
 
             # fit
             try:
                 params, message, success = pec_fit(pec, params)
                 if success:
-                    print(f'\nPoint-wise PEC approximation done: {message}')
-                    out.flush()
+                    out.print(f'\nPoint-wise PEC approximation done: {message}')
                 else:
-                    self.print_message(f'ERROR: point-wise PEC approximation FAILED: {message}\n')
-                    out.flush()
+                    self.print_message(f'ERROR: point-wise PEC approximation FAILED: {message}\n', out)
                     return
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "pec_fit" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "pec_fit" function: {str(ex)}\n', out)
                 return
 
             # final approximation
-            print('\nFitted PEC\n')
-            print_pecs(pec, params)
-            print('\nFitted parameters\n')
-            params.print_pec_params()
-            out.flush()
+            out.print('\nFitted PEC\n')
+            print_pecs(out, pec, params)
+            out.print('\nFitted parameters\n')
+            params.print_pec_params(out)
 
         #---
 
-        if self.mode.get() == 'lev_calc_pw':
+        if self.mode.get() == 'LevelsPW':
 
             f_vr_par = self.file_lev_calc.get()
             f_pw_pec = self.file_pw_pec.get()
 
             # print input
             try:
-                print('* Parameter for vib.-rot. levels calculation *')
-                print_input_file(f_vr_par)
-                out.flush()
+                out.print('* Parameter for vib.-rot. levels calculation *')
+                print_input_file(out, f_vr_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. levels calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. levels calculation: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Point-wise PEC *')
-                print_input_file(f_pw_pec)
-                out.flush()
+                out.print('* Point-wise PEC *')
+                print_input_file(out, f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n', out)
                 return
 
             # read files
             try:
                 pec = PWCurve(f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n', out)
                 return
 
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'ENERGY')
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n', out)
                 return
 
             # calc and print vr levels
             try:
                 levels = Levels('pw', params, pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n', out)
                 return
 
-            levels.print()
-            out.flush()
+            levels.print(out)
 
         #---
 
-        if self.mode.get() == 'lev_calc_an':
+        if self.mode.get() == 'LevelsAn':
 
             f_vr_par = self.file_lev_calc.get()
             f_fit_par = self.file_fitted_params.get()
 
             # print input
             try:
-                print('* Parameter for vib.-rot. levels calculation *')
-                print_input_file(f_vr_par)
-                out.flush()
+                out.print('* Parameter for vib.-rot. levels calculation *')
+                print_input_file(out, f_vr_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. levels calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. levels calculation: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Fitted EMO parameters *')
-                print_input_file(f_fit_par)
-                out.flush()
+                out.print('* Fitted EMO parameters *')
+                print_input_file(out, f_fit_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n', out)
                 return
 
             # read files
@@ -784,15 +763,13 @@ class MainWindow:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'ENERGY')
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read parameter for vib.-rot. levels calculation: {str(ex)}\n', out)
                 return
 
             try:
                 params.read_pec_params(f_fit_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n', out)
                 return
 
 
@@ -800,16 +777,14 @@ class MainWindow:
             try:
                 levels = Levels('an', params)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n', out)
                 return
 
-            levels.print()
-            out.flush()
+            levels.print(out)
 
         #---
 
-        if self.mode.get() == 'sp_calc_pw':
+        if self.mode.get() == 'SpectrumPW':
 
             f_vr_par = self.file_sp_calc.get()
             f_pw_pec = self.file_pw_pec.get()
@@ -817,77 +792,65 @@ class MainWindow:
 
             # print input
             try:
-                print('* Parameters for vib.-rot. spectrum calculation *')
-                print_input_file(f_vr_par)
-                out.flush()
+                out.print('* Parameters for vib.-rot. spectrum calculation *')
+                print_input_file(out, f_vr_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Point-wise PEC *')
-                print_input_file(f_pw_pec)
-                out.flush()
+                out.print('* Point-wise PEC *')
+                print_input_file(out, f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Point-wise dipole moment *')
-                print_input_file(f_pw_dm)
-                out.flush()
+                out.print('* Point-wise dipole moment *')
+                print_input_file(out, f_pw_dm)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with point-wise dipole moment: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with point-wise dipole moment: {str(ex)}\n', out)
                 return
 
             # read files
             try:
                 pec = PWCurve(f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n', out)
                 return
 
             try:
                 dm = PWCurve(f_pw_dm)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n', out)
                 return
 
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n', out)
                 return
 
             # calc vr levels
             try:
                 levels = Levels('pw', params, pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n', out)
                 return
 
             # calc and print integrals
             try:
                 matrix_elements = MatrixElements(params, levels, dm)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n', out)
                 return
 
-            matrix_elements.print()
-            out.flush()
+            matrix_elements.print(out)
 
         #---
 
-        if self.mode.get() == 'sp_calc_an':
+        if self.mode.get() == 'SpectrumAn':
 
             f_vr_par = self.file_sp_calc.get()
             f_fit_par = self.file_fitted_params.get()
@@ -895,30 +858,24 @@ class MainWindow:
 
             # print input
             try:
-                print('* Parameters for vib.-rot. spectrum calculation *')
-                print_input_file(f_vr_par)
-                out.flush()
+                out.print('* Parameters for vib.-rot. spectrum calculation *')
+                print_input_file(out, f_vr_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Fitted EMO parameters *')
-                print_input_file(f_fit_par)
-                out.flush()
+                out.print('* Fitted EMO parameters *')
+                print_input_file(out, f_fit_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Point-wise dipole moment *')
-                print_input_file(f_pw_dm)
-                out.flush()
+                out.print('* Point-wise dipole moment *')
+                print_input_file(out, f_pw_dm)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with point-wise dipole moment: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with point-wise dipole moment: {str(ex)}\n', out)
                 return
 
             # read files
@@ -926,46 +883,40 @@ class MainWindow:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read parameter for vib.-rot. spectrum calculation: {str(ex)}\n', out)
                 return
 
             try:
                 params.read_pec_params(f_fit_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n', out)
                 return
 
             try:
                 dm = PWCurve(f_pw_dm)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read point-wise dipole moment: {str(ex)}\n', out)
                 return
 
             # calc vr levels
             try:
                 levels = Levels('an', params)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n', out)
                 return
 
             # calc and print integrals
             try:
                 matrix_elements = MatrixElements(params, levels, dm)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "matrix_elements" function: {str(ex)}\n', out)
                 return
 
-            matrix_elements.print()
-            out.flush()
+            matrix_elements.print(out)
 
         #---
 
-        if self.mode.get() == 'fit_pec_to_exp':
+        if self.mode.get() == 'FitExp':
 
             f_vr_par = self.file_fit_calc.get()
             f_fit_par = self.file_fitted_params.get()
@@ -974,121 +925,102 @@ class MainWindow:
 
             # print input
             try:
-                print('* Parameters for PEC fit to exp. levels *')
-                print_input_file(f_vr_par)
-                out.flush()
+                out.print('* Parameters for PEC fit to exp. levels *')
+                print_input_file(out, f_vr_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with parameter for PEC fit to exp. levels: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with parameter for PEC fit to exp. levels: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Fitted EMO parameters *')
-                print_input_file(f_fit_par)
-                out.flush()
+                out.print('* Fitted EMO parameters *')
+                print_input_file(out, f_fit_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with fitted EMO parameters: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Point-wise PEC *')
-                print_input_file(f_pw_pec)
-                out.flush()
+                out.print('* Point-wise PEC *')
+                print_input_file(out, f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with point-wise PEC: {str(ex)}\n', out)
                 return
 
             try:
-                print('* Exp. levels *')
-                print_input_file(f_epx_lev)
-                out.flush()
+                out.print('* Exp. levels *')
+                print_input_file(out, f_epx_lev)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read input file with exp. vib.-rot. levels: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read input file with exp. vib.-rot. levels: {str(ex)}\n', out)
                 return
 
             # read files
             try:
                 pec = PWCurve(f_pw_pec)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read point-wise PEC: {str(ex)}\n', out)
                 return
 
             try:
                 params = Parameters()
                 params.read_vr_calc_params(f_vr_par, 'FIT')
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read parameter for PEC fit to exp. levels: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read parameter for PEC fit to exp. levels: {str(ex)}\n', out)
                 return
 
             try:
                 params.read_pec_params(f_fit_par)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read fitted EMO parameters: {str(ex)}\n', out)
                 return
 
             try:
                 expdata = read_expdata(f_epx_lev)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to read exp. vib.-rot. levels: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to read exp. vib.-rot. levels: {str(ex)}\n', out)
                 return
 
             params['jmax'] = max(expdata.keys())
 
-            print('=== Fit PEC to reproduce exp. data ===\n')
+            out.print('=== Fit PEC to reproduce exp. data ===\n')
 
             # print initial guess
-            print('Initial guess')
+            out.print('Initial guess')
             try:
                 levels = Levels('an', params)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n', out)
                 return
 
-            levels.print_with_expdata(expdata)
-            print_pecs(pec, params)
-            out.flush()
+            levels.print_with_expdata(out, expdata)
+            print_pecs(out, pec, params)
 
             # fit
             try:
                 params, message, success = exp_fit(params, pec, expdata)
                 if success:
-                    print(f'\nPEC fit to exp. levels done: {message}')
-                    out.flush()
+                    out.print(f'\nPEC fit to exp. levels done: {message}')
                 else:
-                    self.print_message(f'ERROR: PEC fit to exp. levels FAILED: {message}')
-                    out.flush()
+                    self.print_message(f'ERROR: PEC fit to exp. levels FAILED: {message}', out)
                     return
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "exp_fit" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "exp_fit" function: {str(ex)}\n', out)
                 return
 
             # print final results
-            print('\nFit results')
+            out.print('\nFit results')
             try:
                 levels = Levels('an', params)
             except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n')
-                out.flush()
+                self.print_message(f'ERROR: failed to run "vr_solver" function: {str(ex)}\n', out)
                 return
-            levels.print_with_expdata(expdata)
-            print_pecs(pec, params)
-            print('\nFitted parameters\n')
-            params.print_pec_params()
-            out.flush()
+            levels.print_with_expdata(out, expdata)
+            print_pecs(out, pec, params)
+            out.print('\nFitted parameters\n')
+            params.print_pec_params(out)
 
         #---
-
-        self.print_message(f'SUCCESS! See "{fname}" for results\n', False)
+        out.close()
+        self.print_message(f'SUCCESS! See "{fname}" for results\n')
 
         # back to normal stdout
-        sys.stdout = sys.__stdout__
-        out.close()
+        #sys.stdout = sys.__stdout__
+        #out.close()

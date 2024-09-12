@@ -63,7 +63,6 @@ jmax  10
 
 === End of input file: input/pw_pec.txt ===
 
-WARNING: grid for spline out of range - [0.9, 4.0] not in [0.90898, 4.67]
 
 === Energy levels ===
 

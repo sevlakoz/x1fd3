@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
+from x1fd3.base.logger import Logger
 from x1fd3.base.print_funcs import print_input_file
 
 class Driver(ABC):
@@ -62,6 +63,7 @@ class Driver(ABC):
         self.dm = PWCurve()
         self.params = Parameters()
         self.expdata: dict[int, dict[int, float]] = {}
+        self.out = Logger(self.mode)
 
     def input_check(
         self
@@ -81,7 +83,7 @@ class Driver(ABC):
         print input files one by one
         '''
         for fname in self.input_files:
-            print_input_file(fname)
+            print_input_file(self.out, fname)
 
     @abstractmethod
     def read_files(
@@ -109,3 +111,4 @@ class Driver(ABC):
         self.print_input_files()
         self.read_files()
         self.core()
+        print(f'Results are stored in {self.out.fname}')

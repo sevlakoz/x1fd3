@@ -6,6 +6,7 @@ from scipy.linalg import eigh_tridiagonal     # type: ignore
 from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .emo import emo
+from .logger import Logger
 
 class Levels:
     '''
@@ -94,28 +95,29 @@ class Levels:
 
     def print(
         self,
+        out: Logger
     ) -> None:
         '''
         print vib-rot levels from dict in custom format
         '''
-        print('\n=== Energy levels ===')
+        out.print('\n=== Energy levels ===')
         for j, en_jv in self.energy.items():
-            print(f'\nJ = {j}\n{"v":>3}{"E,cm-1":>15}{"Bv,cm-1":>15}')
+            out.print(f'\nJ = {j}\n{"v":>3}{"E,cm-1":>15}{"Bv,cm-1":>15}')
             for v, en_v in en_jv.items():
-                print(f'{v:3d}{en_v:15.3f}{self.rot_const[j][v]:15.5f}')
+                out.print(f'{v:3d}{en_v:15.3f}{self.rot_const[j][v]:15.5f}')
 
     def print_with_expdata(
         self,
+        out: Logger,
         expdata: dict[int, dict[int, float]]
     ) -> None:
         '''
         print cal and exp vib-rot levels in custom format
         '''
-        print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
+        out.print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
         for j, en_jv in self.energy.items():
             for v, en_cal in en_jv.items():
-                if j in expdata:
-                    if v in expdata[j]:
-                        en_exp = expdata[j][v]
-                        print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
-        print()
+                if j in expdata and v in expdata[j]:
+                    en_exp = expdata[j][v]
+                    out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
+        out.print()

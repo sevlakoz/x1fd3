@@ -100,8 +100,6 @@ v2    1
 
 === End of input file: input/pw_dm.txt ===
 
-WARNING: grid for spline out of range - [0.9, 4.0] not in [0.90898, 4.67]
-WARNING: grid for spline out of range - [0.9, 4.0] not in [0.8, 2.0]
 
 === Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===
 

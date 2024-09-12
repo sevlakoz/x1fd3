@@ -3,6 +3,7 @@ import numpy as np
 from .p_w_curve import PWCurve
 from .levels import Levels
 from .parameters import Parameters
+from .logger import Logger
 
 class MatrixElements:
     '''
@@ -42,26 +43,28 @@ class MatrixElements:
                 )
 
     def print(
-        self
+        self,
+        out: Logger
     ) -> None:
         '''
         print calculated matrix elements in custom format
         '''
-        print("\n=== Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===\n")
-        print(f"v'' = {self.v1}")
-        print(f"v'  = {self.v2}\n")
+        out.print("\n=== Transition energies & Intergals <f(v',J')|d|f(v'',J'')>,D ===\n")
+        out.print(f"v'' = {self.v1}")
+        out.print(f"v'  = {self.v2}\n")
 
         for j2, me_j2j1 in self.matrix_elements.items():
-            print(f"J' = {j2}")
-            print(f'''{"J''":>4}{"freq,cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
+            out.print(f"J' = {j2}")
+            out.print(f'''{"J''":>4}{"freq,cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
             for j1, me in me_j2j1.items():
                 en1 = self.energy1[j2][j1]
                 frq  = self.freq[j2][j1]
-                print(f"{j1:4d}{frq:15.3f}{en1:15.3f}{me:15.5e}")
-            print()
+                out.print(f"{j1:4d}{frq:15.3f}{en1:15.3f}{me:15.5e}")
+            out.print()
 
     def _ht(
-        self
+        self,
+        out: Logger
     ) -> None:
         '''
         ht comp
@@ -81,8 +84,8 @@ class MatrixElements:
         fts  = ['',       'd',  'd',  '.3f',  '.5e','.5f','.3f', '.5e', '.5e', '.5f','.5e']
 
         for wd, hdr in zip(wds, hdrs):
-            print(f'{hdr:>{wd}}', end = '')
-        print()
+            out.print(f'{hdr:>{wd}}', end = '')
+        out.print()
 
         for j2, j1 in jlist:
             dj = j2 - j1
@@ -107,5 +110,5 @@ class MatrixElements:
 
             vals = [lbl, j2, j1, frq, me, sa, en1, pop, inten, se, a]
             for val, wd, ft in zip(vals, wds, fts):
-                print(f'{val:{wd}{ft}}', end = '')
-            print()
+                out.print(f'{val:{wd}{ft}}', end = '')
+            out.print()

@@ -4,24 +4,27 @@ function for print not included in any class
 from os.path import isfile
 from .p_w_curve import PWCurve
 from .parameters import Parameters
+from .logger import Logger
 from .emo import emo
 
 def print_input_file(
+        out: Logger,
         fname: str
     ) -> None:
     '''
     print file line-by-line
     '''
     if isfile(fname):
-        print(f'\n=== Input file: {fname} ===\n')
+        out.print(f'\n=== Input file: {fname} ===\n')
         with open(fname, encoding="utf-8") as inp:
             for line in inp:
-                print(line, end = '')
-        print(f'\n=== End of input file: {fname} ===\n')
+                out.print(line, end = '')
+        out.print(f'\n=== End of input file: {fname} ===\n')
     else:
         raise FileNotFoundError(f'ERROR: No such file: {fname}')
 
 def print_pecs(
+        out: Logger,
         pec: PWCurve,
         params: Parameters
     ) -> None:
@@ -36,6 +39,6 @@ def print_pecs(
 
     # print with loop over r
     lbl = f'U({params["ptype"]}),cm-1'
-    print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{lbl:>20}{"delta,cm-1":>20}')
+    out.print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{lbl:>20}{"delta,cm-1":>20}')
     for r_inp, u_inp, u_cal in zip(pec.rval, pec.cval, pec_an):
-        print(f'{r_inp:10.5f}{u_inp:20.3f}{u_cal:20.3f}{u_inp - u_cal:20.3f}')
+        out.print(f'{r_inp:10.5f}{u_inp:20.3f}{u_cal:20.3f}{u_inp - u_cal:20.3f}')

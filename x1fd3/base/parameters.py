@@ -2,6 +2,7 @@ from configparser import ConfigParser
 from collections import UserDict
 import numpy as np
 
+from .logger import Logger
 
 class Parameters(UserDict):
     '''
@@ -87,18 +88,19 @@ class Parameters(UserDict):
         self['rtype'] = rtype
 
     def print_pec_params(
-            self
+            self,
+            out: Logger
         ) -> None:
         '''
         print params from dict in custom format
         '''
-        print(f"[{self['ptype']}]")
-        print(f"de    {self['de']:.3f}")
-        print(f"re    {self['re']:.6f}")
-        print(f"rref  {self['rref']:.6f}")
-        print(f"q     {self['q']}")
+        out.print(f"[{self['ptype']}]")
+        out.print(f"de    {self['de']:.3f}")
+        out.print(f"re    {self['re']:.6f}")
+        out.print(f"rref  {self['rref']:.6f}")
+        out.print(f"q     {self['q']}")
 
-        print('beta  ', end = '')
+        out.print('beta  ', end = '')
         for beta in self['beta']:
-            print(f'{beta:10.5e}\n      ', end = '')
-        print()
+            out.print(f'{beta:10.5e}\n      ', end = '')
+        out.print()

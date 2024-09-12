@@ -17,17 +17,17 @@ class DriverPecApprox(Driver):
         self
     ) -> None:
         # print initial guess
-        print('=== Point-wise PEC approximation ===\n')
-        print('Initial guess\n')
-        print_pecs(self.pec, self.params)
+        self.out.print('=== Point-wise PEC approximation ===\n')
+        self.out.print('Initial guess\n')
+        print_pecs(self.out, self.pec, self.params)
         # fit
         self.params, message, success = pec_fit(self.pec, self.params)
         if success:
-            print(f'\nPoint-wise PEC approximation done: {message}')
+            self.out.print(f'\nPoint-wise PEC approximation done: {message}')
         else:
             raise RuntimeError(f'\nPoint-wise PEC approximation FAILED: {message}')
         # final approximation
-        print('\nFitted PEC\n')
-        print_pecs(self.pec, self.params)
-        print('\nFitted parameters\n')
-        self.params.print_pec_params()
+        self.out.print('\nFitted PEC\n')
+        print_pecs(self.out, self.pec, self.params)
+        self.out.print('\nFitted parameters\n')
+        self.params.print_pec_params(self.out)

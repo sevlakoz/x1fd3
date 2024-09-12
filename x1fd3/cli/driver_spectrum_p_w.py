@@ -21,4 +21,4 @@ class DriverSpectrumPW(Driver):
         levels = Levels('pw', self.params, self.pec)
         # calc and print integrals
         matrix_elements = MatrixElements(self.params, levels, self.dm)
-        matrix_elements.print()
+        matrix_elements.print(self.out)
