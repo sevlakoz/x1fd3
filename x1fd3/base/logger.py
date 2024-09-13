@@ -26,7 +26,7 @@ class Logger:
             self.out = open(self.fname, 'w', encoding = 'utf-8')
         else:
             self.fname = ''
-    
+
     def print(
         self,
         *args,
