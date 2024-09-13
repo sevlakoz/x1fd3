@@ -1,21 +1,22 @@
 from os.path import isfile, getsize
+from warnings import warn
 
 class Logger:
     '''
-    init = open file for results, automatic name selection for CLI versions
+    class for writing results
     '''
     def __init__(
         self,
         mode: str = '',
-        is_gui = False
+        auto_name_adjust = True
     ) -> None:
         '''
-        2
+        open file for results if name provided 
+        optional automatic name adjust
         '''
+        self.fname: str = mode
         if mode:
-            if is_gui:
-                self.fname = mode
-            else:
+            if auto_name_adjust:
                 n = 1
                 while True:
                     self.fname = f'{mode}_{n}.log'
@@ -24,8 +25,6 @@ class Logger:
                     else:
                         break
             self.out = open(self.fname, 'w', encoding = 'utf-8')
-        else:
-            self.fname = ''
 
     def print(
         self,
@@ -33,26 +32,27 @@ class Logger:
         **kwargs
     ) -> None:
         '''
-        print-like write to file
+        print-like write to file or print to stdout if no file opened
         '''
-        def_kwargs = {
-            'sep': ' ',
-            'end': '\n',
-            'flush': True
-        }
-        for key, val in def_kwargs.items():
-            if key not in kwargs:
-                kwargs[key] = val
-
-        if len(args) > 0:
-            self.out.write(str(args[0]))
-            for mes in args[1:]:
-                self.out.write(kwargs['sep'])
-                self.out.write(str(mes))
-        self.out.write(kwargs['end'])
-
-        if kwargs['flush']:
-            self.out.flush()
+        if hasattr(self, 'out') and not self.out.closed:
+            def_kwargs = {
+                'sep': ' ',
+                'end': '\n',
+                'flush': True
+            }
+            for key, val in def_kwargs.items():
+                if key not in kwargs:
+                    kwargs[key] = val
+            if len(args) > 0:
+                self.out.write(str(args[0]))
+                for mes in args[1:]:
+                    self.out.write(kwargs['sep'])
+                    self.out.write(str(mes))
+            self.out.write(kwargs['end'])
+            if kwargs['flush']:
+                self.out.flush()
+        else:
+            print(*args, **kwargs)
 
     def close(
         self
@@ -60,4 +60,18 @@ class Logger:
         '''
         close file 
         '''
-        self.out.close()
+        if hasattr(self, 'out'):
+            self.out.close()
+        else:
+            warn('Initialized with empty file name, skipping', RuntimeWarning)
+
+    def reopen(
+        self
+    ) -> None:
+        '''
+        reopen
+        '''
+        if hasattr(self, 'out'):        
+            self.out = open(self.fname, 'w', encoding = 'utf-8')
+        else:
+            warn('Initialized with empty file name, skipping', RuntimeWarning)

@@ -626,7 +626,7 @@ class MainWindow:
             self.print_message('ERROR: out file not specified\n')
             return
 
-        out = Logger(fname, True)
+        out = Logger(fname, False)
 
         #---
 
