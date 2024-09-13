@@ -50,7 +50,8 @@ class PWCurve:
         #rng_inp = [r_grid[0], r_grid[-1]]
         #rng_self = [self.rval[0], self.rval[-1]]
         #if rng_inp[0] < rng_self[0] or rng_inp[-1] > rng_self[-1]:
-        #    print(f'WARNING: grid for spline out of range - {rng_inp} not in {rng_self}')
+        #    raise RuntimeError(f'ERROR: grid for spline out of range - {rng_inp} not in {rng_self}')
+        #   ^^^ TO DO: re-enable after inputs update ^^^
 
         spl_pec = splrep(self.rval, self.cval)
         c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
