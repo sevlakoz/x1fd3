@@ -35,16 +35,24 @@ class Logger:
         '''
         print-like write to file
         '''
-        if 'end' not in kwargs:
-            kwargs['end'] = '\n'
+        def_kwargs = {
+            'sep': ' ',
+            'end': '\n',
+            'flush': True
+        }
+        for key, val in def_kwargs.items():
+            if key not in kwargs:
+                kwargs[key] = val
 
         if len(args) > 0:
             self.out.write(str(args[0]))
             for mes in args[1:]:
-                self.out.write(' ')
+                self.out.write(kwargs['sep'])
                 self.out.write(str(mes))
         self.out.write(kwargs['end'])
-        self.out.flush()
+
+        if kwargs['flush']:
+            self.out.flush()
 
     def close(
         self
