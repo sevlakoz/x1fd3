@@ -13,7 +13,7 @@ Available modes:
 * LevelsAn - vib.-rot. level calculation for given analytic PEC
 * SpectrumPW - vib.-rot. spectrum calculation for given point-wise PEC and point-wise DM
 * SpectrumAn - vib.-rot. spectrum calculation for given analytic PEC and point-wise DM
-* ExpFit - fit analytic PEC to reproduce given exp. vib.-rot. levels
+* FitExp - fit analytic PEC to reproduce given experimental vib.-rot. levels
 
 ## Requirements
 * python >= 3.10
