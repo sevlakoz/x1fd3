@@ -1,6 +1,4 @@
-#import sys
-from os import getcwd
-from os.path import isfile, getsize, dirname, basename
+from os.path import isfile, getsize, relpath
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
@@ -136,7 +134,7 @@ class MainWindow:
 
         self.lbl_pw_pec = tk.Label(
             self.frame,
-            text = 'Point-wise PEC, example: pw_pec.txt'
+            text = 'Point-wise PEC, example: input/pw_pec.txt'
         )
 
         self.file_pw_pec = ttk.Entry(
@@ -154,7 +152,7 @@ class MainWindow:
 
         self.lbl_lev_calc = tk.Label(
             self.frame,
-            text = 'Parameters for vib.-rot. levels calculation, example: vr_level_calc_params.txt'
+            text = 'Parameters for vib.-rot. levels calculation, example: input/vr_level_calc_params.txt'
         )
 
         self.file_lev_calc = ttk.Entry(
@@ -172,7 +170,7 @@ class MainWindow:
 
         self.lbl_sp_calc = tk.Label(
             self.frame,
-            text = 'Parameters for vib.-rot. spectrum calculation, example: vr_spectrum_calc_params.txt'
+            text = 'Parameters for vib.-rot. spectrum calculation, example: input/vr_spectrum_calc_params.txt'
         )
 
         self.file_sp_calc = ttk.Entry(
@@ -190,7 +188,7 @@ class MainWindow:
 
         self.lbl_fit_calc = tk.Label(
             self.frame,
-            text = 'Parameters for vib.-rot. levels calculation, example: vr_fit_params.txt'
+            text = 'Parameters for vib.-rot. levels calculation, example: input/vr_fit_params.txt'
         )
 
         self.file_fit_calc = ttk.Entry(
@@ -208,7 +206,7 @@ class MainWindow:
 
         self.lbl_init_params = tk.Label(
             self.frame,
-            text = 'Initial EMO parameters for PEC approxomation, example: init_emo_params.txt'
+            text = 'Initial EMO parameters for PEC approxomation, example: input/init_emo_params.txt'
         )
 
         self.file_init_params = ttk.Entry(
@@ -226,7 +224,7 @@ class MainWindow:
 
         self.lbl_fitted_params = tk.Label(
             self.frame,
-            text = 'Fitted EMO parameters for levels/spectrum calculation, example: fitted_emo_params.txt'
+            text = 'Fitted EMO parameters for levels/spectrum calculation, example: input/fitted_emo_params.txt'
         )
 
         self.file_fitted_params = ttk.Entry(
@@ -244,7 +242,7 @@ class MainWindow:
 
         self.lbl_pw_dip = tk.Label(
             self.frame,
-            text = 'Point-wise dipole moment, example: pw_dm.txt'
+            text = 'Point-wise dipole moment, example: input/pw_dm.txt'
         )
 
         self.file_pw_dip = ttk.Entry(
@@ -262,7 +260,7 @@ class MainWindow:
 
         self.lbl_exp = tk.Label(
             self.frame,
-            text = 'Experimental vib.-rot. levels, example: exp_levels.txt'
+            text = 'Experimental vib.-rot. levels, example: input/exp_levels.txt'
         )
 
         self.file_exp = ttk.Entry(
@@ -606,8 +604,9 @@ class MainWindow:
         )
 
         if fname:
-            if getcwd() == dirname(fname):
-                fname = basename(fname)
+            fname = relpath(fname)
+            #if getcwd() == dirname(fname):
+            #    fname = basename(fname)
 
         obj.delete(0, 'end')
         obj.insert(0, fname)
@@ -627,10 +626,7 @@ class MainWindow:
             self.print_message('ERROR: out file not specified\n')
             return
 
-        # redirect stdout to file, because of print in funcs in base module
         out = Logger(fname, True)
-        #open(fname, 'w', encoding = 'utf-8')
-        #sys.stdout = out
 
         #---
 
@@ -1020,7 +1016,3 @@ class MainWindow:
         #---
         out.close()
         self.print_message(f'SUCCESS! See "{fname}" for results\n')
-
-        # back to normal stdout
-        #sys.stdout = sys.__stdout__
-        #out.close()
