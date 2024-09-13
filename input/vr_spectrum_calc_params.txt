@@ -1,7 +1,7 @@
 [SPECTRUM]
 mass1 1.007825
 mass2 34.968852
-rmin  0.9
+rmin  0.91
 rmax  4.0
 jmax  10
 v1    0
