@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from time import time
 
 from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
@@ -105,10 +106,13 @@ class Driver(ABC):
         self
     ) -> None:
         '''
-        run all task
+        run all task, print info
         '''
+        start = time()
         self.input_check()
         self.print_input_files()
         self.read_files()
         self.core()
-        print(f'Results are stored in {self.out.fname}')
+        finish = time()
+        print(f'Calculation time, s: {int(finish - start)}')
+        print(f'Results stored in {self.out.fname}')

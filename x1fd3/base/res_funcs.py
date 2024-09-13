@@ -63,9 +63,8 @@ def res_exp(
     # exp levels
     for j, en_jv in expdata.items():
         for v, en_v in en_jv.items():
-            if j in levels.energy:
-                if v in levels.energy[j]:
-                    res.append((levels.energy[j][v] - en_v) / 0.1)
+            if j in levels.energy and v in levels.energy[j]:
+                res.append((levels.energy[j][v] - en_v) / 0.1)
 
     # pec
     if params['ptype'] == 'EMO':
