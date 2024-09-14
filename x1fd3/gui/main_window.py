@@ -574,10 +574,10 @@ class MainWindow:
     def print_message(
         self,
         string: str,
-        out: Logger = Logger()
+        out: Logger
     ) -> None:
         '''
-        print to window and to out
+        print to window and to out file if opened
         '''
         self.message_window.configure(state = 'normal')
         self.message_window.insert('end', string)
@@ -620,10 +620,10 @@ class MainWindow:
         fname = self.file_out.get()
         if fname:
             if isfile(fname) and getsize(fname) > 0:
-                self.print_message(f'ERROR: non-empty out file "{fname}" already exists\n')
+                self.print_message(f'ERROR: non-empty out file "{fname}" already exists\n', Logger())
                 return
         else:
-            self.print_message('ERROR: out file not specified\n')
+            self.print_message('ERROR: out file not specified\n', Logger())
             return
 
         out = Logger(fname, False)
@@ -1015,4 +1015,4 @@ class MainWindow:
 
         #---
         out.close()
-        self.print_message(f'SUCCESS! See "{fname}" for results\n')
+        self.print_message(f'SUCCESS! See "{fname}" for results\n', Logger())
