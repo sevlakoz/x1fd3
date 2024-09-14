@@ -114,5 +114,5 @@ class Driver(ABC):
         self.read_files()
         self.core()
         finish = time()
-        print(f'Calculation time, s: {int(finish - start)}')
+        print(f'Calculation time, s: {finish - start:.3f}')
         print(f'Results stored in {self.out.fname}')

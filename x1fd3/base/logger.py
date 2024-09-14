@@ -1,5 +1,6 @@
 from os.path import isfile, getsize
 from warnings import warn
+from typing import TextIO
 
 class Logger:
     '''
@@ -7,24 +8,24 @@ class Logger:
     '''
     def __init__(
         self,
-        mode: str = '',
+        fname: str = '',
         auto_name_adjust = True
     ) -> None:
         '''
-        open file for results if name provided 
-        optional automatic name adjust
+        open file for results if name provided,
+        automatic adjust file name by default
         '''
-        self.fname: str = mode
-        if mode:
+        self.fname: str = fname
+        if fname:
             if auto_name_adjust:
                 n = 1
                 while True:
-                    self.fname = f'{mode}_{n}.log'
+                    self.fname = f'{fname}_{n}.log'
                     if isfile(self.fname) and getsize(self.fname) > 0:
                         n += 1
                     else:
                         break
-            self.out = open(self.fname, 'w', encoding = 'utf-8')
+            self.out: TextIO = open(self.fname, 'w', encoding = 'utf-8')
 
     def print(
         self,
@@ -32,7 +33,8 @@ class Logger:
         **kwargs
     ) -> None:
         '''
-        print-like write to file or print to stdout if no file opened
+        print-like write to file
+        print to stdout if no file opened on init
         '''
         if hasattr(self, 'out') and not self.out.closed:
             def_kwargs = {
@@ -45,9 +47,9 @@ class Logger:
                     kwargs[key] = val
             if len(args) > 0:
                 self.out.write(str(args[0]))
-                for mes in args[1:]:
+                for arg in args[1:]:
                     self.out.write(kwargs['sep'])
-                    self.out.write(str(mes))
+                    self.out.write(str(arg))
             self.out.write(kwargs['end'])
             if kwargs['flush']:
                 self.out.flush()
@@ -71,7 +73,7 @@ class Logger:
         '''
         reopen
         '''
-        if hasattr(self, 'out'):        
+        if hasattr(self, 'out'):
             self.out = open(self.fname, 'w', encoding = 'utf-8')
         else:
             warn('Initialized with empty file name, skipping', RuntimeWarning)
