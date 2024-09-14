@@ -45,12 +45,17 @@ class Logger:
             for key, val in def_kwargs.items():
                 if key not in kwargs:
                     kwargs[key] = val
+
+            if 'file' in kwargs:
+                warn('Writing to file opened on init, "file" option ignored', RuntimeWarning)
+
             if len(args) > 0:
                 self.out.write(str(args[0]))
                 for arg in args[1:]:
                     self.out.write(kwargs['sep'])
                     self.out.write(str(arg))
             self.out.write(kwargs['end'])
+
             if kwargs['flush']:
                 self.out.flush()
         else:
