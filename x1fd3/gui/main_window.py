@@ -79,7 +79,7 @@ class MainWindow:
                 column = 1,
                 sticky = 'w'
             )
-            
+
             row += 1
 
     def select_mode(
