@@ -19,7 +19,6 @@ class MainWindow:
         self.root.title('x1fd3')
         self.root.resizable(False, False)
 
-        # mode selector
         ttk.Label(
             text = 'Select runtype mode',
             font = ('bold', 16)
@@ -60,7 +59,6 @@ class MainWindow:
             #sticky = 'w'
         )
 
-
         ttk.Button(
             text = 'Vib.-rot. levels calculation with analytic PEC (EMO)',
             #value = 'LevelsAn',
@@ -82,7 +80,6 @@ class MainWindow:
             column = 0
             #sticky = 'w'
         )
-
 
         ttk.Button(
             text = 'Vib.-rot. spectrum calculation with analytic PEC (EMO)',

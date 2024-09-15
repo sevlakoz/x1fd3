@@ -449,8 +449,6 @@ class CalcWindow:
 
         if fname:
             fname = relpath(fname)
-            #if getcwd() == dirname(fname):
-            #    fname = basename(fname)
 
         obj.delete(0, 'end')
         obj.insert(0, fname)
@@ -472,8 +470,7 @@ class CalcWindow:
 
         out = Logger(fname, False)
 
-        #---
-
+        # PecApprox mode
         if self.mode == 'PecApprox':
 
             f_pw_pec = self.file_pw_pec.get()
@@ -531,8 +528,7 @@ class CalcWindow:
             out.print('\nFitted parameters\n')
             params.print_pec_params(out)
 
-        #---
-
+        # LevelsPW mode
         if self.mode == 'LevelsPW':
 
             f_vr_par = self.file_lev_calc.get()
@@ -576,8 +572,7 @@ class CalcWindow:
 
             levels.print(out)
 
-        #---
-
+        # LevelsAn mode
         if self.mode == 'LevelsAn':
 
             f_vr_par = self.file_lev_calc.get()
@@ -622,8 +617,7 @@ class CalcWindow:
 
             levels.print(out)
 
-        #---
-
+        # SpectrumPW mode
         if self.mode == 'SpectrumPW':
 
             f_vr_par = self.file_sp_calc.get()
@@ -688,9 +682,8 @@ class CalcWindow:
 
             matrix_elements.print(out)
 
-        #---
-
-        if self.mode == 'SpectrumAn':
+        # SpectrumAn mode
+        if self.mode == '':
 
             f_vr_par = self.file_sp_calc.get()
             f_fit_par = self.file_fitted_params.get()
@@ -754,8 +747,7 @@ class CalcWindow:
 
             matrix_elements.print(out)
 
-        #---
-
+        # FitExp
         if self.mode == 'FitExp':
 
             f_vr_par = self.file_fit_calc.get()
@@ -857,6 +849,5 @@ class CalcWindow:
             out.print('\nFitted parameters\n')
             params.print_pec_params(out)
 
-        #---
         out.close()
         self.print_message(f'SUCCESS! See "{fname}" for results\n', Logger())
