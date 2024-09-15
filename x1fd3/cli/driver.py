@@ -8,8 +8,8 @@ from x1fd3.base.print_funcs import print_input_file
 
 class Driver(ABC):
     '''
-    base abs class for driver, 
-    contains data for input check and empty vars
+    abstract class for driver, 
+    contains input, data for input check, empty vars, & Logger for output
     '''
     def __init__(
         self,
@@ -70,8 +70,8 @@ class Driver(ABC):
         self
     ) -> None:
         '''
-        check count of input files
-        print error message if not enough 
+        check number of input files provided
+        print error message if not enough for chosen run mode
         '''
         nf, mes = self.input_error_message[self.mode]
         if len(self.input_files) < nf:
@@ -91,7 +91,7 @@ class Driver(ABC):
         self
     ) -> None:
         '''
-        read files, store to vars, no pattern at all
+        read files, store to vars
         '''
 
     @abstractmethod
@@ -99,7 +99,7 @@ class Driver(ABC):
         self
     ) -> None:
         '''
-        run calc & print stuff, no pattern at all
+        run calc & print stuff
         '''
 
     def run(
