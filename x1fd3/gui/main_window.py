@@ -89,3 +89,4 @@ class MainWindow:
         draw sub window for calculation
         '''
         CalcWindow(self.root, self.mode.get())
+        self.mode.set('')
