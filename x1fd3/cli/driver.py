@@ -1,6 +1,6 @@
+import traceback
 from abc import ABC, abstractmethod
 from time import time
-import traceback
 
 from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
