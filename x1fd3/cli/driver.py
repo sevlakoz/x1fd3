@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from time import time
+import traceback
 
 from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
@@ -78,15 +79,13 @@ class Driver(ABC):
         if len(self.input_files) < nf:
             raise RuntimeError('Missing command line arguments: input files\n' + mes)
 
-        self.out.print('=== CLI arguments ==\n')
-        self.out.print(self.mode, *self.input_files)
-
     def print_input_files(
         self
     ) -> None:
         '''
         print input files one by one
         '''
+        self.out.print('Input files:', *self.input_files)
         for fname in self.input_files:
             print_input_file(self.out, fname)
 
@@ -118,9 +117,12 @@ class Driver(ABC):
             self.print_input_files()
             self.read_files()
             self.core()
-        except BaseException as ex: # pylint: disable = W0718
-            self.out.print(str(ex))
-            print(str(ex))
+            print('Success!')
+        except BaseException: # pylint: disable = W0718
+            print('Error!')
+            err = traceback.format_exc()
+            self.out.print(err)
+            print(err)
         finish = time()
-        print(f'Calculation time, s: {finish - start:.3f}')
+        print(f'Execution time, s: {finish - start:.3f}')
         print(f'Results stored in {self.out.fname}')
