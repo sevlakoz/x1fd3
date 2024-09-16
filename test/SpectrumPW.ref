@@ -1,3 +1,6 @@
+=== CLI arguments ==
+
+SpectrumPW input/vr_spectrum_calc_params.txt input/pw_pec.txt input/pw_dm.txt
 
 === Input file: input/vr_spectrum_calc_params.txt ===
 

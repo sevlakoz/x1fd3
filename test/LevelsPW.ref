@@ -1,3 +1,6 @@
+=== CLI arguments ==
+
+LevelsPW input/vr_level_calc_params.txt input/pw_pec.txt
 
 === Input file: input/vr_level_calc_params.txt ===
 

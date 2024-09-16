@@ -73,9 +73,13 @@ class Driver(ABC):
         check number of input files provided
         print error message if not enough for chosen run mode
         '''
+
         nf, mes = self.input_error_message[self.mode]
         if len(self.input_files) < nf:
             raise RuntimeError('Missing command line arguments: input files\n' + mes)
+
+        self.out.print('=== CLI arguments ==\n')
+        self.out.print(self.mode, *self.input_files)
 
     def print_input_files(
         self
@@ -110,9 +114,13 @@ class Driver(ABC):
         '''
         start = time()
         self.input_check()
-        self.print_input_files()
-        self.read_files()
-        self.core()
+        try:
+            self.print_input_files()
+            self.read_files()
+            self.core()
+        except BaseException as ex: # pylint: disable = W0718
+            self.out.print(str(ex))
+            print(str(ex))
         finish = time()
         print(f'Calculation time, s: {finish - start:.3f}')
         print(f'Results stored in {self.out.fname}')
