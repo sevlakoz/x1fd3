@@ -1,6 +1,4 @@
-=== CLI arguments ==
-
-SpectrumAn input/vr_spectrum_calc_params.txt input/fitted_emo_params.txt input/pw_dm.txt
+Input files: input/vr_spectrum_calc_params.txt input/fitted_emo_params.txt input/pw_dm.txt
 
 === Input file: input/vr_spectrum_calc_params.txt ===
 

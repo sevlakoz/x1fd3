@@ -1,6 +1,4 @@
-=== CLI arguments ==
-
-PecApprox input/pw_pec.txt input/init_emo_params.txt
+Input files: input/pw_pec.txt input/init_emo_params.txt
 
 === Input file: input/pw_pec.txt ===
 
