@@ -2,6 +2,12 @@
 
 A program to deal with the adiabatic $X^1\Sigma^+$ state of diatomic molecules.
 
+## Requirements
+* python >= 3.10
+* numpy
+* scipy
+* tkinter
+
 ## Usage
 ```bash
 python -m x1fd3 [mode] [input files]
@@ -42,6 +48,7 @@ The finite-difference scheme is used within the scheme 3-point approximation of 
 f''(x_i) \approx \frac{ f(x_{i-1}) - 2f(x_i) + f(x_{i+1}) }{ \Delta x^2}
 ```
 Within this method the original differential equation is transformed to tridiagonal symmetric matrix eigenvalue problem.
+
 PEC $`U(R)`$ is required in point-wise format, spline interpolation is used.
 
 ### LevelsAn
@@ -74,9 +81,3 @@ Least-squares procedure is based on Hellmann–Feynman theorem:
 \Psi_v \right >
 ```
 where $`p_i`$ are $`D_e`$, $`R_e`$ and $`\beta_0`$, ..., $`\beta_N`$
-
-## Requirements
-* python >= 3.10
-* numpy
-* scipy
-* tkinter
