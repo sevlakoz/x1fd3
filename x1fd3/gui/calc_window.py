@@ -9,9 +9,9 @@ from x1fd3.base.parameters import Parameters
 from x1fd3.base.levels import Levels
 from x1fd3.base.matrix_elements import MatrixElements
 from x1fd3.base.logger import Logger
+from x1fd3.base.exp_data import ExpData
 from x1fd3.base.print_funcs import print_input_file, print_pecs
 from x1fd3.base.fit_funcs import pec_fit, exp_fit
-from x1fd3.base.read_expdata import read_expdata
 
 
 class CalcWindow:
@@ -844,13 +844,13 @@ class CalcWindow:
                 return
 
             try:
-                expdata = read_expdata(f_epx_lev)
+                expdata = ExpData(f_epx_lev)
             except BaseException: # pylint: disable = W0718
                 self.print_message('ERROR: failed to read exp. vib.-rot. levels', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
-            params['jmax'] = max(expdata.keys())
+            params['jmax'] = max(expdata.energy.keys())
 
             out.print('=== Fit PEC to reproduce exp. data ===\n')
 
@@ -863,12 +863,12 @@ class CalcWindow:
                 self.print_message(traceback.format_exc(), out)
                 return
 
-            levels.print_with_expdata(out, expdata)
+            levels.print_with_expdata(out, expdata.energy)
             print_pecs(out, pec, params)
 
             # fit
             try:
-                params, message, success = exp_fit(params, pec, expdata)
+                params, message, success = exp_fit(params, pec, expdata.energy)
                 if success:
                     out.print(f'\nPEC fit to exp. levels done: {message}')
                 else:
@@ -887,7 +887,7 @@ class CalcWindow:
                 self.print_message('ERROR: failed to run "vr_solver" function', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-            levels.print_with_expdata(out, expdata)
+            levels.print_with_expdata(out, expdata.energy)
             print_pecs(out, pec, params)
             out.print('\nFitted parameters\n')
             params.print_pec_params(out)

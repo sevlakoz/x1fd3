@@ -5,6 +5,7 @@ from time import time
 from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
 from x1fd3.base.logger import Logger
+from x1fd3.base.exp_data import ExpData
 from x1fd3.base.print_funcs import print_input_file
 
 class Driver(ABC):
@@ -74,7 +75,7 @@ class Driver(ABC):
         self.pec = PWCurve()
         self.dm = PWCurve()
         self.params = Parameters()
-        self.expdata: dict[int, dict[int, float]] = {}
+        self.expdata = ExpData()
         self.out = Logger(self.mode)
 
     def print_input_files(
