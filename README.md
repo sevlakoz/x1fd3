@@ -72,7 +72,6 @@ Least-squares procedure is based on Hellmann–Feynman theorem:
 \frac{\partial \mathbf U(p_1,p_2,...) }{\partial p_i} 
 \middle | 
 \Psi_v \right >
-=
 ```
 where $`p_i`$ are $`D_e`$, $`R_e`$ and $`\beta_0`$, ..., $`\beta_N`$
 
