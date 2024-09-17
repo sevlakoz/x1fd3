@@ -16,9 +16,15 @@ class Driver(ABC):
         self,
         input_files: list[str]
     ):
-        self.input_files: list[str] = input_files
+        '''
+        set empty vars, create Logger
+        check number of input files provided
+        print error message if not enough for chosen run mode
+        '''
         self.mode:str = type(self).__name__.replace('Driver', '')
-        self.input_error_message: dict[str, tuple[int, str]] = {
+        self.input_files: list[str] = input_files
+
+        input_error_message: dict[str, tuple[int, str]] = {
             'PecApprox': (
                 2,
                 'Usage: python -m x1fd3 PecApprox <1> <2>\n' + 
@@ -61,23 +67,15 @@ class Driver(ABC):
             )
         }
 
+        nf, mes = input_error_message[self.mode]
+        if len(input_files) < nf:
+            raise RuntimeError('Missing command line arguments: input files\n' + mes)
+
         self.pec = PWCurve()
         self.dm = PWCurve()
         self.params = Parameters()
         self.expdata: dict[int, dict[int, float]] = {}
         self.out = Logger(self.mode)
-
-    def input_check(
-        self
-    ) -> None:
-        '''
-        check number of input files provided
-        print error message if not enough for chosen run mode
-        '''
-
-        nf, mes = self.input_error_message[self.mode]
-        if len(self.input_files) < nf:
-            raise RuntimeError('Missing command line arguments: input files\n' + mes)
 
     def print_input_files(
         self
@@ -112,7 +110,6 @@ class Driver(ABC):
         run all task, print info
         '''
         start = time()
-        self.input_check()
         try:
             self.print_input_files()
             self.read_files()
