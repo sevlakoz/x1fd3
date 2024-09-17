@@ -39,16 +39,16 @@ Vibrational-rotational levels are found by solving the radial Schrodinger equati
 ```
 The finite-difference scheme is used within the scheme 3-point approximation of 2nd derivative:
 ```math
-f''(x_i) = \frac{ f(x_{i-1}) - 2f(x_i) + f(x_{i+1}) }{ \Delta x^2}
+f''(x_i) \approx \frac{ f(x_{i-1}) - 2f(x_i) + f(x_{i+1}) }{ \Delta x^2}
 ```
 Within this method the original differential equation is transformed to tridiagonal symmetric matrix eigenvalue problem.
-PEC ($`U(R)`$) is required in point-wise format, spline interpolation is used.
+PEC $`U(R)`$ is required in point-wise format, spline interpolation is used.
 
 ### LevelsAn
 Similar to **LevelsPW**, but with EMO representation of PEC.
 
 ### SpectrumPW
-**LevelsPW** with additional matrix elements calculation for given point-wise DM ($`D(R)`$) and lower and upper vibrational quantum numbers $`v_1`$ and $`v_2`$:
+**LevelsPW** with additional matrix elements calculation for given point-wise DM $`D(R)`$ and lower and upper vibrational quantum numbers $`v_1`$ and $`v_2`$:
 ```math
 \mu = <\Psi_{v1}|D|\Psi_{v2}>
 ```
