@@ -69,7 +69,7 @@ Least-squares procedure is based on Hellmann–Feynman theorem:
 \frac{\partial E}{\partial p_i} = 
 \left< \Psi_v 
 \middle | 
-\frac{\partial \mathbf U(p_1,p_2,...) }{\partial p_i} 
+\frac{\partial U(p_1,p_2,...) }{\partial p_i} 
 \middle | 
 \Psi_v \right >
 ```
