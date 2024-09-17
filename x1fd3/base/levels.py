@@ -7,6 +7,7 @@ from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .emo import emo
 from .logger import Logger
+from .exp_data import ExpData
 
 class Levels:
     '''
@@ -109,7 +110,7 @@ class Levels:
     def print_with_expdata(
         self,
         out: Logger,
-        expdata: dict[int, dict[int, float]]
+        expdata: ExpData
     ) -> None:
         '''
         print cal and exp vib-rot levels in custom format
@@ -117,7 +118,7 @@ class Levels:
         out.print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
         for j, en_jv in self.energy.items():
             for v, en_cal in en_jv.items():
-                if j in expdata and v in expdata[j]:
-                    en_exp = expdata[j][v]
+                if j in expdata.energy and v in expdata.energy[j]:
+                    en_exp = expdata.energy[j][v]
                     out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
         out.print()

@@ -6,6 +6,7 @@ from scipy.optimize import least_squares      # type: ignore
 
 from .p_w_curve import PWCurve
 from .parameters import Parameters
+from .exp_data import ExpData
 from .res_funcs import res_pec, res_exp
 
 def pec_fit(
@@ -36,7 +37,7 @@ def pec_fit(
 def exp_fit(
         params: Parameters,
         pec: PWCurve,
-        expdata: dict[int, dict[int, float]]
+        expdata: ExpData
     ) -> tuple[Parameters, str, bool]:
     '''
     fit pec to exp vib-rot levels

@@ -863,12 +863,12 @@ class CalcWindow:
                 self.print_message(traceback.format_exc(), out)
                 return
 
-            levels.print_with_expdata(out, expdata.energy)
+            levels.print_with_expdata(out, expdata)
             print_pecs(out, pec, params)
 
             # fit
             try:
-                params, message, success = exp_fit(params, pec, expdata.energy)
+                params, message, success = exp_fit(params, pec, expdata)
                 if success:
                     out.print(f'\nPEC fit to exp. levels done: {message}')
                 else:
@@ -887,7 +887,7 @@ class CalcWindow:
                 self.print_message('ERROR: failed to run "vr_solver" function', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-            levels.print_with_expdata(out, expdata.energy)
+            levels.print_with_expdata(out, expdata)
             print_pecs(out, pec, params)
             out.print('\nFitted parameters\n')
             params.print_pec_params(out)

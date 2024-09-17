@@ -4,6 +4,7 @@ residual functions for fit_* functions to provide to scipy.optimize.least_square
 from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .levels import Levels
+from .exp_data import ExpData
 from .emo import emo
 
 def res_pec(
@@ -41,7 +42,7 @@ def res_exp(
         guess: list[float],
         params: Parameters,
         pec: PWCurve,
-        expdata: dict[int, dict[int, float]]
+        expdata: ExpData
     ) -> list[float]:
     '''
     residual for exp_fit
@@ -61,7 +62,7 @@ def res_exp(
     res = []
 
     # exp levels
-    for j, en_jv in expdata.items():
+    for j, en_jv in expdata.energy.items():
         for v, en_v in en_jv.items():
             if j in levels.energy and v in levels.energy[j]:
                 res.append((levels.energy[j][v] - en_v) / 0.1)
