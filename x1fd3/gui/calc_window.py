@@ -97,7 +97,7 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text = 'Parameters for vib.-rot. levels calculation, example: input/vr_level_calc_params.txt'
+                text = 'Parameters for vib.-rot. levels calculation, example: input/params_levels.txt'
             ).grid(
                 row = 103,
                 column = 0,
@@ -131,7 +131,7 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text = 'Parameters for vib.-rot. spectrum calculation, example: input/vr_spectrum_calc_params.txt'
+                text = 'Parameters for vib.-rot. spectrum calculation, example: input/params_spectrum.txt'
             ).grid(
                 row = 104,
                 column = 0,
@@ -164,7 +164,7 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text = 'Parameters for vib.-rot. levels calculation, example: input/vr_fit_params.txt'
+                text = 'Parameters for vib.-rot. levels calculation, example: input/params_fit.txt'
             ).grid(
                 row = 105,
                 column = 0,
@@ -196,7 +196,7 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Initial EMO parameters for PEC approxomation, example: input/init_emo_params.txt'
+                text = 'Initial EMO parameters for PEC approxomation, example: input/init_emo.txt'
             ).grid(
                 row = 106,
                 column = 0,
@@ -230,7 +230,7 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Fitted EMO parameters for levels/spectrum calculation, example: input/fitted_emo_params.txt'
+                text = 'Fitted EMO parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
             ).grid(
                 row = 107,
                 column = 0,

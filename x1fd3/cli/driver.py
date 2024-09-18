@@ -30,39 +30,39 @@ class Driver(ABC):
                 2,
                 'Usage: python -m x1fd3 PecApprox <1> <2>\n' + 
                 '       <1> = file with point-wise pec     | example: input/pw_pec.txt\n' +
-                '       <2> = file with initial parameters | example: input/init_emo_params.txt'
+                '       <2> = file with initial parameters | example: input/init_emo.txt'
             ),
             'LevelsPW': (
                 2,
                 'Usage: python -m x1fd3 LevelsPW <1> <2>\n' +
-                '       <1> = file with parameters for level calc | example: input/vr_level_calc_params.txt\n' +
+                '       <1> = file with parameters for level calc | example: input/params_levels.txt\n' +
                 '       <2> = file with point-wise pec            | example: input/pw_pec.txt'
             ),
             'LevelsAn': (
                 2,
                 'Usage: python -m x1fd3 LevelsAn <1> <2>\n' +
-                '       <1> = file with parameters for level calc | example: input/vr_level_calc_params.txt\n' +
-                '       <2> = file with fitted parameters         | example: input/fitted_emo_params.txt'
+                '       <1> = file with parameters for level calc | example: input/params_levels.txt\n' +
+                '       <2> = file with fitted parameters         | example: input/fitted_emo.txt'
             ),
             'SpectrumPW': (
                 3,
                 'Usage: python -m x1fd3 SpectrumPW <1> <2> <3>\n' +
-                '       <1> = file with parameters for spectrum calc | example: input/vr_spectrum_calc_params.txt\n' +
+                '       <1> = file with parameters for spectrum calc | example: input/params_spectrum.txt\n' +
                 '       <2> = file with point-wise pec               | example: input/pw_pec.txt\n' +
                 '       <3> = file with point-wise dm                | example: input/pw_dm.txt'
             ),
             'SpectrumAn': (
                 3,
                 'Usage: python -m x1fd3 SpectrumAn <1> <2> <3>\n' +
-                '       <1> = file with parameters for spectrum calc | example: input/vr_spectrum_calc_params.txt\n' +
-                '       <2> = file with fitted parameters            | example: input/fitted_emo_params.txt\n' +
+                '       <1> = file with parameters for spectrum calc | example: input/params_spectrum.txt\n' +
+                '       <2> = file with fitted parameters            | example: input/fitted_emo.txt\n' +
                 '       <3> = file with point-wise dm                | example: input/pw_dm.txt'
             ),
             'FitExp': (
                 4,
                 'Usage: python -m x1fd3 FitExp <1> <2> <3> <4>\n' +
-                '       <1> = file with parameters for level calc | example: input/vr_fit_params.txt\n' +
-                '       <2> = file with pre-fitted parameters     | example: input/fitted_emo_params.txt\n' +
+                '       <1> = file with parameters for level calc | example: input/params_fit.txt\n' +
+                '       <2> = file with pre-fitted parameters     | example: input/fitted_emo.txt\n' +
                 '       <3> = file with point-wise pec            | example: input/pw_pec.txt\n' +
                 '       <4> = file with exp. vib.-rot. levels     | example: input/exp_levels.txt'
             )

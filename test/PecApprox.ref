@@ -1,4 +1,4 @@
-Input files: input/pw_pec.txt input/init_emo_params.txt
+Input files: input/pw_pec.txt input/init_emo.txt
 
 === Input file: input/pw_pec.txt ===
 
@@ -53,7 +53,7 @@ Input files: input/pw_pec.txt input/init_emo_params.txt
 === End of input file: input/pw_pec.txt ===
 
 
-=== Input file: input/init_emo_params.txt ===
+=== Input file: input/init_emo.txt ===
 
 [EMO]
 de    37250
@@ -65,7 +65,7 @@ beta  1.
       0. 
       0.
 
-=== End of input file: input/init_emo_params.txt ===
+=== End of input file: input/init_emo.txt ===
 
 === Point-wise PEC approximation ===
 
@@ -176,4 +176,3 @@ beta  1.86598e+00
       9.97366e-02
       4.23179e-01
       2.96481e-01
-      

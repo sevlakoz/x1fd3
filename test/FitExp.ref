@@ -1,6 +1,6 @@
-Input files: input/vr_fit_params.txt input/fitted_emo_params.txt input/pw_pec.txt input/exp_levels.txt
+Input files: input/params_fit.txt input/fitted_emo.txt input/pw_pec.txt input/exp_levels.txt
 
-=== Input file: input/vr_fit_params.txt ===
+=== Input file: input/params_fit.txt ===
 
 [FIT]
 mass1 1.007825
@@ -8,10 +8,10 @@ mass2 34.968852
 rmin  0.91
 rmax  4.0
 
-=== End of input file: input/vr_fit_params.txt ===
+=== End of input file: input/params_fit.txt ===
 
 
-=== Input file: input/fitted_emo_params.txt ===
+=== Input file: input/fitted_emo.txt ===
 
 [EMO]
 de    37430.35910153395
@@ -24,7 +24,7 @@ beta  1.8659827543007734
       0.2964808850036093
 
 
-=== End of input file: input/fitted_emo_params.txt ===
+=== End of input file: input/fitted_emo.txt ===
 
 
 === Input file: input/pw_pec.txt ===
@@ -328,4 +328,3 @@ beta  1.90884e+00
       1.46812e-01
       3.72221e-01
       3.06639e-01
-      

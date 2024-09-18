@@ -1,6 +1,6 @@
-Input files: input/vr_spectrum_calc_params.txt input/fitted_emo_params.txt input/pw_dm.txt
+Input files: input/params_spectrum.txt input/fitted_emo.txt input/pw_dm.txt
 
-=== Input file: input/vr_spectrum_calc_params.txt ===
+=== Input file: input/params_spectrum.txt ===
 
 [SPECTRUM]
 mass1 1.007825
@@ -11,10 +11,10 @@ jmax  10
 v1    0
 v2    1
 
-=== End of input file: input/vr_spectrum_calc_params.txt ===
+=== End of input file: input/params_spectrum.txt ===
 
 
-=== Input file: input/fitted_emo_params.txt ===
+=== Input file: input/fitted_emo.txt ===
 
 [EMO]
 de    37430.35910153395
@@ -27,7 +27,7 @@ beta  1.8659827543007734
       0.2964808850036093
 
 
-=== End of input file: input/fitted_emo_params.txt ===
+=== End of input file: input/fitted_emo.txt ===
 
 
 === Input file: input/pw_dm.txt ===
