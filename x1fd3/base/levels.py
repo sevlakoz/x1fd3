@@ -5,7 +5,7 @@ from scipy.linalg import eigh_tridiagonal     # type: ignore
 
 from .p_w_curve import PWCurve
 from .parameters import Parameters
-from .an_pec_funcs import emo
+from .an_pec_funcs import emo, mlr
 from .logger import Logger
 from .exp_data import ExpData
 
@@ -53,6 +53,9 @@ class Levels:
             an_ptype = params['ptype']
             if an_ptype == 'EMO':
                 u_grid = emo(r_grid, params)
+                emax = params['de']
+            elif an_ptype == 'MLR':
+                u_grid = mlr(r_grid, params)
                 emax = params['de']
             else:
                 raise RuntimeError(f'ERROR: Uknown analytic pec type "{an_ptype}"')

@@ -5,7 +5,7 @@ from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .levels import Levels
 from .exp_data import ExpData
-from .an_pec_funcs import emo
+from .an_pec_funcs import emo, mlr
 
 def res_pec(
         guess: list[float],
@@ -28,6 +28,8 @@ def res_pec(
     # pec
     if params['ptype'] == 'EMO':
         pec_an = emo(pec.rval, tmp)
+    elif params['ptype'] == 'MLR':
+        pec_an = mlr(pec.rval, tmp)
     else:
         raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
 
@@ -70,6 +72,8 @@ def res_exp(
     # pec
     if params['ptype'] == 'EMO':
         pec_an = emo(pec.rval, tmp)
+    elif params['ptype'] == 'MLR':
+        pec_an = mlr(pec.rval, tmp)
     else:
         raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
 

@@ -5,7 +5,7 @@ from os.path import isfile
 from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .logger import Logger
-from .an_pec_funcs import emo
+from .an_pec_funcs import emo, mlr
 
 def print_input_file(
         out: Logger,
@@ -34,6 +34,8 @@ def print_pecs(
     # pec calc
     if params['ptype'] == 'EMO':
         pec_an = emo(pec.rval, params)
+    elif params['ptype'] == 'MLR':
+        pec_an = mlr(pec.rval, params)
     else:
         raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
 
