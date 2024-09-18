@@ -5,7 +5,7 @@ from os.path import isfile
 from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .logger import Logger
-from .emo import emo
+from .an_pec_funcs import emo
 
 def print_input_file(
         out: Logger,

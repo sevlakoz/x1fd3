@@ -5,7 +5,7 @@ from scipy.linalg import eigh_tridiagonal     # type: ignore
 
 from .p_w_curve import PWCurve
 from .parameters import Parameters
-from .emo import emo
+from .an_pec_funcs import emo
 from .logger import Logger
 from .exp_data import ExpData
 

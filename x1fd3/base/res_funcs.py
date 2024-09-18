@@ -5,7 +5,7 @@ from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .levels import Levels
 from .exp_data import ExpData
-from .emo import emo
+from .an_pec_funcs import emo
 
 def res_pec(
         guess: list[float],
