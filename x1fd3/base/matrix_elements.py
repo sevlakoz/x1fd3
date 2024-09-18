@@ -98,7 +98,7 @@ class MatrixElements:
                 sa = j1       / (2 * j1 + 1)
                 se = (j2 + 1) / (2 * j2 + 1)
             else:
-                raise RuntimeError('ERROR: wrong dJ')
+                raise RuntimeError('wrong dJ')
 
             en1 = self.energy1[j2][j1]
             frq  = self.freq[j2][j1]

@@ -5,7 +5,7 @@ from os.path import isfile
 from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .logger import Logger
-from .an_pec_funcs import emo, mlr
+from .an_pec_funcs import an_pec
 
 def print_input_file(
         out: Logger,
@@ -21,7 +21,7 @@ def print_input_file(
                 out.print(line, end = '')
         out.print(f'\n=== End of input file: {fname} ===\n')
     else:
-        raise FileNotFoundError(f'ERROR: No such file: {fname}')
+        raise FileNotFoundError(f'No such file: {fname}')
 
 def print_pecs(
         out: Logger,
@@ -32,12 +32,7 @@ def print_pecs(
     print point-wise and approximated pec
     '''
     # pec calc
-    if params['ptype'] == 'EMO':
-        pec_an = emo(pec.rval, params)
-    elif params['ptype'] == 'MLR':
-        pec_an = mlr(pec.rval, params)
-    else:
-        raise RuntimeError(f"ERROR: {params['ptype']} not implemented")
+    pec_an = an_pec(pec.rval, params)
 
     # print with loop over r
     lbl = f'U({params["ptype"]}),cm-1'

@@ -6,6 +6,24 @@ import numpy.typing as npt
 
 from .parameters import Parameters
 
+def an_pec(
+        r_inp: npt.NDArray[np.float64],
+        params: Parameters
+    ) -> npt.NDArray[np.float64]:
+    '''
+    calculate pec vals for grid of Rs
+    '''
+    match params['ptype']:
+        case 'EMO':
+            return emo(r_inp, params)
+        case 'MLR':
+            return mlr(r_inp, params)
+        case 'DELR':
+            return delr(r_inp, params)
+        case _:
+            raise RuntimeError(f"{params['ptype']} not implemented")
+
+
 def emo(
         r_inp: npt.NDArray[np.float64],
         params: Parameters
@@ -52,9 +70,10 @@ def delr(
     calculate DELR value for given r point and params
     '''
     yq = y(r_inp, params['q'], params['rref'])
+    yq_re = y(np.array([params['re']]), params['q'], params['rref'])
 
     beta_pol = beta(r_inp, params['beta'], yq)
-    beta_pol_re = float(beta(np.array([params['re']]), params['beta'], yq)[0])
+    beta_pol_re = float(beta(np.array([params['re']]), params['beta'], yq_re)[0])
 
     ulr = lr(r_inp, params)
     ulr_re = float(lr(np.array([params['re']]), params)[0])
