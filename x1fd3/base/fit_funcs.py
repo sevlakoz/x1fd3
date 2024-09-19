@@ -14,7 +14,7 @@ def pec_fit(
         params: Parameters
     ) -> tuple[Parameters, str, bool]:
     '''
-    fit pec by EMO function
+    fit PEC by analytic function
     '''
 
     # fitted params

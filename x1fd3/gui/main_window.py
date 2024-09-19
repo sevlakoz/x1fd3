@@ -48,11 +48,11 @@ class MainWindow:
         )
 
         modes = {
-            'PecApprox': 'Point-wise PEC approximation with analytic function (EMO)',
+            'PecApprox': 'Point-wise PEC approximation with analytic function',
             'LevelsPW': 'Vib.-rot. levels calculation with point-wise PEC',
-            'LevelsAn': 'Vib.-rot. levels calculation with analytic PEC (EMO)',
+            'LevelsAn': 'Vib.-rot. levels calculation with analytic PEC',
             'SpectrumPW': 'Vib.-rot. spectrum calculation with point-wise PEC',
-            'SpectrumAn': 'Vib.-rot. spectrum calculation with analytic PEC (EMO)',
+            'SpectrumAn': 'Vib.-rot. spectrum calculation with analytic PEC',
             'FitExp': 'Fit PEC to reproduce experimental vib.-rot. levels'
         }
 

@@ -190,13 +190,13 @@ class CalcWindow:
                 column = 2
             )
 
-        # init EMO params
+        # init params
         if mode in [
             'PecApprox'
         ]:
             tk.Label(
                 self.root,
-                text = 'Initial EMO parameters for PEC approxomation, example: input/init_emo.txt'
+                text = 'Initial parameters for PEC approxomation, example: input/init_emo.txt'
             ).grid(
                 row = 106,
                 column = 0,
@@ -222,7 +222,7 @@ class CalcWindow:
                 column = 2
             )
 
-        # fitted EMO params
+        # fitted params
         if mode in [
             'LevelsAn',
             'SpectrumAn',
@@ -230,7 +230,7 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Fitted EMO parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
+                text = 'Fitted PEC parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
             ).grid(
                 row = 107,
                 column = 0,
@@ -487,10 +487,10 @@ class CalcWindow:
                 return
 
             try:
-                out.print('* Init EMO parameters *')
+                out.print('* Init PEC parameters *')
                 print_input_file(out, f_init_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with initial EMO parameters', out)
+                self.print_message('ERROR: failed to read input file with initial parameters for PEC approximation', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
@@ -506,7 +506,7 @@ class CalcWindow:
                 params = Parameters()
                 params.read_pec_params(f_init_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read initial EMO parameters', out)
+                self.print_message('ERROR: failed to read initial PEC parameters', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
@@ -599,10 +599,10 @@ class CalcWindow:
                 return
 
             try:
-                out.print('* Fitted EMO parameters *')
+                out.print('* Fitted PEC parameters *')
                 print_input_file(out, f_fit_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with fitted EMO parameters', out)
+                self.print_message('ERROR: failed to read input file with fitted PEC parameters', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
@@ -618,7 +618,7 @@ class CalcWindow:
             try:
                 params.read_pec_params(f_fit_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read fitted EMO parameters', out)
+                self.print_message('ERROR: failed to read fitted PEC parameters', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
@@ -723,10 +723,10 @@ class CalcWindow:
                 return
 
             try:
-                out.print('* Fitted EMO parameters *')
+                out.print('* Fitted PEC parameters *')
                 print_input_file(out, f_fit_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with fitted EMO parameters', out)
+                self.print_message('ERROR: failed to read input file with fitted PEC parameters', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
@@ -750,7 +750,7 @@ class CalcWindow:
             try:
                 params.read_pec_params(f_fit_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read fitted EMO parameters', out)
+                self.print_message('ERROR: failed to read fitted PEC parameters', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
@@ -797,10 +797,10 @@ class CalcWindow:
                 return
 
             try:
-                out.print('* Fitted EMO parameters *')
+                out.print('* Fitted PEC parameters *')
                 print_input_file(out, f_fit_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with fitted EMO parameters', out)
+                self.print_message('ERROR: failed to read input file with fitted PEC parameters', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
@@ -839,7 +839,7 @@ class CalcWindow:
             try:
                 params.read_pec_params(f_fit_par)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read fitted EMO parameters', out)
+                self.print_message('ERROR: failed to read fitted PEC parameters', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 

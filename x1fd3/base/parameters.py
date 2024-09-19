@@ -25,24 +25,28 @@ class Parameters(UserDict):
 
         params_check = {
             'EMO': {'re', 'de', 'rref', 'q', 'beta'},
-            'MLR': {'re', 'de', 'rref', 'q', 'p', 'beta', 'cnpow', 'cnval'},
-            'DELR': {'re', 'de', 'rref', 'q', 'beta', 'cnpow', 'cnval'}
+            'MLR': {'re', 'de', 'rref', 'q', 'p', 'beta', 'cnpow', 'cnval', 'dampf', 'rho', 's'},
+            'DELR': {'re', 'de', 'rref', 'q', 'beta', 'cnpow', 'cnval', 'dampf', 'rho', 's'}
         }
 
-        if not ptype in params_check.keys():
+        if not ptype in params_check:
             raise RuntimeError(f'Uknown potential type "{ptype}"')
 
         tmp = {}
 
         for keyword, value in input_parser[ptype].items():
-            if keyword in ('q', 'p'):
+            if keyword in ('q', 'p', 's'):
                 tmp[keyword] = int(value)
-            elif keyword in ('re', 'de', 'rref'):
+            elif keyword in ('re', 'de', 'rref', 'rho'):
                 tmp[keyword] = float(value)                              # type: ignore
             elif keyword in ('beta', 'cnval'):
                 tmp[keyword] = np.array(list(map(float, value.split()))) # type: ignore
             elif keyword in ('cnpow'):
                 tmp[keyword] = np.array(list(map(int, value.split()))) # type: ignore
+            elif keyword in ('dampf'):
+                tmp[keyword] = value # type: ignore
+            else:
+                raise RuntimeError(f'Unknown keyword "{keyword}"')
 
         if tmp.keys() != params_check[ptype]:
             raise RuntimeError(f'For {ptype} the following parameters must be given: {params_check[ptype]}')
@@ -121,3 +125,6 @@ class Parameters(UserDict):
             for cn in self['cnval']:
                 out.print(f'{lbl}{cn:10.5e}')
                 lbl = ' '*6
+            out.print(f"dampf {self['dampf']}")
+            out.print(f"s     {self['s']}")
+            out.print(f"rho   {self['rho']}")

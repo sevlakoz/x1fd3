@@ -1,15 +1,16 @@
 '''
 analytic pec functions
 '''
+from math import factorial
 import numpy as np
 import numpy.typing as npt
 
 from .parameters import Parameters
 
 def an_pec(
-        r_inp: npt.NDArray[np.float64],
-        params: Parameters
-    ) -> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    params: Parameters
+) -> npt.NDArray[np.float64]:
     '''
     calculate pec vals for grid of Rs
     '''
@@ -25,9 +26,9 @@ def an_pec(
 
 
 def emo(
-        r_inp: npt.NDArray[np.float64],
-        params: Parameters
-    ) -> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    params: Parameters
+) -> npt.NDArray[np.float64]:
     '''
     calculate EMO value for given r point and params
     '''
@@ -40,9 +41,9 @@ def emo(
     return val
 
 def mlr(
-        r_inp: npt.NDArray[np.float64],
-        params: Parameters
-    ) -> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    params: Parameters
+) -> npt.NDArray[np.float64]:
     '''
     calculate MLR value for given r point and params
     '''
@@ -63,9 +64,9 @@ def mlr(
     return val
 
 def delr(
-        r_inp: npt.NDArray[np.float64],
-        params: Parameters
-    ) -> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    params: Parameters
+) -> npt.NDArray[np.float64]:
     '''
     calculate DELR value for given r point and params
     '''
@@ -89,20 +90,20 @@ def delr(
     return val
 
 def y(
-        r_inp: npt.NDArray[np.float64],
-        q: int,
-        rref: float
-    ) -> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    q: int,
+    rref: float
+) -> npt.NDArray[np.float64]:
     '''
     calculate y function  value for given r point and params
     '''
     return (r_inp**q - rref**q) / (r_inp**q + rref**q)
 
 def beta(
-        r_inp: npt.NDArray[np.float64],
-        beta_coefs: list[float],
-        y_vals: npt.NDArray[np.float64]
-    )-> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    beta_coefs: list[float],
+    y_vals: npt.NDArray[np.float64]
+)-> npt.NDArray[np.float64]:
     '''
     calculate beta function value for given r point and params
     '''
@@ -113,22 +114,22 @@ def beta(
     return val
 
 def lr(
-        r_inp: npt.NDArray[np.float64],
-        params: Parameters
-    ) -> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    params: Parameters
+) -> npt.NDArray[np.float64]:
     '''
     calculate long-range value for given r point and params
     '''
     val = np.zeros(len(r_inp))
     for n, cn in zip(params['cnpow'], params['cnval']):
-        val += cn * r_inp**-n
+        val += dampf(r_inp, params, n) * cn * r_inp**-n
 
     return val
 
 def der_lr(
-        r_inp: npt.NDArray[np.float64],
-        params: Parameters
-    ) -> npt.NDArray[np.float64]:
+    r_inp: npt.NDArray[np.float64],
+    params: Parameters
+) -> npt.NDArray[np.float64]:
     '''
     calculate d(long-range)/dR value for given r point and params
     '''
@@ -137,3 +138,59 @@ def der_lr(
         val -= n * cn * r_inp**(- n - 1)
 
     return val
+
+def dampf(
+    r_inp: npt.NDArray[np.float64],
+    params: Parameters,
+    n: int
+) -> npt.NDArray[np.float64]:
+    '''
+    see doi.org/10.1080/00268976.2010.527304 for details
+    params['dampf'] options: 
+    * 'ds'   - Douketis et al.
+    * 'tt'   - Tang-Toennies
+    * 'none' - disable damping
+    s = 1/2 for 'ds' is not included
+    '''
+
+    btt = {
+        2: 3.47,
+        1: 3.13,
+        0: 2.78,
+       -1: 2.44,
+       -2: 2.1
+    }
+
+    bds = {
+        2: 4.99,
+        1: 4.53,
+        0: 3.95,
+       -1: 3.3,
+       -2: 2.5
+    }
+
+    cds = {
+        2: 0.34,
+        1: 0.36,
+        0: 0.39,
+       -1: 0.423,
+       -2: 0.468
+    }
+
+
+    s = params['s']
+    rho = params['rho']
+    match params['dampf']:
+        case 'tt':
+            sm = 0
+            for k in range(n + s -1):
+                sm += btt[s] * (rho * r_inp)**k / factorial(k)
+            return 1 - np.exp(- btt[s] * rho * r_inp) * sm
+        case 'ds':
+            ex = np.exp(- bds[s] * rho * r_inp / n
+                        - cds[s] * (rho * r_inp)**2 / n**0.5)
+            return (1 - ex)**(n + s)
+        case 'none':
+            return np.ones(len(r_inp))
+        case _:
+            raise RuntimeError(f"{params['dampf']} not implemented")
