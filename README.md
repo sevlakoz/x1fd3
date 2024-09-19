@@ -14,7 +14,7 @@ python -m x1fd3 [mode] [input files]
 ```
 Available modes:
 * GUI - TK wrapper for all other modes 
-* PecApprox - Potential energy curve (PEC) approximation with function 
+* PecApprox - Potential energy curve (PEC) approximation with analytic function 
 * LevelsPW - Vibrational-rotational level calculation for given point-wise PEC
 * LevelsAn - Vibrational-rotational level calculation for given analytic PEC
 * SpectrumPW - Vibrational-rotational spectrum calculation for given point-wise PEC and point-wise dipole moment (DM)
