@@ -5,7 +5,7 @@ from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .levels import Levels
 from .exp_data import ExpData
-from .an_pec_funcs import an_pec
+from .an_pec import AnPec
 
 def res_pec(
         guess: list[float],
@@ -26,7 +26,7 @@ def res_pec(
     res = []
 
     # pec
-    pec_an = an_pec(pec.rval, tmp)
+    pec_an = AnPec(tmp).calc(pec.rval)
 
     for u_inp, u_cal in zip(pec.cval, pec_an):
         err = max(u_inp / 100., 100.)
@@ -65,7 +65,7 @@ def res_exp(
                 res.append((levels.energy[j][v] - en_v) / 0.1)
 
     # pec
-    pec_an = an_pec(pec.rval, tmp)
+    pec_an = AnPec(tmp).calc(pec.rval)
 
     for u_inp, u_cal in zip(pec.cval, pec_an):
         err = max(u_inp / 100., 100.)

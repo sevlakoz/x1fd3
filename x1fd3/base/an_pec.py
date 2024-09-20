@@ -1,0 +1,219 @@
+from math import factorial
+import numpy as np
+import numpy.typing as npt
+
+from .parameters import Parameters
+
+class AnPec:
+    '''
+    class for analytic pec functions
+    '''
+    def __init__(
+        self,
+        params: Parameters
+    ) -> None:
+        '''
+        init params
+        '''
+        self.params = params
+
+    def calc(
+        self,
+        r_inp: npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.float64]:
+        '''
+        calculate pec vals for grid of Rs
+        '''
+        match self.params['ptype']:
+            case 'EMO':
+                return self._emo(r_inp)
+            case 'MLR':
+                return self._mlr(r_inp)
+            case 'DELR':
+                return self._delr(r_inp)
+            case _:
+                raise RuntimeError(f"{self.params['ptype']} not implemented")
+
+
+    def _emo(
+        self,
+        r_inp: npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.float64]:
+        '''
+        calculate EMO value for given r point and params
+        '''
+        p = self.params
+
+        yq = self._y(r_inp, p['q'], p['rref'])
+
+        beta_pol = self._beta(yq)
+
+        val = p['de'] * (1 - np.exp(- beta_pol * (r_inp - p['re'])))**2
+
+        return val
+
+    def _mlr(
+        self,
+        r_inp: npt.NDArray[np.float64],
+    ) -> npt.NDArray[np.float64]:
+        '''
+        calculate MLR value for given r point and params
+        '''
+        p = self.params
+
+        yq = self._y(r_inp, p['q'], p['rref'])
+        yp = self._y(r_inp, p['p'], p['rref'])
+        yp_eq = self._y(r_inp, p['p'], p['re'])
+
+        ulr_re = float(self._lr(np.array([p['re']]))[0])
+        ulr = self._lr(r_inp)
+
+        binf = np.log(2 * p['de'] / ulr_re)
+        beta_pol = self._beta(yq)
+        beta_pol *= (1 - yp)
+        beta_pol += binf * yp
+
+        val = p['de'] * (1 - ulr / ulr_re * np.exp(- beta_pol * yp_eq))**2
+
+        return val
+
+    def _delr(
+        self,
+        r_inp: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
+        '''
+        calculate DELR value for given r point and params
+        '''
+        p = self.params
+
+        yq = self._y(r_inp, p['q'], p['rref'])
+        yq_re = self._y(np.array([p['re']]), p['q'], p['rref'])
+
+        beta_pol = self._beta(yq)
+        beta_pol_re = float(self._beta(yq_re)[0])
+
+        ulr = self._lr(r_inp)
+        ulr_re = float(self._lr(np.array([p['re']]))[0])
+
+        der_ulr_re = float(self._der_lr(np.array([p['re']]))[0])
+
+        a = p['de'] - ulr_re - der_ulr_re / beta_pol_re
+        b = p['de'] - ulr_re + a
+
+        val = p['de'] - ulr + a * np.exp(- 2 * beta_pol * (r_inp - p['re'])) \
+                            - b * np.exp(- beta_pol * (r_inp - p['re']))
+
+        return val
+
+    def _y(
+        self,
+        r_inp: npt.NDArray[np.float64],
+        q: int,
+        rref: float
+    ) -> npt.NDArray[np.float64]:
+        '''
+        calculate y function  value for given r points and params
+        '''
+        return (r_inp**q - rref**q) / (r_inp**q + rref**q)
+
+    def _beta(
+        self,
+        y_vals: npt.NDArray[np.float64]
+    )-> npt.NDArray[np.float64]:
+        '''
+        calculate beta function value for given r point and params
+        '''
+        p = self.params
+
+        val = np.zeros(len(y_vals))
+        for n, b in enumerate(p['beta']):
+            val += b * y_vals**n
+
+        return val
+
+    def _lr(
+        self,
+        r_inp: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
+        '''
+        calculate long-range value for given r point and params
+        '''
+        p = self.params
+
+        val = np.zeros(len(r_inp))
+        for n, cn in zip(p['cnpow'], p['cnval']):
+            val += self._dampf(r_inp, n) * cn * r_inp**-n
+
+        return val
+
+    def _der_lr(
+        self,
+        r_inp: npt.NDArray[np.float64]
+    ) -> npt.NDArray[np.float64]:
+        '''
+        calculate d(long-range)/dR value for given r point and params
+        '''
+        p = self.params
+
+        val = np.zeros(len(r_inp))
+        for n, cn in zip(p['cnpow'], p['cnval']):
+            val -= n * cn * r_inp**(- n - 1)
+
+        return val
+
+    def _dampf(
+        self,
+        r_inp: npt.NDArray[np.float64],
+        n: int
+    ) -> npt.NDArray[np.float64]:
+        '''
+        see doi.org/10.1080/00268976.2010.527304 for details
+        params['dampf'] options: 
+        * 'ds'   - Douketis et al.
+        * 'tt'   - Tang-Toennies
+        * 'none' - disable damping
+        s = 1/2 for 'ds' is not included
+        '''
+        p = self.params
+
+        btt = {
+            2: 3.47,
+            1: 3.13,
+            0: 2.78,
+           -1: 2.44,
+           -2: 2.1
+        }
+
+        bds = {
+            2: 4.99,
+            1: 4.53,
+            0: 3.95,
+           -1: 3.3,
+           -2: 2.5
+        }
+
+        cds = {
+            2: 0.34,
+            1: 0.36,
+            0: 0.39,
+           -1: 0.423,
+           -2: 0.468
+        }
+
+
+        s = p['s']
+        rho = p['rho']
+        match p['dampf']:
+            case 'tt':
+                sm = 0
+                for k in range(n + s -1):
+                    sm += btt[s] * (rho * r_inp)**k / factorial(k)
+                return 1 - np.exp(- btt[s] * rho * r_inp) * sm
+            case 'ds':
+                ex = np.exp(- bds[s] * rho * r_inp / n
+                            - cds[s] * (rho * r_inp)**2 / n**0.5)
+                return (1 - ex)**(n + s)
+            case 'none':
+                return np.ones(len(r_inp))
+            case _:
+                raise RuntimeError(f"{p['dampf']} not implemented")

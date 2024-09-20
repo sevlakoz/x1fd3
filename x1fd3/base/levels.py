@@ -5,7 +5,7 @@ from scipy.linalg import eigh_tridiagonal     # type: ignore
 
 from .p_w_curve import PWCurve
 from .parameters import Parameters
-from .an_pec_funcs import an_pec
+from .an_pec import AnPec
 from .logger import Logger
 from .exp_data import ExpData
 
@@ -50,7 +50,7 @@ class Levels:
             emax = u_grid[-1]
         elif ptype == 'an':
             # analytic
-            u_grid = an_pec(r_grid, params)
+            u_grid = AnPec(params).calc(r_grid)
             if params['ptype'] in ('EMO', 'MLR', 'DELR'):
                 emax = params['de']
             else:

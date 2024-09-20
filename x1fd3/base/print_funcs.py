@@ -5,7 +5,7 @@ from os.path import isfile
 from .p_w_curve import PWCurve
 from .parameters import Parameters
 from .logger import Logger
-from .an_pec_funcs import an_pec
+from .an_pec import AnPec
 
 def print_input_file(
         out: Logger,
@@ -32,7 +32,7 @@ def print_pecs(
     print point-wise and approximated pec
     '''
     # pec calc
-    pec_an = an_pec(pec.rval, params)
+    pec_an = AnPec(params).calc(pec.rval)
 
     # print with loop over r
     lbl = f'U({params["ptype"]}),cm-1'
