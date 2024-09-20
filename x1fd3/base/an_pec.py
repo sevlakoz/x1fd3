@@ -204,10 +204,11 @@ class AnPec:
         if der_order == 0:
             match p['dampf']:
                 case 'tt':
-                    sm = 0
-                    for k in range(n + s - 1):
+                    ex = np.exp(- btt[s] * rho * r_inp)
+                    sm = np.ones(len(r_inp))
+                    for k in range(1, n + s):
                         sm += (btt[s] * rho * r_inp)**k / factorial(k)
-                    return 1 - np.exp(- btt[s] * rho * r_inp) * sm
+                    return 1 - ex * sm
                 case 'ds':
                     ex = np.exp(- bds[s] * rho * r_inp / n
                                 - cds[s] * (rho * r_inp)**2 / n**0.5)
@@ -219,18 +220,19 @@ class AnPec:
         elif der_order == 1:
             match p['dampf']:
                 case 'tt':
-                    sm = 0
-                    dsm = 0
-                    for k in range(n + s -1):
-                        ex = np.exp(- btt[s] * rho * r_inp)
+                    ex = np.exp(- btt[s] * rho * r_inp)
+                    sm = np.ones(len(r_inp))
+                    dsm = np.zeros(len(r_inp))
+                    for k in range(1, n + s):
                         sm += (btt[s] * rho * r_inp)**k / factorial(k)
-                        dsm += k * (btt[s] * rho * r_inp)**(k - 1) / factorial(k)
-                    return btt[s] * rho * ex * sm + dsm * ex
+                        dsm += k * btt[s] * rho *(btt[s] * rho * r_inp)**(k - 1) / factorial(k)
+                    return btt[s] * rho * ex * sm - dsm * ex
                 case 'ds':
                     ex = np.exp(- bds[s] * rho * r_inp / n
                                 - cds[s] * (rho * r_inp)**2 / n**0.5)
-                    return (bds[s] * rho / n + 2 * cds[s] * rho * r_inp / n**0.5) \
-                            * (1 - ex)**(n + s - 1)
+                    return (n + s) * (1 - ex)**(n + s - 1) * ex \
+                           * (bds[s] * rho / n + 2 * cds[s] * rho**2 * r_inp / n**0.5)
+
                 case 'none':
                     return np.zeros(len(r_inp))
                 case _:

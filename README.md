@@ -38,7 +38,7 @@ y = \frac{R^q - R_{ref}^q}{R^q + R_{ref}^q}
 ```
 $`D_e`$, $`R_e`$ and $`\beta_0`$, ..., $`\beta_N`$ are optimized within non-linear least squares.
 
-Note: MLR is available as well.
+Note: MLR and DELR are available as well.
 
 ### LevelsPW
 Vibrational-rotational levels are found by solving the radial Schrodinger equation:
