@@ -225,8 +225,7 @@ class AnPec:
                         ex = np.exp(- btt[s] * rho * r_inp)
                         sm += (btt[s] * rho * r_inp)**k / factorial(k)
                         dsm += k * (btt[s] * rho * r_inp)**(k - 1) / factorial(k)
-                    return btt[s] * rho * ex * sm \
-                           + dsm * ex
+                    return btt[s] * rho * ex * sm + dsm * ex
                 case 'ds':
                     ex = np.exp(- bds[s] * rho * r_inp / n
                                 - cds[s] * (rho * r_inp)**2 / n**0.5)
