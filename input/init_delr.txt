@@ -1,0 +1,19 @@
+[DELR]
+de    37250
+re    1.27
+rref  1.5
+q     3
+beta  2. 
+      0. 
+      0. 
+      0.
+cnpow 6
+      8
+      10
+cnval 1.128e5
+      8.54e5
+      6.99e6
+# none = damping disabled; s and rho still required, but not used
+dampf none  
+s     0
+rho   0.
