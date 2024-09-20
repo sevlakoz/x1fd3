@@ -58,6 +58,7 @@ class AnPec:
     ) -> npt.NDArray[np.float64]:
         '''
         calculate MLR value for given r point and params
+        see https://doi.org/10.1063%2F1.3264688 for details
         '''
         p = self.params
 
@@ -83,6 +84,7 @@ class AnPec:
     ) -> npt.NDArray[np.float64]:
         '''
         calculate DELR value for given r point and params
+        see https://doi.org/10.1063/1.1607313 for details
         '''
         p = self.params
 
@@ -95,7 +97,7 @@ class AnPec:
         ulr = self._lr(r_inp)
         ulr_re = float(self._lr(np.array([p['re']]))[0])
 
-        der_ulr_re = float(self._der_lr(np.array([p['re']]))[0])
+        der_ulr_re = float(self._lr(np.array([p['re']]), 1)[0])
 
         a = p['de'] - ulr_re - der_ulr_re / beta_pol_re
         b = p['de'] - ulr_re + a
@@ -133,7 +135,8 @@ class AnPec:
 
     def _lr(
         self,
-        r_inp: npt.NDArray[np.float64]
+        r_inp: npt.NDArray[np.float64],
+        der_order: int = 0
     ) -> npt.NDArray[np.float64]:
         '''
         calculate long-range value for given r point and params
@@ -141,33 +144,27 @@ class AnPec:
         p = self.params
 
         val = np.zeros(len(r_inp))
-        for n, cn in zip(p['cnpow'], p['cnval']):
-            val += self._dampf(r_inp, n) * cn * r_inp**-n
 
-        return val
-
-    def _der_lr(
-        self,
-        r_inp: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
-        '''
-        calculate d(long-range)/dR value for given r point and params
-        '''
-        p = self.params
-
-        val = np.zeros(len(r_inp))
-        for n, cn in zip(p['cnpow'], p['cnval']):
-            val -= n * cn * r_inp**(- n - 1)
+        if der_order == 0:
+            for n, cn in zip(p['cnpow'], p['cnval']):
+                val += self._dampf(r_inp, n) * cn * r_inp**-n
+        elif der_order == 1:
+            for n, cn in zip(p['cnpow'], p['cnval']):
+                val -= self._dampf(r_inp, n) * n * cn * r_inp**(- n - 1)
+                val += self._dampf(r_inp, n, 1) * cn * r_inp**-n
+        else:
+            raise RuntimeError(f"order {der_order} not implemented")
 
         return val
 
     def _dampf(
         self,
         r_inp: npt.NDArray[np.float64],
-        n: int
+        n: int,
+        der_order: int = 0
     ) -> npt.NDArray[np.float64]:
         '''
-        see doi.org/10.1080/00268976.2010.527304 for details
+        see https://doi.org/10.1080/00268976.2010.527304 for details
         params['dampf'] options: 
         * 'ds'   - Douketis et al.
         * 'tt'   - Tang-Toennies
@@ -203,17 +200,41 @@ class AnPec:
 
         s = p['s']
         rho = p['rho']
-        match p['dampf']:
-            case 'tt':
-                sm = 0
-                for k in range(n + s -1):
-                    sm += btt[s] * (rho * r_inp)**k / factorial(k)
-                return 1 - np.exp(- btt[s] * rho * r_inp) * sm
-            case 'ds':
-                ex = np.exp(- bds[s] * rho * r_inp / n
-                            - cds[s] * (rho * r_inp)**2 / n**0.5)
-                return (1 - ex)**(n + s)
-            case 'none':
-                return np.ones(len(r_inp))
-            case _:
-                raise RuntimeError(f"{p['dampf']} not implemented")
+
+        if der_order == 0:
+            match p['dampf']:
+                case 'tt':
+                    sm = 0
+                    for k in range(n + s - 1):
+                        sm += (btt[s] * rho * r_inp)**k / factorial(k)
+                    return 1 - np.exp(- btt[s] * rho * r_inp) * sm
+                case 'ds':
+                    ex = np.exp(- bds[s] * rho * r_inp / n
+                                - cds[s] * (rho * r_inp)**2 / n**0.5)
+                    return (1 - ex)**(n + s)
+                case 'none':
+                    return np.ones(len(r_inp))
+                case _:
+                    raise RuntimeError(f"{p['dampf']} not implemented")
+        elif der_order == 1:
+            match p['dampf']:
+                case 'tt':
+                    sm = 0
+                    dsm = 0
+                    for k in range(n + s -1):
+                        ex = np.exp(- btt[s] * rho * r_inp)
+                        sm += (btt[s] * rho * r_inp)**k / factorial(k)
+                        dsm += k * (btt[s] * rho * r_inp)**(k - 1) / factorial(k)
+                    return btt[s] * rho * ex * sm \
+                           + dsm * ex
+                case 'ds':
+                    ex = np.exp(- bds[s] * rho * r_inp / n
+                                - cds[s] * (rho * r_inp)**2 / n**0.5)
+                    return (bds[s] * rho / n + 2 * cds[s] * rho * r_inp / n**0.5) \
+                            * (1 - ex)**(n + s - 1)
+                case 'none':
+                    return np.zeros(len(r_inp))
+                case _:
+                    raise RuntimeError(f"{p['dampf']} not implemented")
+        else:
+            raise RuntimeError(f"order {der_order} not implemented")
