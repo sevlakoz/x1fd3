@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
+from os.path import isfile
 
 from x1fd3.base import PWCurve, \
                        Parameters, \
                        Logger, \
-                       ExpData, \
-                       print_input_file
+                       ExpData
 
 class Driver(ABC):
     '''
@@ -118,8 +118,15 @@ class Driver(ABC):
         self.out.print('Input files:', *self.input_files)
         for fname, ftype in zip(self.input_files, input_file_types[self.mode]):
             if fname:
-                self.out.print(f'* {ftype} *')
-                print_input_file(self.out, fname)
+                if isfile(fname):
+                    self.out.print(f'* {ftype} *')
+                    self.out.print(f'\n=== Input file: {fname} ===\n')
+                    with open(fname, encoding="utf-8") as inp:
+                        for line in inp:
+                            self.out.print(line, end = '')
+                    self.out.print(f'\n=== End of input file: {fname} ===\n')
+                else:
+                    raise FileNotFoundError(f'No such file: {fname}')
             else:
                 raise RuntimeError(f'file with {ftype} not specified')
 
