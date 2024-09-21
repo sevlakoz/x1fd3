@@ -66,7 +66,7 @@ class AnPec:
         yp = self._y(r_inp, p['p'], p['rref'])
         yp_eq = self._y(r_inp, p['p'], p['re'])
 
-        ulr_re = float(self._lr(np.array([p['re']]))[0])
+        ulr_re = self._lr(np.array([p['re']]))[0]
         ulr = self._lr(r_inp)
 
         binf = np.log(2 * p['de'] / ulr_re)
@@ -92,12 +92,12 @@ class AnPec:
         yq_re = self._y(np.array([p['re']]), p['q'], p['rref'])
 
         beta_pol = self._beta(yq)
-        beta_pol_re = float(self._beta(yq_re)[0])
+        beta_pol_re = self._beta(yq_re)[0]
 
         ulr = self._lr(r_inp)
-        ulr_re = float(self._lr(np.array([p['re']]))[0])
+        ulr_re = self._lr(np.array([p['re']]))[0]
 
-        der_ulr_re = float(self._lr(np.array([p['re']]), 1)[0])
+        der_ulr_re = self._lr(np.array([p['re']]), 1)[0]
 
         a = p['de'] - ulr_re - der_ulr_re / beta_pol_re
         b = p['de'] - ulr_re + a
@@ -171,8 +171,6 @@ class AnPec:
         * 'none' - disable damping
         s = 1/2 for 'ds' is not included
         '''
-        p = self.params
-
         btt = {
             2: 3.47,
             1: 3.13,
@@ -197,7 +195,7 @@ class AnPec:
            -2: 0.468
         }
 
-
+        p = self.params
         s = p['s']
         rho = p['rho']
 
@@ -232,7 +230,6 @@ class AnPec:
                                 - cds[s] * (rho * r_inp)**2 / n**0.5)
                     return (n + s) * (1 - ex)**(n + s - 1) * ex \
                            * (bds[s] * rho / n + 2 * cds[s] * rho**2 * r_inp / n**0.5)
-
                 case 'none':
                     return np.zeros(len(r_inp))
                 case _:
