@@ -15,6 +15,7 @@ class PWCurve:
         '''
         self.rval: npt.NDArray[np.float64] = np.array([])
         self.cval: npt.NDArray[np.float64] = np.array([])
+        self.eval: npt.NDArray[np.float64] = np.array([])
 
         if fname:
             self.read_file(fname)
@@ -26,19 +27,23 @@ class PWCurve:
         '''
         read points from file
         '''
-        tmp_rval = []
-        tmp_cval = []
+        data = np.loadtxt(fname).T
 
-        with open(fname, encoding = 'utf-8') as inp:
-            for line in inp:
-                if line.lstrip() == '' or line.lstrip()[0] == '#':
-                    continue
-                line = line.split()   # type: ignore
-                tmp_rval.append(float(line[0]))
-                tmp_cval.append(float(line[1]))
+        ncol = len(data)
 
-        self.rval = np.array(tmp_rval)
-        self.cval = np.array(tmp_cval)
+        if ncol == 2:
+            self.rval = data[0]
+            self.cval = data[1]
+            self.eval = np.maximum(
+                np.full(len(data[1]), 100.),
+                data[1] / 100.
+            )
+        elif ncol == 3:
+            self.rval = data[0]
+            self.cval = data[1]
+            self.eval = data[2]
+        else:
+            raise RuntimeError(f'found {ncol} columns in {fname}, only 2 or 3 supported')
 
     def spline(
         self,

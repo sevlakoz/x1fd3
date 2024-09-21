@@ -22,15 +22,11 @@ def res_pec(
     tmp['re'] = guess[1]
     tmp['beta'] = guess[2:]
 
-    # residual calc
-    res = []
-
     # pec
     pec_an = AnPec(tmp).calc(pec.rval)
 
-    for u_inp, u_cal in zip(pec.cval, pec_an):
-        err = max(u_inp / 100., 100.)
-        res.append((u_cal - u_inp) / err)
+    # residual calc
+    res = list((pec.cval - pec_an) / pec.eval)
 
     return res
 
@@ -66,9 +62,6 @@ def res_exp(
 
     # pec
     pec_an = AnPec(tmp).calc(pec.rval)
-
-    for u_inp, u_cal in zip(pec.cval, pec_an):
-        err = max(u_inp / 100., 100.)
-        res.append((u_cal - u_inp) / err)
+    res.extend((pec.cval - pec_an) / pec.eval)
 
     return res
