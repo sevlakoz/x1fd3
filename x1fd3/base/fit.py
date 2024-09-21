@@ -46,7 +46,7 @@ class Fit:
         guess.extend(self.params['beta'])
 
         # scipy least squares
-        res_1 = least_squares(self.res, guess)
+        res_1 = least_squares(self._res, guess)
         if res_1.success:
             out.print(f'\nPEC fit done: {res_1.message}\n')
         else:
@@ -63,7 +63,7 @@ class Fit:
         out.print('\nFitted parameters\n')
         self.params.print_pec_params(out)
 
-    def res(
+    def _res(
         self,
         guess: list[float]
     ) -> list[float]:
