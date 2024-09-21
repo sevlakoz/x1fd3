@@ -1,6 +1,5 @@
 from x1fd3.base.p_w_curve import PWCurve
-from x1fd3.base.levels import Levels
-from x1fd3.base.fit_funcs import exp_fit
+from x1fd3.base.fit import Fit
 from x1fd3.base.exp_data import ExpData
 from .driver import Driver
 
@@ -19,23 +18,10 @@ class DriverFitExp(Driver):
     def core(
         self
     ) -> None:
-        self.params['jmax'] = max(self.expdata.energy.keys())
         self.out.print('=== Fit PEC to reproduce exp. data ===\n')
-        # print initial guess
-        self.out.print('Initial guess')
-        levels = Levels('an', self.params)
-        levels.print_with_expdata(self.out, self.expdata)
-        self.pec.print_with_an(self.params, self.out)
+        # jmax from exp data
+        self.params['jmax'] = max(self.expdata.energy.keys())
+        # init obj for fit
+        fit = Fit(self.pec, self.params, self.expdata)
         # fit
-        self.params, message, success = exp_fit(self.params, self.pec, self.expdata)
-        if success:
-            self.out.print(f'\nPEC fit done: {message}')
-        else:
-            raise RuntimeError(f'\nPEC fit FAILED: {message}')
-        # print final results
-        self.out.print('Fit results')
-        levels = Levels('an', self.params)
-        levels.print_with_expdata(self.out, self.expdata)
-        self.pec.print_with_an(self.params, self.out)
-        self.out.print('\nFitted parameters\n')
-        self.params.print_pec_params(self.out)
+        fit.fit_n_print(self.out)

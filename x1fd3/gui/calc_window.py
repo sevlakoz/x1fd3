@@ -11,7 +11,7 @@ from x1fd3.base.matrix_elements import MatrixElements
 from x1fd3.base.logger import Logger
 from x1fd3.base.exp_data import ExpData
 from x1fd3.base.print_input import print_input_file
-from x1fd3.base.fit_funcs import pec_fit, exp_fit
+from x1fd3.base.fit import Fit
 
 
 class CalcWindow:
@@ -510,29 +510,18 @@ class CalcWindow:
                 self.print_message(traceback.format_exc(), out)
                 return
 
-            # print initial guess
             out.print('=== Point-wise PEC approximation ===\n')
-            out.print('Initial guess\n')
-            pec.print_with_an(params, out)
+
+            # init obj for fit
+            fit = Fit(pec, params)
 
             # fit
             try:
-                params, message, success = pec_fit(pec, params)
-                if success:
-                    out.print(f'\nPoint-wise PEC approximation done: {message}')
-                else:
-                    self.print_message(f'ERROR: point-wise PEC approximation FAILED: {message}\n', out)
-                    return
+                fit.fit_n_print(out)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "pec_fit" function', out)
+                self.print_message('ERROR: fit failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-
-            # final approximation
-            out.print('\nFitted PEC\n')
-            pec.print_with_an(params, out)
-            out.print('\nFitted parameters\n')
-            params.print_pec_params(out)
 
         # LevelsPW mode
         if self.mode == 'LevelsPW':
@@ -852,45 +841,18 @@ class CalcWindow:
 
             params['jmax'] = max(expdata.energy.keys())
 
-            out.print('=== Fit PEC to reproduce exp. data ===\n')
+            out.print('=== Fit PEC to reproduce experimental data ===\n')
 
-            # print initial guess
-            out.print('Initial guess')
-            try:
-                levels = Levels('an', params)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "vr_solver" function', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            levels.print_with_expdata(out, expdata)
-            pec.print_with_an(params, out)
+            # init obj for fit
+            fit = Fit(pec, params, expdata)
 
             # fit
             try:
-                params, message, success = exp_fit(params, pec, expdata)
-                if success:
-                    out.print(f'\nPEC fit to exp. levels done: {message}')
-                else:
-                    self.print_message(f'ERROR: PEC fit to exp. levels FAILED: {message}', out)
-                    return
+                fit.fit_n_print(out)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "exp_fit" function', out)
+                self.print_message('ERROR: fit failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-
-            # print final results
-            out.print('\nFit results')
-            try:
-                levels = Levels('an', params)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "vr_solver" function', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-            levels.print_with_expdata(out, expdata)
-            pec.print_with_an(params, out)
-            out.print('\nFitted parameters\n')
-            params.print_pec_params(out)
 
         out.close()
         self.print_message(f'SUCCESS! See "{fname}" for results\n', Logger())

@@ -1,5 +1,5 @@
 from x1fd3.base.p_w_curve import PWCurve
-from x1fd3.base.fit_funcs import pec_fit
+from x1fd3.base.fit import Fit
 from .driver import Driver
 
 class DriverPecApprox(Driver):
@@ -15,18 +15,8 @@ class DriverPecApprox(Driver):
     def core(
         self
     ) -> None:
-        # print initial guess
         self.out.print('=== Point-wise PEC approximation ===\n')
-        self.out.print('Initial guess\n')
-        self.pec.print_with_an(self.params, self.out)
+        # init obj for fit
+        fit = Fit(self.pec, self.params)
         # fit
-        self.params, message, success = pec_fit(self.pec, self.params)
-        if success:
-            self.out.print(f'\nPoint-wise PEC approximation done: {message}')
-        else:
-            raise RuntimeError(f'\nPoint-wise PEC approximation FAILED: {message}')
-        # final approximation
-        self.out.print('\nFitted PEC\n')
-        self.pec.print_with_an(self.params, self.out)
-        self.out.print('\nFitted parameters\n')
-        self.params.print_pec_params(self.out)
+        fit.fit_n_print(self.out)

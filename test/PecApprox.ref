@@ -116,9 +116,9 @@ Initial guess
    3.48500           37005.700           29561.878            7443.822
    4.67000           37214.000           34805.180            2408.820
 
-Point-wise PEC approximation done: `ftol` termination condition is satisfied.
+PEC fit done: `ftol` termination condition is satisfied.
 
-Fitted PEC
+Fit results
 
        R,A         U(p-w),cm-1         U(EMO),cm-1          delta,cm-1
    0.90898           37214.000           37142.994              71.006

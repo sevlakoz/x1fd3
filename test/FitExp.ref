@@ -140,6 +140,7 @@ beta  1.8659827543007734
 
 Initial guess
 
+
    J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1
    0   0       1483.881       1482.931          0.949
    0   1       4369.857       4363.960          5.897
@@ -228,7 +229,9 @@ Initial guess
    4.67000           37214.000           37418.374            -204.374
 
 PEC fit done: `xtol` termination condition is satisfied.
+
 Fit results
+
 
    J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1
    0   0       1483.881       1484.901         -1.021

@@ -13,6 +13,8 @@ class ExpData:
         '''
         self.energy: dict[int, dict[int, float]] = {}
 
+        self.nlev = 0
+
         if fname:
             self.read_file(fname)
 
@@ -31,15 +33,14 @@ class ExpData:
         input_parser.read(fname)
 
         # read levels
-        n_levels = 0
-
+        
         for j in input_parser.sections():
             tmp = {}
             for v, en in input_parser[j].items():
                 tmp[int(v)] = float(en)
-                n_levels += 1
+                self.nlev += 1
             self.energy[int(j)] = tmp
 
         # check
-        if n_levels == 0:
+        if self.nlev == 0:
             raise RuntimeError(f'No energy levels found in {fname}')
