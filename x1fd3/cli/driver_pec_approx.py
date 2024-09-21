@@ -16,7 +16,5 @@ class DriverPecApprox(Driver):
         self
     ) -> None:
         self.out.print('=== Point-wise PEC approximation ===\n')
-        # init obj for fit
-        fit = Fit(self.pec, self.params)
-        # fit
-        fit.fit_n_print(self.out)
+        # fit and print
+        Fit(self.pec, self.params).fit_n_print(self.out)

@@ -15,5 +15,4 @@ class DriverLevelsAn(Driver):
         self
     ) -> None:
         # calc and print vr levels
-        levels = Levels('an', self.params)
-        levels.print(self.out)
+        Levels('an', self.params).print(self.out)

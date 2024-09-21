@@ -512,12 +512,9 @@ class CalcWindow:
 
             out.print('=== Point-wise PEC approximation ===\n')
 
-            # init obj for fit
-            fit = Fit(pec, params)
-
             # fit
             try:
-                fit.fit_n_print(out)
+                Fit(pec, params).fit_n_print(out)
             except BaseException: # pylint: disable = W0718
                 self.print_message('ERROR: fit failed', out)
                 self.print_message(traceback.format_exc(), out)
@@ -564,8 +561,7 @@ class CalcWindow:
 
             # calc and print vr levels
             try:
-                levels = Levels('pw', params, pec)
-                levels.print(out)
+                Levels('pw', params, pec).print(out)
             except BaseException: # pylint: disable = W0718
                 self.print_message('ERROR: levels calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
@@ -613,8 +609,7 @@ class CalcWindow:
 
             # calc and print vr levels
             try:
-                levels = Levels('an', params)
-                levels.print(out)
+                Levels('an', params).print(out)
             except BaseException: # pylint: disable = W0718
                 self.print_message('ERROR: levels calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
@@ -685,8 +680,7 @@ class CalcWindow:
 
             # calc and print integrals
             try:
-                matrix_elements = MatrixElements(params, levels, dm)
-                matrix_elements.print(out)
+                MatrixElements(params, levels, dm).print(out)
             except BaseException: # pylint: disable = W0718
                 self.print_message('ERROR: matrix elements calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
@@ -757,8 +751,7 @@ class CalcWindow:
 
             # calc and print integrals
             try:
-                matrix_elements = MatrixElements(params, levels, dm)
-                matrix_elements.print(out)
+                MatrixElements(params, levels, dm).print(out)
             except BaseException: # pylint: disable = W0718
                 self.print_message('ERROR: matrix elements calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
@@ -839,12 +832,9 @@ class CalcWindow:
 
             out.print('=== Fit PEC to reproduce experimental data ===\n')
 
-            # init obj for fit
-            fit = Fit(pec, params, expdata)
-
             # fit
             try:
-                fit.fit_n_print(out)
+                Fit(pec, params, expdata).fit_n_print(out)
             except BaseException: # pylint: disable = W0718
                 self.print_message('ERROR: fit failed', out)
                 self.print_message(traceback.format_exc(), out)

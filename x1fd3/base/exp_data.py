@@ -33,7 +33,6 @@ class ExpData:
         input_parser.read(fname)
 
         # read levels
-        
         for j in input_parser.sections():
             tmp = {}
             for v, en in input_parser[j].items():

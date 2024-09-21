@@ -1,6 +1,3 @@
-'''
-function for print not included in any class
-'''
 from os.path import isfile
 from .logger import Logger
 
@@ -19,5 +16,3 @@ def print_input_file(
         out.print(f'\n=== End of input file: {fname} ===\n')
     else:
         raise FileNotFoundError(f'No such file: {fname}')
-
-

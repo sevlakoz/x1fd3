@@ -21,7 +21,5 @@ class DriverFitExp(Driver):
         self.out.print('=== Fit PEC to reproduce exp. data ===\n')
         # jmax from exp data
         self.params['jmax'] = max(self.expdata.energy.keys())
-        # init obj for fit
-        fit = Fit(self.pec, self.params, self.expdata)
         # fit
-        fit.fit_n_print(self.out)
+        Fit(self.pec, self.params, self.expdata).fit_n_print(self.out)

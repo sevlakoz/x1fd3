@@ -16,5 +16,4 @@ class DriverLevelsPW(Driver):
         self
     ) -> None:
         # calc and print vr levels
-        levels = Levels('pw', self.params, self.pec)
-        levels.print(self.out)
+        Levels('pw', self.params, self.pec).print(self.out)
