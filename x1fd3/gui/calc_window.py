@@ -565,12 +565,12 @@ class CalcWindow:
             # calc and print vr levels
             try:
                 levels = Levels('pw', params, pec)
+                levels.print(out)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "vr_solver" function', out)
+                self.print_message('ERROR: levels calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
-            levels.print(out)
 
         # LevelsAn mode
         if self.mode == 'LevelsAn':
@@ -611,16 +611,14 @@ class CalcWindow:
                 self.print_message(traceback.format_exc(), out)
                 return
 
-
             # calc and print vr levels
             try:
                 levels = Levels('an', params)
+                levels.print(out)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "vr_solver" function', out)
+                self.print_message('ERROR: levels calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-
-            levels.print(out)
 
         # SpectrumPW mode
         if self.mode == 'SpectrumPW':
@@ -688,12 +686,11 @@ class CalcWindow:
             # calc and print integrals
             try:
                 matrix_elements = MatrixElements(params, levels, dm)
+                matrix_elements.print(out)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "matrix_elements" function', out)
+                self.print_message('ERROR: matrix elements calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-
-            matrix_elements.print(out)
 
         # SpectrumAn mode
         if self.mode == 'SpectrumAn':
@@ -761,12 +758,11 @@ class CalcWindow:
             # calc and print integrals
             try:
                 matrix_elements = MatrixElements(params, levels, dm)
+                matrix_elements.print(out)
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "matrix_elements" function', out)
+                self.print_message('ERROR: matrix elements calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-
-            matrix_elements.print(out)
 
         # FitExp
         if self.mode == 'FitExp':
