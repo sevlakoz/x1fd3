@@ -86,42 +86,42 @@ class Driver(ABC):
         '''
         input_file_types: dict[str, tuple[str, ...]] = {
             'PecApprox': (
-                '* Point-wise PEC *',
-                '* Init PEC parameters *'
+                'Point-wise PEC',
+                'Init PEC parameters'
             ),
             'LevelsPW': (
-                '* Parameter for levels calculation *',
-                '* Point-wise PEC *'
+                'Parameter for levels calculation',
+                'Point-wise PEC'
             ),
             'LevelsAn': (
-                '* Parameter for levels calculation *',
-                '* Fitted PEC parameters *'
+                'Parameter for levels calculation',
+                'Fitted PEC parameters'
             ),
             'SpectrumPW': (
-                '* Parameter for spectrum calculation *',
-                '* Point-wise PEC *',
-                '* Point-wise dipole moment *'
+                'Parameter for spectrum calculation',
+                'Point-wise PEC',
+                'Point-wise dipole moment'
             ),
             'SpectrumAn': (
-                '* Parameter for spectrum calculation *',
-                '* Fitted PEC parameters *',
-                '* Point-wise dipole moment *'
+                'Parameter for spectrum calculation',
+                'Fitted PEC parameters',
+                'Point-wise dipole moment'
             ),
             'FitExp': (
-                '* Parameters for fit *',
-                '* Fitted PEC parameters *',
-                '* Point-wise PEC *',
-                '* Experimental levels *'
+                'Parameters for fit',
+                'Fitted PEC parameters',
+                'Point-wise PEC',
+                'Experimental levels'
             )
         }
 
         self.out.print('Input files:', *self.input_files)
         for fname, ftype in zip(self.input_files, input_file_types[self.mode]):
             if fname:
-                self.out.print(ftype)
+                self.out.print(f'* {ftype} *')
                 print_input_file(self.out, fname)
             else:
-                raise RuntimeError(f'No file for {ftype} provided')
+                raise RuntimeError(f'file with {ftype} not specified')
 
     @abstractmethod
     def read_files(
@@ -143,7 +143,7 @@ class Driver(ABC):
         self
     ) -> None:
         '''
-        run all task, print info
+        run all task
         '''
         self.print_input_files()
         self.read_files()

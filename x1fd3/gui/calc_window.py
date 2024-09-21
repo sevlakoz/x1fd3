@@ -463,10 +463,10 @@ class CalcWindow:
         fname = self.file_out.get()
         if fname:
             if isfile(fname) and getsize(fname) > 0:
-                self.print_message(f'ERROR: non-empty out file "{fname}" already exists\n', Logger())
+                self.print_message(f'RuntimeError: non-empty out file "{fname}" already exists\n', Logger())
                 return
         else:
-            self.print_message('ERROR: out file not specified\n', Logger())
+            self.print_message('RuntimeError: out file not specified\n', Logger())
             return
 
         out = Logger(fname, False)
@@ -481,8 +481,9 @@ class CalcWindow:
 
             try:
                 DriverPecApprox(self.mode, input_files, out).run()
-            except BaseException: # pylint: disable = W0718
-                self.print_message(traceback.format_exc(), out)
+            except BaseException as ex: # pylint: disable = W0718
+                self.print_message(f'RuntimeError: {ex}\n', Logger())
+                out.print(traceback.format_exc())
                 return
 
         # LevelsPW mode
@@ -495,8 +496,9 @@ class CalcWindow:
 
             try:
                 DriverLevelsPW(self.mode, input_files, out).run()
-            except BaseException: # pylint: disable = W0718
-                self.print_message(traceback.format_exc(), out)
+            except BaseException as ex: # pylint: disable = W0718
+                self.print_message(f'RuntimeError: {ex}\n', Logger())
+                out.print(traceback.format_exc())
                 return
 
         # LevelsAn mode
@@ -509,8 +511,9 @@ class CalcWindow:
 
             try:
                 DriverLevelsAn(self.mode, input_files, out).run()
-            except BaseException: # pylint: disable = W0718
-                self.print_message(traceback.format_exc(), out)
+            except BaseException as ex: # pylint: disable = W0718
+                self.print_message(f'RuntimeError: {ex}\n', Logger())
+                out.print(traceback.format_exc())
                 return
 
         # SpectrumPW mode
@@ -524,8 +527,9 @@ class CalcWindow:
 
             try:
                 DriverSpectrumPW(self.mode, input_files, out).run()
-            except BaseException: # pylint: disable = W0718
-                self.print_message(traceback.format_exc(), out)
+            except BaseException as ex: # pylint: disable = W0718
+                self.print_message(f'RuntimeError: {ex}\n', Logger())
+                out.print(traceback.format_exc())
                 return
 
         # SpectrumAn mode
@@ -539,8 +543,9 @@ class CalcWindow:
 
             try:
                 DriverSpectrumAn(self.mode, input_files, out).run()
-            except BaseException: # pylint: disable = W0718
-                self.print_message(traceback.format_exc(), out)
+            except BaseException as ex: # pylint: disable = W0718
+                self.print_message(f'RuntimeError: {ex}\n', Logger())
+                out.print(traceback.format_exc())
                 return
 
         # FitExp
@@ -555,8 +560,9 @@ class CalcWindow:
 
             try:
                 DriverFitExp(self.mode, input_files, out).run()
-            except BaseException: # pylint: disable = W0718
-                self.print_message(traceback.format_exc(), out)
+            except BaseException as ex: # pylint: disable = W0718
+                self.print_message(f'RuntimeError: {ex}\n', Logger())
+                out.print(traceback.format_exc())
                 return
 
         out.close()
