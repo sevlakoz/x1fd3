@@ -1,5 +1,5 @@
-from x1fd3.base.p_w_curve import PWCurve
-from x1fd3.base.fit import Fit
+from x1fd3.base import PWCurve, \
+                       Fit
 from .driver import Driver
 
 class DriverPecApprox(Driver):

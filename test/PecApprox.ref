@@ -1,4 +1,5 @@
 Input files: input/pw_pec.txt input/init_emo.txt
+* Point-wise PEC *
 
 === Input file: input/pw_pec.txt ===
 
@@ -52,6 +53,7 @@ Input files: input/pw_pec.txt input/init_emo.txt
 
 === End of input file: input/pw_pec.txt ===
 
+* Init PEC parameters *
 
 === Input file: input/init_emo.txt ===
 

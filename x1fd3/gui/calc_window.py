@@ -1,18 +1,18 @@
 import traceback
-from os.path import isfile, getsize, relpath
+from os.path import isfile, \
+                    getsize, \
+                    relpath
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 
-from x1fd3.base.p_w_curve import PWCurve
-from x1fd3.base.parameters import Parameters
-from x1fd3.base.levels import Levels
-from x1fd3.base.matrix_elements import MatrixElements
-from x1fd3.base.logger import Logger
-from x1fd3.base.exp_data import ExpData
-from x1fd3.base.print_input import print_input_file
-from x1fd3.base.fit import Fit
-
+from x1fd3.base import Logger
+from x1fd3.cli import DriverPecApprox, \
+                      DriverLevelsPW, \
+                      DriverLevelsAn, \
+                      DriverSpectrumPW, \
+                      DriverSpectrumAn, \
+                      DriverFitExp
 
 class CalcWindow:
     '''
@@ -474,369 +474,88 @@ class CalcWindow:
         # PecApprox mode
         if self.mode == 'PecApprox':
 
-            f_pw_pec = self.file_pw_pec.get()
-            f_init_par = self.file_init_params.get()
-
-            # print input
-            try:
-                out.print('* Point-wise PEC *')
-                print_input_file(out, f_pw_pec)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with point-wise PEC', out)
-                self.print_message(traceback.format_exc(), out)
-                return
+            input_files = [
+                self.file_pw_pec.get(),
+                self.file_init_params.get()
+            ]
 
             try:
-                out.print('* Init PEC parameters *')
-                print_input_file(out, f_init_par)
+                DriverPecApprox(self.mode, input_files, out).run()
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with initial parameters for PEC approximation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # read files
-            try:
-                pec = PWCurve(f_pw_pec)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read point-wise PEC', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                params = Parameters()
-                params.read_pec_params(f_init_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read initial PEC parameters', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            out.print('=== Point-wise PEC approximation ===\n')
-
-            # fit
-            try:
-                Fit(pec, params).fit_n_print(out)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: fit failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
         # LevelsPW mode
         if self.mode == 'LevelsPW':
 
-            f_vr_par = self.file_lev_calc.get()
-            f_pw_pec = self.file_pw_pec.get()
-
-            # print input
-            try:
-                out.print('* Parameter for vib.-rot. levels calculation *')
-                print_input_file(out, f_vr_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with parameter for vib.-rot. levels calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
+            input_files = [
+                self.file_lev_calc.get(),
+                self.file_pw_pec.get()
+            ]
 
             try:
-                out.print('* Point-wise PEC *')
-                print_input_file(out, f_pw_pec)
+                DriverLevelsPW(self.mode, input_files, out).run()
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with point-wise PEC', out)
                 self.print_message(traceback.format_exc(), out)
                 return
-
-            # read files
-            try:
-                pec = PWCurve(f_pw_pec)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read point-wise PEC', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                params = Parameters()
-                params.read_vr_calc_params(f_vr_par, 'ENERGY')
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read parameter for vib.-rot. levels calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # calc and print vr levels
-            try:
-                Levels('pw', params, pec).print(out)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: levels calculation failed', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
 
         # LevelsAn mode
         if self.mode == 'LevelsAn':
 
-            f_vr_par = self.file_lev_calc.get()
-            f_fit_par = self.file_fitted_params.get()
-
-            # print input
-            try:
-                out.print('* Parameter for vib.-rot. levels calculation *')
-                print_input_file(out, f_vr_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with parameter for vib.-rot. levels calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
+            input_files = [
+                self.file_lev_calc.get(),
+                self.file_fitted_params.get()
+            ]
 
             try:
-                out.print('* Fitted PEC parameters *')
-                print_input_file(out, f_fit_par)
+                DriverLevelsAn(self.mode, input_files, out).run()
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with fitted PEC parameters', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # read files
-            try:
-                params = Parameters()
-                params.read_vr_calc_params(f_vr_par, 'ENERGY')
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read parameter for vib.-rot. levels calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                params.read_pec_params(f_fit_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read fitted PEC parameters', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # calc and print vr levels
-            try:
-                Levels('an', params).print(out)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: levels calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
         # SpectrumPW mode
         if self.mode == 'SpectrumPW':
 
-            f_vr_par = self.file_sp_calc.get()
-            f_pw_pec = self.file_pw_pec.get()
-            f_pw_dm = self.file_pw_dip.get()
-
-            # print input
-            try:
-                out.print('* Parameters for vib.-rot. spectrum calculation *')
-                print_input_file(out, f_vr_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
+            input_files = [
+                self.file_sp_calc.get(),
+                self.file_pw_pec.get(),
+                self.file_pw_dip.get()
+            ]
 
             try:
-                out.print('* Point-wise PEC *')
-                print_input_file(out, f_pw_pec)
+                DriverSpectrumPW(self.mode, input_files, out).run()
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with point-wise PEC', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                out.print('* Point-wise dipole moment *')
-                print_input_file(out, f_pw_dm)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with point-wise dipole moment', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # read files
-            try:
-                pec = PWCurve(f_pw_pec)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read point-wise PEC', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                dm = PWCurve(f_pw_dm)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read point-wise dipole moment', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                params = Parameters()
-                params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read parameter for vib.-rot. spectrum calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # calc vr levels
-            try:
-                levels = Levels('pw', params, pec)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "vr_solver" function', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # calc and print integrals
-            try:
-                MatrixElements(params, levels, dm).print(out)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: matrix elements calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
         # SpectrumAn mode
         if self.mode == 'SpectrumAn':
 
-            f_vr_par = self.file_sp_calc.get()
-            f_fit_par = self.file_fitted_params.get()
-            f_pw_dm = self.file_pw_dip.get()
-
-            # print input
-            try:
-                out.print('* Parameters for vib.-rot. spectrum calculation *')
-                print_input_file(out, f_vr_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with parameter for vib.-rot. spectrum calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
+            input_files = [
+                self.file_sp_calc.get(),
+                self.file_fitted_params.get(),
+                self.file_pw_dip.get(),
+            ]
 
             try:
-                out.print('* Fitted PEC parameters *')
-                print_input_file(out, f_fit_par)
+                DriverSpectrumAn(self.mode, input_files, out).run()
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with fitted PEC parameters', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                out.print('* Point-wise dipole moment *')
-                print_input_file(out, f_pw_dm)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with point-wise dipole moment', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # read files
-            try:
-                params = Parameters()
-                params.read_vr_calc_params(f_vr_par, 'SPECTRUM')
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read parameter for vib.-rot. spectrum calculation', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                params.read_pec_params(f_fit_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read fitted PEC parameters', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                dm = PWCurve(f_pw_dm)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read point-wise dipole moment', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # calc vr levels
-            try:
-                levels = Levels('an', params)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to run "vr_solver" function', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # calc and print integrals
-            try:
-                MatrixElements(params, levels, dm).print(out)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: matrix elements calculation failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 
         # FitExp
         if self.mode == 'FitExp':
 
-            f_vr_par = self.file_fit_calc.get()
-            f_fit_par = self.file_fitted_params.get()
-            f_pw_pec = self.file_pw_pec.get()
-            f_epx_lev = self.file_exp.get()
-
-            # print input
-            try:
-                out.print('* Parameters for PEC fit to exp. levels *')
-                print_input_file(out, f_vr_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with parameter for PEC fit to exp. levels', out)
-                self.print_message(traceback.format_exc(), out)
-                return
+            input_files = [
+                self.file_fit_calc.get(),
+                self.file_fitted_params.get(),
+                self.file_pw_pec.get(),
+                self.file_exp.get()
+            ]
 
             try:
-                out.print('* Fitted PEC parameters *')
-                print_input_file(out, f_fit_par)
+                DriverFitExp(self.mode, input_files, out).run()
             except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with fitted PEC parameters', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                out.print('* Point-wise PEC *')
-                print_input_file(out, f_pw_pec)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with point-wise PEC', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                out.print('* Exp. levels *')
-                print_input_file(out, f_epx_lev)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read input file with exp. vib.-rot. levels', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            # read files
-            try:
-                pec = PWCurve(f_pw_pec)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read point-wise PEC', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                params = Parameters()
-                params.read_vr_calc_params(f_vr_par, 'FIT')
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read parameter for PEC fit to exp. levels', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                params.read_pec_params(f_fit_par)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read fitted PEC parameters', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            try:
-                expdata = ExpData(f_epx_lev)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: failed to read exp. vib.-rot. levels', out)
-                self.print_message(traceback.format_exc(), out)
-                return
-
-            params['jmax'] = max(expdata.energy.keys())
-
-            out.print('=== Fit PEC to reproduce experimental data ===\n')
-
-            # fit
-            try:
-                Fit(pec, params, expdata).fit_n_print(out)
-            except BaseException: # pylint: disable = W0718
-                self.print_message('ERROR: fit failed', out)
                 self.print_message(traceback.format_exc(), out)
                 return
 

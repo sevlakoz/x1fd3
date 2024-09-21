@@ -1,4 +1,4 @@
-from x1fd3.base.levels import Levels
+from x1fd3.base import Levels
 from .driver import Driver
 
 class DriverLevelsAn(Driver):

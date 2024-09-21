@@ -1,12 +1,10 @@
-import traceback
 from abc import ABC, abstractmethod
-from time import time
 
-from x1fd3.base.p_w_curve import PWCurve
-from x1fd3.base.parameters import Parameters
-from x1fd3.base.logger import Logger
-from x1fd3.base.exp_data import ExpData
-from x1fd3.base.print_input import print_input_file
+from x1fd3.base import PWCurve, \
+                       Parameters, \
+                       Logger, \
+                       ExpData, \
+                       print_input_file
 
 class Driver(ABC):
     '''
@@ -15,14 +13,16 @@ class Driver(ABC):
     '''
     def __init__(
         self,
-        input_files: list[str]
+        mode: str,
+        input_files: list[str],
+        out: Logger
     ):
         '''
-        set empty vars, create Logger
+        set empty vars
         check number of input files provided
         print error message if not enough for chosen run mode
         '''
-        self.mode:str = type(self).__name__.replace('Driver', '')
+        self.mode:str = mode
         self.input_files: list[str] = input_files
 
         input_error_message: dict[str, tuple[int, str]] = {
@@ -76,7 +76,7 @@ class Driver(ABC):
         self.dm = PWCurve()
         self.params = Parameters()
         self.expdata = ExpData()
-        self.out = Logger(self.mode)
+        self.out = out
 
     def print_input_files(
         self
@@ -84,9 +84,44 @@ class Driver(ABC):
         '''
         print input files one by one
         '''
+        input_file_types: dict[str, tuple[str, ...]] = {
+            'PecApprox': (
+                '* Point-wise PEC *',
+                '* Init PEC parameters *'
+            ),
+            'LevelsPW': (
+                '* Parameter for levels calculation *',
+                '* Point-wise PEC *'
+            ),
+            'LevelsAn': (
+                '* Parameter for levels calculation *',
+                '* Fitted PEC parameters *'
+            ),
+            'SpectrumPW': (
+                '* Parameter for spectrum calculation *',
+                '* Point-wise PEC *',
+                '* Point-wise dipole moment *'
+            ),
+            'SpectrumAn': (
+                '* Parameter for spectrum calculation *',
+                '* Fitted PEC parameters *',
+                '* Point-wise dipole moment *'
+            ),
+            'FitExp': (
+                '* Parameters for fit *',
+                '* Fitted PEC parameters *',
+                '* Point-wise PEC *',
+                '* Experimental levels *'
+            )
+        }
+
         self.out.print('Input files:', *self.input_files)
-        for fname in self.input_files:
-            print_input_file(self.out, fname)
+        for fname, ftype in zip(self.input_files, input_file_types[self.mode]):
+            if fname:
+                self.out.print(ftype)
+                print_input_file(self.out, fname)
+            else:
+                raise RuntimeError(f'No file for {ftype} provided')
 
     @abstractmethod
     def read_files(
@@ -110,17 +145,6 @@ class Driver(ABC):
         '''
         run all task, print info
         '''
-        start = time()
-        try:
-            self.print_input_files()
-            self.read_files()
-            self.core()
-            print('Success!')
-        except BaseException: # pylint: disable = W0718
-            print('Error!')
-            err = traceback.format_exc()
-            self.out.print(err)
-            print(err)
-        finish = time()
-        print(f'Execution time, s: {finish - start:.3f}')
-        print(f'Results stored in {self.out.fname}')
+        self.print_input_files()
+        self.read_files()
+        self.core()

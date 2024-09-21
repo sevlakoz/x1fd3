@@ -5,6 +5,7 @@ from .p_w_curve import PWCurve
 from .logger import Logger
 from .exp_data import ExpData
 from .an_pec import AnPec
+from .fit import Fit
 from .print_input import print_input_file
 
 __all__ = (
@@ -15,5 +16,6 @@ __all__ = (
     'Logger',
     'ExpData',
     'AnPec',
+    'Fit',
     'print_input_file'
 )

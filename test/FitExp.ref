@@ -1,4 +1,5 @@
 Input files: input/params_fit.txt input/fitted_emo.txt input/pw_pec.txt input/exp_levels.txt
+* Parameters for fit *
 
 === Input file: input/params_fit.txt ===
 
@@ -10,6 +11,7 @@ rmax  4.0
 
 === End of input file: input/params_fit.txt ===
 
+* Fitted PEC parameters *
 
 === Input file: input/fitted_emo.txt ===
 
@@ -26,6 +28,7 @@ beta  1.8659827543007734
 
 === End of input file: input/fitted_emo.txt ===
 
+* Point-wise PEC *
 
 === Input file: input/pw_pec.txt ===
 
@@ -79,6 +82,7 @@ beta  1.8659827543007734
 
 === End of input file: input/pw_pec.txt ===
 
+* Experimental levels *
 
 === Input file: input/exp_levels.txt ===
 

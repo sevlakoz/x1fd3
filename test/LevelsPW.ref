@@ -1,4 +1,5 @@
 Input files: input/params_levels.txt input/pw_pec.txt
+* Parameter for levels calculation *
 
 === Input file: input/params_levels.txt ===
 
@@ -11,6 +12,7 @@ jmax  10
 
 === End of input file: input/params_levels.txt ===
 
+* Point-wise PEC *
 
 === Input file: input/pw_pec.txt ===
 

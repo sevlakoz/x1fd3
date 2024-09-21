@@ -1,5 +1,5 @@
-from x1fd3.base.p_w_curve import PWCurve
-from x1fd3.base.levels import Levels
+from x1fd3.base import PWCurve, \
+                       Levels
 from .driver import Driver
 
 class DriverLevelsPW(Driver):

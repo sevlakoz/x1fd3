@@ -1,11 +1,14 @@
+import traceback
 from argparse import ArgumentParser
+from time import time
 
-from x1fd3.cli import DriverPecApprox
-from x1fd3.cli import DriverLevelsPW
-from x1fd3.cli import DriverLevelsAn
-from x1fd3.cli import DriverSpectrumPW
-from x1fd3.cli import DriverSpectrumAn
-from x1fd3.cli import DriverFitExp
+from x1fd3.base import Logger
+from x1fd3.cli import DriverPecApprox, \
+                      DriverLevelsPW, \
+                      DriverLevelsAn, \
+                      DriverSpectrumPW, \
+                      DriverSpectrumAn, \
+                      DriverFitExp
 from x1fd3.gui import MainWindow
 
 parser = ArgumentParser()
@@ -29,17 +32,32 @@ if args.mode == 'GUI':
     main_window = MainWindow()
     main_window.root.mainloop()
 else:
-    match args.mode:
-        case 'PecApprox':
-            driver = DriverPecApprox(args.input_files)
-        case 'LevelsPW':
-            driver = DriverLevelsPW(args.input_files) #type: ignore
-        case 'LevelsAn':
-            driver = DriverLevelsAn(args.input_files) #type: ignore
-        case 'SpectrumPW':
-            driver = DriverSpectrumPW(args.input_files) #type: ignore
-        case 'SpectrumAn':
-            driver = DriverSpectrumAn(args.input_files) #type: ignore
-        case 'FitExp':
-            driver = DriverFitExp(args.input_files) #type: ignore
-    driver.run()
+    out = Logger(args.mode)
+
+    start = time()
+
+    try:
+        match args.mode:
+            case 'PecApprox':
+                DriverPecApprox(args.mode, args.input_files, out).run()
+            case 'LevelsPW':
+                DriverLevelsPW(args.mode, args.input_files, out).run()
+            case 'LevelsAn':
+                DriverLevelsAn(args.mode, args.input_files, out).run()
+            case 'SpectrumPW':
+                DriverSpectrumPW(args.mode, args.input_files, out).run()
+            case 'SpectrumAn':
+                DriverSpectrumAn(args.mode, args.input_files, out).run()
+            case 'FitExp':
+                DriverFitExp(args.mode, args.input_files, out).run()
+        print('Success!')
+    except BaseException: # pylint: disable = W0718
+        err = traceback.format_exc()
+        print('Error!')
+        print(err)
+        out.print(err)
+
+    finish = time()
+
+    print(f'Execution time, s: {finish - start:.3f}')
+    print(f'Results stored in {out.fname}')
