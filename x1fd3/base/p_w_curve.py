@@ -2,6 +2,10 @@ import numpy as np
 import numpy.typing as npt
 from scipy.interpolate import splrep, splev   # type: ignore
 
+from .parameters import Parameters
+from .logger import Logger
+from .an_pec import AnPec
+
 class PWCurve:
     '''
     class for point-wise curve
@@ -60,3 +64,20 @@ class PWCurve:
         spl_pec = splrep(self.rval, self.cval)
         c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
         return c_grid
+
+    def print_with_an(
+        self,
+        params: Parameters,
+        out: Logger
+    ) -> None:
+        '''
+        print point-wise and approximated pec
+        '''
+        # pec calc
+        pec_an = AnPec(params).calc(self.rval)
+
+        # print with loop over r
+        lbl = f'U({params["ptype"]}),cm-1'
+        out.print(f'{"R,A":>10}{"U(p-w),cm-1":>20}{lbl:>20}{"delta,cm-1":>20}')
+        for r_inp, u_inp, u_cal in zip(self.rval, self.cval, pec_an):
+            out.print(f'{r_inp:10.5f}{u_inp:20.3f}{u_cal:20.3f}{u_inp - u_cal:20.3f}')

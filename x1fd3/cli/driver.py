@@ -6,7 +6,7 @@ from x1fd3.base.p_w_curve import PWCurve
 from x1fd3.base.parameters import Parameters
 from x1fd3.base.logger import Logger
 from x1fd3.base.exp_data import ExpData
-from x1fd3.base.print_funcs import print_input_file
+from x1fd3.base.print_input import print_input_file
 
 class Driver(ABC):
     '''

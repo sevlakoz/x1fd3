@@ -10,7 +10,7 @@ from x1fd3.base.levels import Levels
 from x1fd3.base.matrix_elements import MatrixElements
 from x1fd3.base.logger import Logger
 from x1fd3.base.exp_data import ExpData
-from x1fd3.base.print_funcs import print_input_file, print_pecs
+from x1fd3.base.print_input import print_input_file
 from x1fd3.base.fit_funcs import pec_fit, exp_fit
 
 
@@ -513,7 +513,7 @@ class CalcWindow:
             # print initial guess
             out.print('=== Point-wise PEC approximation ===\n')
             out.print('Initial guess\n')
-            print_pecs(out, pec, params)
+            pec.print_with_an(params, out)
 
             # fit
             try:
@@ -530,7 +530,7 @@ class CalcWindow:
 
             # final approximation
             out.print('\nFitted PEC\n')
-            print_pecs(out, pec, params)
+            pec.print_with_an(params, out)
             out.print('\nFitted parameters\n')
             params.print_pec_params(out)
 
@@ -864,7 +864,7 @@ class CalcWindow:
                 return
 
             levels.print_with_expdata(out, expdata)
-            print_pecs(out, pec, params)
+            pec.print_with_an(params, out)
 
             # fit
             try:
@@ -888,7 +888,7 @@ class CalcWindow:
                 self.print_message(traceback.format_exc(), out)
                 return
             levels.print_with_expdata(out, expdata)
-            print_pecs(out, pec, params)
+            pec.print_with_an(params, out)
             out.print('\nFitted parameters\n')
             params.print_pec_params(out)
 

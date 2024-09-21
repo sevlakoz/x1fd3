@@ -6,7 +6,7 @@ from .logger import Logger
 from .exp_data import ExpData
 from .an_pec import AnPec
 from .fit_funcs import exp_fit, pec_fit
-from .print_funcs import print_input_file, print_pecs
+from .print_input import print_input_file
 
 __all__ = (
     'Levels',
@@ -18,6 +18,5 @@ __all__ = (
     'AnPec',
     'exp_fit',
     'pec_fit',
-    'print_input_file',
-    'print_pecs'
+    'print_input_file'
 )
