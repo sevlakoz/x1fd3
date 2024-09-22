@@ -52,7 +52,7 @@ else:
                 DriverFitExp(args.mode, args.input_files, out).run()
         print('Success!')
     except BaseException: # pylint: disable = W0718
-        err = traceback.format_exc()
+        err = traceback.format_exc() # pylint: disable=C0103
         print('Error!')
         print(err)
         out.print(err)

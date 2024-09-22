@@ -117,8 +117,9 @@ class AnPec:
     ) -> Float64Array:
         '''
         calculate y function  value for given r points and params
-        ''' 
-        return (r_inp**q - rref**q) / (r_inp**q + rref**q)
+        '''
+        val: Float64Array = (r_inp**q - rref**q) / (r_inp**q + rref**q)
+        return val
 
     def _beta(
         self,
