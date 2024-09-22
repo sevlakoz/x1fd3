@@ -1,3 +1,4 @@
+from typing import ClassVar
 import numpy as np
 
 from .p_w_curve import PWCurve
@@ -9,6 +10,13 @@ class MatrixElements:
     '''
     class for matrix elements
     '''
+    # Scale factor for A, \frac{8 \pi^2}{3 \hbar \epsilon_0} [1 / s / D^2 / (cm-1)^3]
+    SCALE_A: ClassVar[float] = 3.13618932e-7
+    # Boltzmann constant  [cm-1 / K]
+    K_B = 0.695
+    # Temperature [K]
+    T = 298.0
+
     def __init__(
         self,
         params: Parameters,
@@ -104,8 +112,8 @@ class MatrixElements:
             frq  = self.freq[j2][j1]
             me = self.matrix_elements[j2][j1]
 
-            pop = (2 * j1 + 1) * np.exp(-en1 / 0.695 / 298.0)
-            a = 3.137e-7 * me**2 * se * frq**3
+            pop = (2 * j1 + 1) * np.exp(-en1 / self.K_B / self.T)
+            a = self.SCALE_A * me**2 * se * frq**3
             inten = pop * me**2 * sa
 
             vals = [lbl, j2, j1, frq, me, sa, en1, pop, inten, se, a]

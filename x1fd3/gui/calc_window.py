@@ -20,7 +20,7 @@ class CalcWindow:
     '''
     def __init__(
         self,
-        main_root,
+        main_root: tk.Tk,
         mode: str
     ) -> None:
         '''

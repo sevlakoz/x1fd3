@@ -4,6 +4,8 @@ import numpy.typing as npt
 
 from .parameters import Parameters
 
+Float64Array = npt.NDArray[np.float64]
+
 class AnPec:
     '''
     class for analytic pec functions
@@ -19,8 +21,8 @@ class AnPec:
 
     def calc(
         self,
-        r_inp: npt.NDArray[np.float64],
-    ) -> npt.NDArray[np.float64]:
+        r_inp: Float64Array,
+    ) -> Float64Array:
         '''
         calculate pec vals for grid of Rs
         '''
@@ -37,8 +39,8 @@ class AnPec:
 
     def _emo(
         self,
-        r_inp: npt.NDArray[np.float64],
-    ) -> npt.NDArray[np.float64]:
+        r_inp: Float64Array,
+    ) -> Float64Array:
         '''
         calculate EMO value for given r point and params
         '''
@@ -48,14 +50,14 @@ class AnPec:
 
         beta_pol = self._beta(yq)
 
-        val = p['de'] * (1 - np.exp(- beta_pol * (r_inp - p['re'])))**2
+        val: Float64Array = p['de'] * (1 - np.exp(- beta_pol * (r_inp - p['re'])))**2
 
         return val
 
     def _mlr(
         self,
-        r_inp: npt.NDArray[np.float64],
-    ) -> npt.NDArray[np.float64]:
+        r_inp: Float64Array,
+    ) -> Float64Array:
         '''
         calculate MLR value for given r point and params
         see https://doi.org/10.1063%2F1.3264688 for details
@@ -74,14 +76,14 @@ class AnPec:
         beta_pol *= (1 - yp)
         beta_pol += binf * yp
 
-        val = p['de'] * (1 - ulr / ulr_re * np.exp(- beta_pol * yp_eq))**2
+        val: Float64Array = p['de'] * (1 - ulr / ulr_re * np.exp(- beta_pol * yp_eq))**2
 
         return val
 
     def _delr(
         self,
-        r_inp: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+        r_inp: Float64Array
+    ) -> Float64Array:
         '''
         calculate DELR value for given r point and params
         see https://doi.org/10.1063/1.1607313 for details
@@ -102,32 +104,32 @@ class AnPec:
         a = p['de'] - ulr_re - der_ulr_re / beta_pol_re
         b = p['de'] - ulr_re + a
 
-        val = p['de'] - ulr + a * np.exp(- 2 * beta_pol * (r_inp - p['re'])) \
-                            - b * np.exp(- beta_pol * (r_inp - p['re']))
+        val: Float64Array = p['de'] - ulr + a * np.exp(- 2 * beta_pol * (r_inp - p['re'])) \
+                                          - b * np.exp(- beta_pol * (r_inp - p['re']))
 
         return val
 
     def _y(
         self,
-        r_inp: npt.NDArray[np.float64],
+        r_inp: Float64Array,
         q: int,
         rref: float
-    ) -> npt.NDArray[np.float64]:
+    ) -> Float64Array:
         '''
         calculate y function  value for given r points and params
-        '''
+        ''' 
         return (r_inp**q - rref**q) / (r_inp**q + rref**q)
 
     def _beta(
         self,
-        y_vals: npt.NDArray[np.float64]
-    )-> npt.NDArray[np.float64]:
+        y_vals: Float64Array
+    )-> Float64Array:
         '''
         calculate beta function value for given r point and params
         '''
         p = self.params
 
-        val = np.zeros(len(y_vals))
+        val: Float64Array = np.zeros(len(y_vals))
         for n, b in enumerate(p['beta']):
             val += b * y_vals**n
 
@@ -135,15 +137,15 @@ class AnPec:
 
     def _lr(
         self,
-        r_inp: npt.NDArray[np.float64],
+        r_inp: Float64Array,
         der_order: int = 0
-    ) -> npt.NDArray[np.float64]:
+    ) -> Float64Array:
         '''
         calculate long-range value for given r point and params
         '''
         p = self.params
 
-        val = np.zeros(len(r_inp))
+        val: Float64Array = np.zeros(len(r_inp))
 
         if der_order == 0:
             for n, cn in zip(p['cnpow'], p['cnval']):
@@ -159,10 +161,10 @@ class AnPec:
 
     def _dampf(
         self,
-        r_inp: npt.NDArray[np.float64],
+        r_inp: Float64Array,
         n: int,
         der_order: int = 0
-    ) -> npt.NDArray[np.float64]:
+    ) -> Float64Array:
         '''
         see https://doi.org/10.1080/00268976.2010.527304 for details
         params['dampf'] options: 
@@ -199,6 +201,8 @@ class AnPec:
         s = p['s']
         rho = p['rho']
 
+        val: Float64Array = np.zeros(len(r_inp))
+
         if der_order == 0:
             match p['dampf']:
                 case 'tt':
@@ -206,11 +210,13 @@ class AnPec:
                     sm = np.ones(len(r_inp))
                     for k in range(1, n + s):
                         sm += (btt[s] * rho * r_inp)**k / factorial(k)
-                    return 1 - ex * sm
+                    val = 1 - ex * sm
+                    return val
                 case 'ds':
                     ex = np.exp(- bds[s] * rho * r_inp / n
                                 - cds[s] * (rho * r_inp)**2 / n**0.5)
-                    return (1 - ex)**(n + s)
+                    val = (1 - ex)**(n + s)
+                    return val
                 case 'none':
                     return np.ones(len(r_inp))
                 case _:
@@ -224,12 +230,14 @@ class AnPec:
                     for k in range(1, n + s):
                         sm += (btt[s] * rho * r_inp)**k / factorial(k)
                         dsm += k * btt[s] * rho *(btt[s] * rho * r_inp)**(k - 1) / factorial(k)
-                    return btt[s] * rho * ex * sm - dsm * ex
+                    val = btt[s] * rho * ex * sm - dsm * ex
+                    return val
                 case 'ds':
                     ex = np.exp(- bds[s] * rho * r_inp / n
                                 - cds[s] * (rho * r_inp)**2 / n**0.5)
-                    return (n + s) * (1 - ex)**(n + s - 1) * ex \
+                    val = (n + s) * (1 - ex)**(n + s - 1) * ex \
                            * (bds[s] * rho / n + 2 * cds[s] * rho**2 * r_inp / n**0.5)
+                    return val
                 case 'none':
                     return np.zeros(len(r_inp))
                 case _:

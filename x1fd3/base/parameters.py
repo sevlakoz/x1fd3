@@ -1,10 +1,11 @@
 from configparser import ConfigParser
 from collections import UserDict
+from typing import Any
 import numpy as np
 
 from .logger import Logger
 
-class Parameters(UserDict):
+class Parameters(UserDict[str, Any]):
     '''
     dict with custom methods for required parameters
     '''

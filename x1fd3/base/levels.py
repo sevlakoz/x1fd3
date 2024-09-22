@@ -9,6 +9,8 @@ from .an_pec import AnPec
 from .logger import Logger
 from .exp_data import ExpData
 
+Float64Array = npt.NDArray[np.float64]
+
 class Levels:
     '''
     class for vib-rot level
@@ -31,8 +33,8 @@ class Levels:
         '''
         self.energy: dict[int, dict[int, float]] = {}
         self.rot_const: dict[int, dict[int, float]] = {}
-        self.wavef_grid: dict[int, dict[int, npt.NDArray[np.float64]]] = {}
-        self.r_grid: npt.NDArray[np.float64] = np.array([])
+        self.wavef_grid: dict[int, dict[int, Float64Array]] = {}
+        self.r_grid: Float64Array = np.array([])
 
         # reduced mass
         mu = params['mass1'] * params['mass2'] / (params['mass1'] + params['mass2'])

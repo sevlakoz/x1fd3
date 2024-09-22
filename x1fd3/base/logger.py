@@ -1,6 +1,6 @@
 from os.path import isfile, getsize
 from warnings import warn
-from typing import TextIO
+from typing import TextIO, Any
 
 class Logger:
     '''
@@ -9,7 +9,7 @@ class Logger:
     def __init__(
         self,
         fname: str = '',
-        auto_name_adjust = True
+        auto_name_adjust: bool = True
     ) -> None:
         '''
         open file for results if name provided,
@@ -29,8 +29,8 @@ class Logger:
 
     def print(
         self,
-        *args,
-        **kwargs
+        *args: Any,
+        **kwargs: Any
     ) -> None:
         '''
         print-like write to file

@@ -6,6 +6,8 @@ from .parameters import Parameters
 from .logger import Logger
 from .an_pec import AnPec
 
+Float64Array = npt.NDArray[np.float64]
+
 class PWCurve:
     '''
     class for point-wise curve
@@ -17,9 +19,9 @@ class PWCurve:
         '''
         init = read data if file provided 
         '''
-        self.rval: npt.NDArray[np.float64] = np.array([])
-        self.cval: npt.NDArray[np.float64] = np.array([])
-        self.eval: npt.NDArray[np.float64] = np.array([])
+        self.rval: Float64Array = np.array([])
+        self.cval: Float64Array = np.array([])
+        self.eval: Float64Array = np.array([])
 
         if fname:
             self.read_file(fname)
@@ -51,8 +53,8 @@ class PWCurve:
 
     def spline(
         self,
-        r_grid: npt.NDArray[np.float64]
-    ) -> npt.NDArray[np.float64]:
+        r_grid: Float64Array
+    ) -> Float64Array:
         '''
         cubic spline with range check
         '''
