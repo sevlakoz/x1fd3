@@ -39,17 +39,21 @@ else:
     try:
         match args.mode:
             case 'PecApprox':
-                DriverPecApprox(args.mode, args.input_files, out).run()
+                DriverPecApprox(args.input_files, out).run()
             case 'LevelsPW':
-                DriverLevelsPW(args.mode, args.input_files, out).run()
+                DriverLevelsPW(args.input_files, out).run()
             case 'LevelsAn':
-                DriverLevelsAn(args.mode, args.input_files, out).run()
+                DriverLevelsAn(args.input_files, out).run()
             case 'SpectrumPW':
-                DriverSpectrumPW(args.mode, args.input_files, out).run()
+                DriverSpectrumPW(args.input_files, out).run()
             case 'SpectrumAn':
-                DriverSpectrumAn(args.mode, args.input_files, out).run()
+                DriverSpectrumAn(args.input_files, out).run()
             case 'FitExp':
-                DriverFitExp(args.mode, args.input_files, out).run()
+                DriverFitExp(args.input_files, out).run()
+        # why not?
+        #cmd = f'Driver{args.mode}(args.input_files, out).run()'
+        #eval(cmd)
+        #
         print('Success!')
     except BaseException: # pylint: disable = W0718
         err = traceback.format_exc() # pylint: disable=C0103

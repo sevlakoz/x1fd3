@@ -13,7 +13,6 @@ class Driver(ABC):
     '''
     def __init__(
         self,
-        mode: str,
         input_files: list[str],
         out: Logger
     ):
@@ -22,7 +21,7 @@ class Driver(ABC):
         check number of input files provided
         print error message if not enough for chosen run mode
         '''
-        self.mode:str = mode
+        self.mode:str = type(self).__name__.replace('Driver', '')
         self.input_files: list[str] = input_files
 
         input_error_message: dict[str, tuple[int, str]] = {
