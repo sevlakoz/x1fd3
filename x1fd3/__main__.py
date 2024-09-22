@@ -50,10 +50,6 @@ else:
                 DriverSpectrumAn(args.input_files, out).run()
             case 'FitExp':
                 DriverFitExp(args.input_files, out).run()
-        # why not?
-        #cmd = f'Driver{args.mode}(args.input_files, out).run()'
-        #eval(cmd)
-        #
         print('Success!')
     except BaseException: # pylint: disable = W0718
         err = traceback.format_exc() # pylint: disable=C0103
