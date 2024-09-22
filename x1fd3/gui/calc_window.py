@@ -480,7 +480,7 @@ class CalcWindow:
             ]
 
             try:
-                DriverPecApprox(self.mode, input_files, out).run()
+                DriverPecApprox(input_files, out).run()
             except BaseException as ex: # pylint: disable = W0718
                 self.print_message(f'RuntimeError: {ex}\n', Logger())
                 out.print(traceback.format_exc())
@@ -495,7 +495,7 @@ class CalcWindow:
             ]
 
             try:
-                DriverLevelsPW(self.mode, input_files, out).run()
+                DriverLevelsPW(input_files, out).run()
             except BaseException as ex: # pylint: disable = W0718
                 self.print_message(f'RuntimeError: {ex}\n', Logger())
                 out.print(traceback.format_exc())
@@ -510,7 +510,7 @@ class CalcWindow:
             ]
 
             try:
-                DriverLevelsAn(self.mode, input_files, out).run()
+                DriverLevelsAn(input_files, out).run()
             except BaseException as ex: # pylint: disable = W0718
                 self.print_message(f'RuntimeError: {ex}\n', Logger())
                 out.print(traceback.format_exc())
@@ -526,7 +526,7 @@ class CalcWindow:
             ]
 
             try:
-                DriverSpectrumPW(self.mode, input_files, out).run()
+                DriverSpectrumPW(input_files, out).run()
             except BaseException as ex: # pylint: disable = W0718
                 self.print_message(f'RuntimeError: {ex}\n', Logger())
                 out.print(traceback.format_exc())
@@ -542,7 +542,7 @@ class CalcWindow:
             ]
 
             try:
-                DriverSpectrumAn(self.mode, input_files, out).run()
+                DriverSpectrumAn(input_files, out).run()
             except BaseException as ex: # pylint: disable = W0718
                 self.print_message(f'RuntimeError: {ex}\n', Logger())
                 out.print(traceback.format_exc())
@@ -559,7 +559,7 @@ class CalcWindow:
             ]
 
             try:
-                DriverFitExp(self.mode, input_files, out).run()
+                DriverFitExp(input_files, out).run()
             except BaseException as ex: # pylint: disable = W0718
                 self.print_message(f'RuntimeError: {ex}\n', Logger())
                 out.print(traceback.format_exc())
