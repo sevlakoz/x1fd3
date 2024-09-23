@@ -9,12 +9,12 @@ class MainWindow:
     '''
     def __init__(
         self,
-        input_files: list[str]
+        args: list[str]
     ) -> None:
         '''
         draw buttons for mode selection
         '''
-        self.input_files = input_files
+        #self.input_files = input_files
 
         self.root = tk.Tk()
 
@@ -86,8 +86,11 @@ class MainWindow:
             row += 1
 
         # autorun for test
-        if input_files[-1] == 'run' and input_files[-2] in modes:
-            CalcWindow(self.root, input_files[-2], input_files[:-2], True)
+        if len(args) > 3 and args[0] == 'autorun' and args[1] in modes:
+            mode = args[1]
+            input_files = tuple(args[2:])
+            out_file = f'{mode}_GUI_autorun.log'
+            CalcWindow(self.root, mode, True, input_files, out_file)
             self.root.destroy()
 
     def select_mode(
@@ -96,5 +99,5 @@ class MainWindow:
         '''
         draw sub window for calculation
         '''
-        CalcWindow(self.root, self.mode.get(), self.input_files)
+        CalcWindow(self.root, self.mode.get())
         self.mode.set('')

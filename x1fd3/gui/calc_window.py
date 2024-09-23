@@ -1,4 +1,5 @@
 import traceback
+from typing import Generator
 from os.path import isfile, \
                     getsize, \
                     relpath
@@ -22,8 +23,9 @@ class CalcWindow:
         self,
         main_root: tk.Tk,
         mode: str,
-        input_files: list[str],
-        autorun: bool = False
+        autorun: bool = False,
+        input_files: tuple[str, ...] = ('', '', '', ''),
+        out_file: str = ''
     ) -> None:
         '''
         draw stuff, mode dependent
@@ -35,10 +37,12 @@ class CalcWindow:
 
         self.mode = mode
         self.input_files = input_files
-        self.input_file_count = len(input_files)
 
         # first row
         row = 1
+
+        # generator to insert input files
+        inp = self.insert_input_file()
 
         # input files
         ttk.Label(
@@ -90,7 +94,7 @@ class CalcWindow:
             )
             self.file_lev_calc.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_lev_calc = ttk.Button(
@@ -130,7 +134,7 @@ class CalcWindow:
             )
             self.file_sp_calc.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_sp_calc = ttk.Button(
@@ -169,7 +173,7 @@ class CalcWindow:
             )
             self.file_fit_calc.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_fit_calc = ttk.Button(
@@ -207,7 +211,7 @@ class CalcWindow:
             )
             self.file_init_params.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_init_params = ttk.Button(
@@ -247,7 +251,7 @@ class CalcWindow:
             )
             self.file_fitted_params.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_fitted_params = ttk.Button(
@@ -288,7 +292,7 @@ class CalcWindow:
             )
             self.file_pw_pec.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_pw_pec = ttk.Button(
@@ -327,7 +331,7 @@ class CalcWindow:
             )
             self.file_pw_dip.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_pw_dip = ttk.Button(
@@ -365,7 +369,7 @@ class CalcWindow:
             )
             self.file_exp.insert(
                 'end',
-                self.input_files.pop(0)
+                next(inp)
             )
 
             self.open_exp = ttk.Button(
@@ -422,6 +426,10 @@ class CalcWindow:
             row = row,
             column = 1
         )
+        self.file_out.insert(
+                'end',
+                out_file
+            )
 
         self.open_out = ttk.Button(
             self.root,
@@ -477,22 +485,24 @@ class CalcWindow:
             columnspan = 4
         )
 
-        # input bypass
-        if self.input_file_count > 0:
-            self.print_message(f'Info: {self.input_file_count} input file name(s) bypassed from CLI\n', Logger())
-
+        # test
         if autorun:
-            self.print_message(f'Info: autorun for {mode}, out file name bypassed from CLI\n', Logger())
-            self.file_out.insert(
-                'end',
-                f'{mode}_GUI_autorun.log'
-            )
+            self.print_message(f'Info: autorun for {mode}, input file names, out file name bypassed from CLI\n', Logger())
             self.run_calc()
 
         # lock main
         self.root.transient(main_root)
         self.root.grab_set()
         main_root.wait_window(self.root)
+
+    def insert_input_file(
+        self
+    ) -> Generator[str, None, None]:
+        '''
+        return first not inserted input file
+        '''
+        for n in range(4):
+            yield self.input_files[n]
 
     def print_message(
         self,
