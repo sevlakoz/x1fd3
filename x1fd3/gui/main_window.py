@@ -8,11 +8,14 @@ class MainWindow:
     class to draw main window
     '''
     def __init__(
-        self
+        self,
+        input_files: list[str]
     ) -> None:
         '''
         draw buttons for mode selection
         '''
+        self.input_files = input_files
+
         self.root = tk.Tk()
 
         self.root.title('x1fd3')
@@ -88,5 +91,5 @@ class MainWindow:
         '''
         draw sub window for calculation
         '''
-        CalcWindow(self.root, self.mode.get())
+        CalcWindow(self.root, self.mode.get(), self.input_files)
         self.mode.set('')

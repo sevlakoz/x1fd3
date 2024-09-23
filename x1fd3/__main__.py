@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 
 if args.mode == 'GUI':
-    main_window = MainWindow()
+    main_window = MainWindow(args.input_files)
     main_window.root.mainloop()
 else:
     out = Logger(args.mode)

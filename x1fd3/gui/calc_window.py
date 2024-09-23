@@ -21,7 +21,8 @@ class CalcWindow:
     def __init__(
         self,
         main_root: tk.Tk,
-        mode: str
+        mode: str,
+        input_files: list[str]
     ) -> None:
         '''
         draw stuff, mode dependent
@@ -32,6 +33,8 @@ class CalcWindow:
         self.root.columnconfigure(0, minsize = 600)
 
         self.mode = mode
+        self.input_files_rev = list(reversed(input_files))
+        self.input_file_count = len(input_files)
 
         # input files
         ttk.Label(
@@ -78,6 +81,10 @@ class CalcWindow:
                 row = 102,
                 column = 1
             )
+            self.file_pw_pec.insert(
+                'end',
+                self.insert_input()
+            )
 
             self.open_pw_pec = ttk.Button(
                 self.root,
@@ -111,6 +118,10 @@ class CalcWindow:
             self.file_lev_calc.grid(
                 row = 103,
                 column = 1
+            )
+            self.file_lev_calc.insert(
+                'end',
+                self.insert_input()
             )
 
             self.open_lev_calc = ttk.Button(
@@ -146,6 +157,10 @@ class CalcWindow:
                 row = 104,
                 column = 1
             )
+            self.file_sp_calc.insert(
+                'end',
+                self.insert_input()
+            )
 
             self.open_sp_calc = ttk.Button(
                 self.root,
@@ -179,6 +194,10 @@ class CalcWindow:
                 row = 105,
                 column = 1
             )
+            self.file_fit_calc.insert(
+                'end',
+                self.insert_input()
+            )
 
             self.open_fit_calc = ttk.Button(
                 self.root,
@@ -210,6 +229,10 @@ class CalcWindow:
             self.file_init_params.grid(
                 row = 106,
                 column = 1
+            )
+            self.file_init_params.insert(
+                'end',
+                self.insert_input()
             )
 
             self.open_init_params = ttk.Button(
@@ -245,6 +268,10 @@ class CalcWindow:
                 row = 107,
                 column = 1
             )
+            self.file_fitted_params.insert(
+                'end',
+                self.insert_input()
+            )
 
             self.open_fitted_params = ttk.Button(
                 self.root,
@@ -278,6 +305,10 @@ class CalcWindow:
                 row = 108,
                 column = 1
             )
+            self.file_pw_dip.insert(
+                'end',
+                self.insert_input()
+            )
 
             self.open_pw_dip = ttk.Button(
                 self.root,
@@ -309,6 +340,10 @@ class CalcWindow:
             self.file_exp.grid(
                 row = 109,
                 column = 1
+            )
+            self.file_exp.insert(
+                'end',
+                self.insert_input()
             )
 
             self.open_exp = ttk.Button(
@@ -410,11 +445,24 @@ class CalcWindow:
             columnspan = 4
         )
 
+        # input bypass
+        if self.input_file_count > 0:
+            self.print_message(f'Info: {self.input_file_count} input file name(s) bypassed from CLI\n', Logger())
+
         # lock main
         self.root.transient(main_root)
         self.root.grab_set()
         main_root.wait_window(self.root)
 
+    def insert_input(
+        self
+    ) -> str:
+        '''
+        return 
+        '''
+        if len(self.input_files_rev) > 0:
+            return self.input_files_rev.pop()
+        return ''
 
     def print_message(
         self,
@@ -454,116 +502,108 @@ class CalcWindow:
         obj.delete(0, 'end')
         obj.insert(0, fname)
 
+    def check_input_file_list(
+        self,
+        input_files: list[str]
+    ) -> None:
+        '''
+        raise error if file name empty
+        '''
+        for fname in input_files:
+            if not fname:
+                raise RuntimeError('one or more input files not specified')
+
+    def set_n_check_out(
+        self,
+    ) -> Logger:
+        '''
+        set and check out
+        '''
+        fname = self.file_out.get()
+        if fname:
+            if isfile(fname) and getsize(fname) > 0:
+                raise RuntimeError(f'non-empty out file "{fname}" already exists')
+            return Logger(fname, False)
+        raise RuntimeError('out file not specified')
+
     def run_calc(
         self
     ) -> None:
         '''
         run selected calculation
         '''
-        fname = self.file_out.get()
-        if fname:
-            if isfile(fname) and getsize(fname) > 0:
-                self.print_message(f'RuntimeError: non-empty out file "{fname}" already exists\n', Logger())
-                return
-        else:
-            self.print_message('RuntimeError: out file not specified\n', Logger())
-            return
-
-        out = Logger(fname, False)
-
-        # PecApprox mode
+        # input files for mode
         if self.mode == 'PecApprox':
-
             input_files = [
                 self.file_pw_pec.get(),
                 self.file_init_params.get()
             ]
-
-            try:
-                DriverPecApprox(input_files, out).run()
-            except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'RuntimeError: {ex}\n', Logger())
-                out.print(traceback.format_exc())
-                return
-
-        # LevelsPW mode
-        if self.mode == 'LevelsPW':
-
+        elif self.mode == 'LevelsPW':
             input_files = [
                 self.file_lev_calc.get(),
                 self.file_pw_pec.get()
             ]
-
-            try:
-                DriverLevelsPW(input_files, out).run()
-            except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'RuntimeError: {ex}\n', Logger())
-                out.print(traceback.format_exc())
-                return
-
-        # LevelsAn mode
-        if self.mode == 'LevelsAn':
-
+        elif self.mode == 'LevelsAn':
             input_files = [
                 self.file_lev_calc.get(),
                 self.file_fitted_params.get()
             ]
-
-            try:
-                DriverLevelsAn(input_files, out).run()
-            except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'RuntimeError: {ex}\n', Logger())
-                out.print(traceback.format_exc())
-                return
-
-        # SpectrumPW mode
-        if self.mode == 'SpectrumPW':
-
+        elif self.mode == 'SpectrumPW':
             input_files = [
                 self.file_sp_calc.get(),
                 self.file_pw_pec.get(),
                 self.file_pw_dip.get()
             ]
-
-            try:
-                DriverSpectrumPW(input_files, out).run()
-            except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'RuntimeError: {ex}\n', Logger())
-                out.print(traceback.format_exc())
-                return
-
-        # SpectrumAn mode
-        if self.mode == 'SpectrumAn':
-
+        elif self.mode == 'SpectrumAn':
             input_files = [
                 self.file_sp_calc.get(),
                 self.file_fitted_params.get(),
                 self.file_pw_dip.get(),
             ]
-
-            try:
-                DriverSpectrumAn(input_files, out).run()
-            except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'RuntimeError: {ex}\n', Logger())
-                out.print(traceback.format_exc())
-                return
-
-        # FitExp
-        if self.mode == 'FitExp':
-
+        elif self.mode == 'FitExp':
             input_files = [
                 self.file_fit_calc.get(),
                 self.file_fitted_params.get(),
                 self.file_pw_pec.get(),
                 self.file_exp.get()
             ]
+        else:
+            return
 
-            try:
+        # check input files
+        try:
+            self.check_input_file_list(input_files)
+        except BaseException as ex: # pylint: disable = W0718
+            self.print_message(f'RuntimeError: {ex}\n', Logger())
+            return
+
+        # set and check out
+        try:
+            out = self.set_n_check_out()
+        except BaseException as ex: # pylint: disable = W0718
+            self.print_message(f'RuntimeError: {ex}\n', Logger())
+            return
+
+        # run calc for mode
+        try:
+            if self.mode == 'PecApprox':
+                DriverPecApprox(input_files, out).run()
+            elif self.mode == 'LevelsPW':
+                DriverLevelsPW(input_files, out).run()
+            elif self.mode == 'LevelsAn':
+                DriverLevelsAn(input_files, out).run()
+            elif self.mode == 'SpectrumPW':
+                DriverSpectrumPW(input_files, out).run()
+            elif self.mode == 'SpectrumAn':
+                DriverSpectrumAn(input_files, out).run()
+            elif self.mode == 'FitExp':
                 DriverFitExp(input_files, out).run()
-            except BaseException as ex: # pylint: disable = W0718
-                self.print_message(f'RuntimeError: {ex}\n', Logger())
-                out.print(traceback.format_exc())
+            else:
                 return
+        except BaseException as ex: # pylint: disable = W0718
+            self.print_message(f'RuntimeError: {ex}\n', Logger())
+            out.print(traceback.format_exc())
+            return
 
         out.close()
-        self.print_message(f'SUCCESS! See "{fname}" for results\n', Logger())
+        self.print_message(f'SUCCESS! See "{out.fname}" for results\n', Logger())
