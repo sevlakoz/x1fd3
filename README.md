@@ -51,13 +51,13 @@ f''(x_i) \approx \frac{ f(x_{i-1}) - 2f(x_i) + f(x_{i+1}) }{ \Delta x^2}
 ```
 Within this method the original differential equation is transformed to tridiagonal symmetric matrix eigenvalue problem.
 
-PEC $`U(R)`$ is required in point-wise format, spline interpolation is used.
+PEC ($`U(R)`$) is required in point-wise format, spline interpolation is used.
 
 ### LevelsAn
 Similar to **LevelsPW**, but with analytic (EMO, etc) representation of PEC.
 
 ### SpectrumPW
-**LevelsPW** with additional matrix elements calculation for given point-wise dipole moment $`D(R)`$ and lower and upper vibrational quantum numbers $`v_1`$ and $`v_2`$:
+**LevelsPW** with additional matrix elements calculation for given point-wise DM ($`D(R)`$) and lower and upper vibrational quantum numbers $`v_1`$ and $`v_2`$:
 ```math
 \mu = <\Psi_{v1}|D|\Psi_{v2}>
 ```
