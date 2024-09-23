@@ -9,8 +9,8 @@ class DriverPecApprox(Driver):
     def read_files(
         self
     ) -> None:
-        self.pec = PWCurve(self.input_files[0])
-        self.params.read_pec_params(self.input_files[1])
+        self.params.read_pec_params(self.input_files[0])
+        self.pec = PWCurve(self.input_files[1])
 
     def core(
         self

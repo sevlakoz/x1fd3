@@ -28,8 +28,8 @@ class Driver(ABC):
             'PecApprox': (
                 2,
                 'Usage: python -m x1fd3 PecApprox <1> <2>\n' + 
-                '       <1> = file with point-wise pec     | example: input/pw_pec.txt\n' +
-                '       <2> = file with initial parameters | example: input/init_emo.txt'
+                '       <2> = file with initial parameters | example: input/init_emo.txt\n' +
+                '       <1> = file with point-wise pec     | example: input/pw_pec.txt'
             ),
             'LevelsPW': (
                 2,
@@ -85,8 +85,8 @@ class Driver(ABC):
         '''
         input_file_types: dict[str, tuple[str, ...]] = {
             'PecApprox': (
-                'Point-wise PEC',
-                'Init PEC parameters'
+                'Init PEC parameters',
+                'Point-wise PEC'
             ),
             'LevelsPW': (
                 'Parameter for levels calculation',

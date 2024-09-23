@@ -13,7 +13,7 @@ fi
 
 rm *.log
 
-python -m x1fd3 PecApprox  input/pw_pec.txt          input/init_emo.txt
+python -m x1fd3 PecApprox  input/init_emo.txt        input/pw_pec.txt          
 python -m x1fd3 LevelsPW   input/params_levels.txt   input/pw_pec.txt
 python -m x1fd3 LevelsAn   input/params_levels.txt   input/fitted_emo.txt
 python -m x1fd3 SpectrumPW input/params_spectrum.txt input/pw_pec.txt     input/pw_dm.txt

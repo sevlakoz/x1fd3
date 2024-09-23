@@ -34,8 +34,11 @@ class CalcWindow:
         self.root.columnconfigure(0, minsize = 600)
 
         self.mode = mode
-        self.input_files_rev = list(reversed(input_files))
+        self.input_files = input_files
         self.input_file_count = len(input_files)
+
+        # first row
+        row = 1
 
         # input files
         ttk.Label(
@@ -43,20 +46,221 @@ class CalcWindow:
             text = 'Select input files',
             font = ('bold', 16)
         ).grid(
-            row = 100,
+            row = row,
             column = 0,
             columnspan = 4
         )
+
+        row += 1
 
         ttk.Separator(
             self.root,
             orient = 'horizontal'
         ).grid(
-            row = 101,
+            row = row,
             column = 0,
             columnspan = 4,
             sticky = 'ew'
         )
+
+        row += 1
+
+        # VR levels calc params
+        if mode in [
+            'LevelsPW',
+            'LevelsAn'
+        ]:
+
+            tk.Label(
+                self.root,
+                text = 'Parameters for vib.-rot. levels calculation, example: input/params_levels.txt'
+            ).grid(
+                row = row,
+                column = 0,
+                sticky = 'e'
+            )
+
+            self.file_lev_calc = ttk.Entry(
+                self.root,
+                width = 110
+            )
+            self.file_lev_calc.grid(
+                row = row,
+                column = 1
+            )
+            self.file_lev_calc.insert(
+                'end',
+                self.input_files.pop(0)
+            )
+
+            self.open_lev_calc = ttk.Button(
+                self.root,
+                text = 'Open a file',
+                command = lambda: self.select_file(self.file_lev_calc)
+            )
+            self.open_lev_calc.grid(
+                row = row,
+                column = 2
+            )
+
+            row += 1
+
+        # VR spectrum calc params
+        if mode in [
+            'SpectrumPW',
+            'SpectrumAn'
+        ]:
+
+            tk.Label(
+                self.root,
+                text = 'Parameters for vib.-rot. spectrum calculation, example: input/params_spectrum.txt'
+            ).grid(
+                row = row,
+                column = 0,
+                sticky = 'e'
+            )
+
+            self.file_sp_calc = ttk.Entry(
+                self.root,
+                width = 110
+            )
+            self.file_sp_calc.grid(
+                row = row,
+                column = 1
+            )
+            self.file_sp_calc.insert(
+                'end',
+                self.input_files.pop(0)
+            )
+
+            self.open_sp_calc = ttk.Button(
+                self.root,
+                text = 'Open a file',
+                command = lambda: self.select_file(self.file_sp_calc)
+            )
+            self.open_sp_calc.grid(
+                row = row,
+                column = 2
+            )
+
+            row += 1
+
+        # VR fit params
+        if mode in [
+            'FitExp'
+        ]:
+
+            tk.Label(
+                self.root,
+                text = 'Parameters for vib.-rot. levels calculation, example: input/params_fit.txt'
+            ).grid(
+                row = row,
+                column = 0,
+                sticky = 'e'
+            )
+
+            self.file_fit_calc = ttk.Entry(
+                self.root,
+                width = 110
+            )
+            self.file_fit_calc.grid(
+                row = row,
+                column = 1
+            )
+            self.file_fit_calc.insert(
+                'end',
+                self.input_files.pop(0)
+            )
+
+            self.open_fit_calc = ttk.Button(
+                self.root,
+                text = 'Open a file',
+                command = lambda: self.select_file(self.file_fit_calc)
+            )
+            self.open_fit_calc.grid(
+                row = row,
+                column = 2
+            )
+
+            row += 1
+
+        # init params
+        if mode in [
+            'PecApprox'
+        ]:
+            tk.Label(
+                self.root,
+                text = 'Initial parameters for PEC approxomation, example: input/init_emo.txt'
+            ).grid(
+                row = row,
+                column = 0,
+                sticky = 'e'
+            )
+
+            self.file_init_params = ttk.Entry(
+                self.root,
+                width = 110
+            )
+            self.file_init_params.grid(
+                row = row,
+                column = 1
+            )
+            self.file_init_params.insert(
+                'end',
+                self.input_files.pop(0)
+            )
+
+            self.open_init_params = ttk.Button(
+                self.root,
+                text = 'Open a file',
+                command = lambda: self.select_file(self.file_init_params)
+            )
+            self.open_init_params.grid(
+                row = row,
+                column = 2
+            )
+
+            row += 1
+
+        # fitted params
+        if mode in [
+            'LevelsAn',
+            'SpectrumAn',
+            'FitExp'
+        ]:
+            tk.Label(
+                self.root,
+                text = 'Fitted PEC parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
+            ).grid(
+                row = row,
+                column = 0,
+                sticky = 'e'
+            )
+
+            self.file_fitted_params = ttk.Entry(
+                self.root,
+                width = 110
+            )
+            self.file_fitted_params.grid(
+                row = row,
+                column = 1
+            )
+            self.file_fitted_params.insert(
+                'end',
+                self.input_files.pop(0)
+            )
+
+            self.open_fitted_params = ttk.Button(
+                self.root,
+                text = 'Open a file',
+                command = lambda: self.select_file(self.file_fitted_params)
+            )
+            self.open_fitted_params.grid(
+                row = row,
+                column = 2
+            )
+
+            row += 1
 
         # PW pec
         if mode in [
@@ -69,7 +273,7 @@ class CalcWindow:
                 self.root,
                 text = 'Point-wise PEC, example: input/pw_pec.txt'
             ).grid(
-                row = 102,
+                row = row,
                 column = 0,
                 sticky = 'e'
             )
@@ -79,12 +283,12 @@ class CalcWindow:
                 width = 110,
             )
             self.file_pw_pec.grid(
-                row = 102,
+                row = row,
                 column = 1
             )
             self.file_pw_pec.insert(
                 'end',
-                self.insert_input()
+                self.input_files.pop(0)
             )
 
             self.open_pw_pec = ttk.Button(
@@ -93,198 +297,13 @@ class CalcWindow:
                 command = lambda: self.select_file(self.file_pw_pec)
             )
             self.open_pw_pec.grid(
-                row = 102,
+                row = row,
                 column = 2
             )
 
-        # VR levels calc params
-        if mode in [
-            'LevelsPW',
-            'LevelsAn'
-        ]:
+            row += 1
 
-            tk.Label(
-                self.root,
-                text = 'Parameters for vib.-rot. levels calculation, example: input/params_levels.txt'
-            ).grid(
-                row = 103,
-                column = 0,
-                sticky = 'e'
-            )
-
-            self.file_lev_calc = ttk.Entry(
-                self.root,
-                width = 110
-            )
-            self.file_lev_calc.grid(
-                row = 103,
-                column = 1
-            )
-            self.file_lev_calc.insert(
-                'end',
-                self.insert_input()
-            )
-
-            self.open_lev_calc = ttk.Button(
-                self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_lev_calc)
-            )
-            self.open_lev_calc.grid(
-                row = 103,
-                column = 2
-            )
-
-        # VR spectrum calc params
-        if mode in [
-            'SpectrumPW',
-            'SpectrumAn'
-        ]:
-
-            tk.Label(
-                self.root,
-                text = 'Parameters for vib.-rot. spectrum calculation, example: input/params_spectrum.txt'
-            ).grid(
-                row = 104,
-                column = 0,
-                sticky = 'e'
-            )
-
-            self.file_sp_calc = ttk.Entry(
-                self.root,
-                width = 110
-            )
-            self.file_sp_calc.grid(
-                row = 104,
-                column = 1
-            )
-            self.file_sp_calc.insert(
-                'end',
-                self.insert_input()
-            )
-
-            self.open_sp_calc = ttk.Button(
-                self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_sp_calc)
-            )
-            self.open_sp_calc.grid(
-                row = 104,
-                column = 2
-            )
-
-        # VR fit params
-        if mode in [
-            'FitExp'
-        ]:
-
-            tk.Label(
-                self.root,
-                text = 'Parameters for vib.-rot. levels calculation, example: input/params_fit.txt'
-            ).grid(
-                row = 105,
-                column = 0,
-                sticky = 'e'
-            )
-
-            self.file_fit_calc = ttk.Entry(
-                self.root,
-                width = 110
-            )
-            self.file_fit_calc.grid(
-                row = 105,
-                column = 1
-            )
-            self.file_fit_calc.insert(
-                'end',
-                self.insert_input()
-            )
-
-            self.open_fit_calc = ttk.Button(
-                self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_fit_calc)
-            )
-            self.open_fit_calc.grid(
-                row = 105,
-                column = 2
-            )
-
-        # init params
-        if mode in [
-            'PecApprox'
-        ]:
-            tk.Label(
-                self.root,
-                text = 'Initial parameters for PEC approxomation, example: input/init_emo.txt'
-            ).grid(
-                row = 106,
-                column = 0,
-                sticky = 'e'
-            )
-
-            self.file_init_params = ttk.Entry(
-                self.root,
-                width = 110
-            )
-            self.file_init_params.grid(
-                row = 106,
-                column = 1
-            )
-            self.file_init_params.insert(
-                'end',
-                self.insert_input()
-            )
-
-            self.open_init_params = ttk.Button(
-                self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_init_params)
-            )
-            self.open_init_params.grid(
-                row = 106,
-                column = 2
-            )
-
-        # fitted params
-        if mode in [
-            'LevelsAn',
-            'SpectrumAn',
-            'FitExp'
-        ]:
-            tk.Label(
-                self.root,
-                text = 'Fitted PEC parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
-            ).grid(
-                row = 107,
-                column = 0,
-                sticky = 'e'
-            )
-
-            self.file_fitted_params = ttk.Entry(
-                self.root,
-                width = 110
-            )
-            self.file_fitted_params.grid(
-                row = 107,
-                column = 1
-            )
-            self.file_fitted_params.insert(
-                'end',
-                self.insert_input()
-            )
-
-            self.open_fitted_params = ttk.Button(
-                self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_fitted_params)
-            )
-            self.open_fitted_params.grid(
-                row = 107,
-                column = 2
-            )
-
-        # dipole
+        # PW dipole
         if mode in [
             'SpectrumPW',
             'SpectrumAn'
@@ -293,7 +312,7 @@ class CalcWindow:
                 self.root,
                 text = 'Point-wise dipole moment, example: input/pw_dm.txt'
             ).grid(
-                row = 108,
+                row = row,
                 column = 0,
                 sticky = 'e'
             )
@@ -303,12 +322,12 @@ class CalcWindow:
                 width = 110
             )
             self.file_pw_dip.grid(
-                row = 108,
+                row = row,
                 column = 1
             )
             self.file_pw_dip.insert(
                 'end',
-                self.insert_input()
+                self.input_files.pop(0)
             )
 
             self.open_pw_dip = ttk.Button(
@@ -317,9 +336,11 @@ class CalcWindow:
                 command = lambda: self.select_file(self.file_pw_dip)
             )
             self.open_pw_dip.grid(
-                row = 108,
+                row = row,
                 column = 2
             )
+
+            row += 1
 
         # exp data
         if mode in [
@@ -329,7 +350,7 @@ class CalcWindow:
                 self.root,
                 text = 'Experimental vib.-rot. levels, example: input/exp_levels.txt'
             ).grid(
-                row = 109,
+                row = row,
                 column = 0,
                 sticky = 'e'
             )
@@ -339,12 +360,12 @@ class CalcWindow:
                 width = 110
             )
             self.file_exp.grid(
-                row = 109,
+                row = row,
                 column = 1
             )
             self.file_exp.insert(
                 'end',
-                self.insert_input()
+                self.input_files.pop(0)
             )
 
             self.open_exp = ttk.Button(
@@ -353,9 +374,11 @@ class CalcWindow:
                 command = lambda: self.select_file(self.file_exp)
             )
             self.open_exp.grid(
-                row = 109,
+                row = row,
                 column = 2
             )
+
+            row += 1
 
         # out file
         ttk.Label(
@@ -363,26 +386,30 @@ class CalcWindow:
             text = 'Select out file',
             font = ('bold', 16)
         ).grid(
-            row = 110,
+            row = row,
             column = 0,
             columnspan = 4
         )
+
+        row += 1
 
         ttk.Separator(
             self.root,
             orient = 'horizontal'
         ).grid(
-            row = 111,
+            row = row,
             column = 0,
             columnspan = 4,
             sticky = 'ew'
         )
 
+        row += 1
+
         tk.Label(
             self.root,
             text = 'Output file:'
         ).grid(
-            row = 112,
+            row = row,
             column = 0,
             sticky = 'e'
         )
@@ -392,7 +419,7 @@ class CalcWindow:
             width = 110
         )
         self.file_out.grid(
-            row = 112,
+            row = row,
             column = 1
         )
 
@@ -402,9 +429,11 @@ class CalcWindow:
             command = lambda: self.select_file(self.file_out)
         )
         self.open_out.grid(
-            row = 112,
+            row = row,
             column = 2
         )
+
+        row += 1
 
         # window for messages
         self.vscroll = tk.Scrollbar(
@@ -412,7 +441,7 @@ class CalcWindow:
             orient = 'vertical'
         )
         self.vscroll.grid(
-            row = 113,
+            row = row,
             column = 3,
             sticky = tk.N + tk.S
         )
@@ -425,11 +454,13 @@ class CalcWindow:
             yscrollcommand = self.vscroll.set
         )
         self.message_window.grid(
-            row = 113,
+            row = row,
             column = 0,
             columnspan = 3,
             sticky = tk.W + tk.E
         )
+
+        row += 1
 
         # run
         ttk.Style().configure('my.TButton', font = ('bold', 16), foreground = 'red')
@@ -441,7 +472,7 @@ class CalcWindow:
             style = 'my.TButton',
             command = self.run_calc
         ).grid(
-            row = 114,
+            row = row,
             column = 0,
             columnspan = 4
         )
@@ -451,28 +482,17 @@ class CalcWindow:
             self.print_message(f'Info: {self.input_file_count} input file name(s) bypassed from CLI\n', Logger())
 
         if autorun:
-            self.print_message(f'Info: autorun for {mode}, out file name  bypassed from CLI\n', Logger())
+            self.print_message(f'Info: autorun for {mode}, out file name bypassed from CLI\n', Logger())
             self.file_out.insert(
                 'end',
                 f'{mode}_GUI_autorun.log'
             )
             self.run_calc()
 
-
         # lock main
         self.root.transient(main_root)
         self.root.grab_set()
         main_root.wait_window(self.root)
-
-    def insert_input(
-        self
-    ) -> str:
-        '''
-        return 
-        '''
-        if len(self.input_files_rev) > 0:
-            return self.input_files_rev.pop()
-        return ''
 
     def print_message(
         self,
@@ -545,8 +565,8 @@ class CalcWindow:
         # input files for mode
         if self.mode == 'PecApprox':
             input_files = [
-                self.file_pw_pec.get(),
-                self.file_init_params.get()
+                self.file_init_params.get(),
+                self.file_pw_pec.get()
             ]
         elif self.mode == 'LevelsPW':
             input_files = [
