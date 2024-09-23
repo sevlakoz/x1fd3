@@ -29,13 +29,11 @@ args = parser.parse_args()
 
 
 if args.mode == 'GUI':
-    main_window = MainWindow(args.input_files)
-    main_window.root.mainloop()
+    MainWindow().root.mainloop()
 else:
     out = Logger(args.mode)
 
     start = time()
-
     try:
         match args.mode:
             case 'PecApprox':
@@ -56,7 +54,6 @@ else:
         print('Error!')
         print(err)
         out.print(err)
-
     finish = time()
 
     print(f'Execution time, s: {finish - start:.3f}')

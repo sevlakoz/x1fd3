@@ -13,7 +13,7 @@ A program to deal with the adiabatic $X^1\Sigma^+$ state of diatomic molecules.
 python -m x1fd3 [mode] [input files]
 ```
 Available modes:
-* GUI - TK wrapper for all other modes 
+* GUI - TK wrapper for all other modes
 * PecApprox - Potential energy curve (PEC) approximation with analytic function 
 * LevelsPW - Vibrational-rotational level calculation for given point-wise PEC
 * LevelsAn - Vibrational-rotational level calculation for given analytic PEC

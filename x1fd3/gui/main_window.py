@@ -8,8 +8,7 @@ class MainWindow:
     class to draw main window
     '''
     def __init__(
-        self,
-        args: list[str]
+        self
     ) -> None:
         '''
         draw buttons for mode selection
@@ -61,7 +60,6 @@ class MainWindow:
 
         ttk.Style().configure('my.TRadiobutton', font = ('bold'), foreground = 'red')
 
-        row = 2
         for mode, descr in modes.items():
             ttk.Radiobutton(
                 text = mode,
@@ -70,7 +68,7 @@ class MainWindow:
                 variable = self.mode,
                 command = self.select_mode
             ).grid(
-                row = row,
+                row = 2,
                 column = 0,
                 sticky = 'w'
             )
@@ -78,20 +76,10 @@ class MainWindow:
             tk.Label(
                 text = descr
             ).grid(
-                row = row,
+                row = 2,
                 column = 1,
                 sticky = 'w'
             )
-
-            row += 1
-
-        # autorun for test
-        if len(args) > 3 and args[0] == 'autorun' and args[1] in modes:
-            mode = args[1]
-            input_files = tuple(args[2:])
-            out_file = f'{mode}_GUI_autorun.log'
-            CalcWindow(self.root, mode, True, input_files, out_file)
-            self.root.destroy()
 
     def select_mode(
         self
