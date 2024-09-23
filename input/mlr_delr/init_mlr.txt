@@ -1,0 +1,21 @@
+[MLR]
+de    37250
+re    1.27
+rref  1.5
+q     3
+p     4
+beta  1. 
+      0. 
+      0. 
+      0.
+      0.
+cnpow 6
+      8
+      10
+cnval 1.128e5
+      8.54e5
+      6.99e6
+# Douketis et al. functions
+dampf ds
+s     -1
+rho   0.984

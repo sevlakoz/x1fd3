@@ -1,5 +1,5 @@
 [FIT]
 mass1 1.007825
 mass2 34.968852
-rmin  0.91
-rmax  4.0
+rmin  0.7
+rmax  5.0
