@@ -22,7 +22,8 @@ class CalcWindow:
         self,
         main_root: tk.Tk,
         mode: str,
-        input_files: list[str]
+        input_files: list[str],
+        autorun: bool = False
     ) -> None:
         '''
         draw stuff, mode dependent
@@ -448,6 +449,15 @@ class CalcWindow:
         # input bypass
         if self.input_file_count > 0:
             self.print_message(f'Info: {self.input_file_count} input file name(s) bypassed from CLI\n', Logger())
+
+        if autorun:
+            self.print_message(f'Info: autorun for {mode}, out file name  bypassed from CLI\n', Logger())
+            self.file_out.insert(
+                'end',
+                f'{mode}_GUI_autorun.log'
+            )
+            self.run_calc()
+
 
         # lock main
         self.root.transient(main_root)

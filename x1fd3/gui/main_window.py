@@ -85,6 +85,9 @@ class MainWindow:
 
             row += 1
 
+        if input_files[-1] == 'run' and input_files[-2] in modes:
+            CalcWindow(self.root, input_files[-2], input_files[:-2], True)
+
     def select_mode(
         self
     ) -> None:
