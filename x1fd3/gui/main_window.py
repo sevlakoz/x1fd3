@@ -60,6 +60,8 @@ class MainWindow:
 
         ttk.Style().configure('my.TRadiobutton', font = ('bold'), foreground = 'red')
 
+        row = 2
+
         for mode, descr in modes.items():
             ttk.Radiobutton(
                 text = mode,
@@ -68,7 +70,7 @@ class MainWindow:
                 variable = self.mode,
                 command = self.select_mode
             ).grid(
-                row = 2,
+                row = row,
                 column = 0,
                 sticky = 'w'
             )
@@ -76,10 +78,12 @@ class MainWindow:
             tk.Label(
                 text = descr
             ).grid(
-                row = 2,
+                row = row,
                 column = 1,
                 sticky = 'w'
             )
+
+            row += 1
 
     def select_mode(
         self
