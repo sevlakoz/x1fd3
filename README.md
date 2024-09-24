@@ -15,8 +15,8 @@ test/test.sh test
 ```
 Zero output is OK.
 
-Note that last test ("FitExp_1.log" vs "test/FitExp.ref") could fail since it's slightly system-dependent.
-If "PEC fit done:" is in "FitExp_1.log" it works just fine.
+Note that the last test ("FitExp_1.log" vs "test/FitExp.ref") could fail since it's slightly system-dependent.
+If "PEC fit done" is in "FitExp_1.log" it works just fine.
 
 ## Usage
 ```bash
