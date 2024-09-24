@@ -3,7 +3,7 @@
 if [ -n "$1" ] && [ "$1" == "make" ]; then
     CMD="mv"
 elif [ -n "$1" ] && [ "$1" == "test" ]; then
-    CMD="diff"
+    CMD="diff --unified=0"
 else
     echo "set \$1: "
     echo "\"make\" - update test/*.ref"

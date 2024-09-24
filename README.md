@@ -9,13 +9,13 @@ A program to deal with the adiabatic $X^1\Sigma^+$ state of diatomic molecules.
 * tkinter
 
 ## Test
-On *nix systems run 
+On *nix systems run:
 ```bash
 test/test.sh test
 ```
-Zero output is OK
+Zero output is OK.
 
-Note that last test could fail since it's slightly system-dependent.
+Note that last test ("FitExp_1.log" vs "test/FitExp.ref") could fail since it's slightly system-dependent.
 If "PEC fit done:" is in "FitExp_1.log" it works just fine.
 
 ## Usage
