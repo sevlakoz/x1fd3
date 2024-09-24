@@ -20,7 +20,7 @@ If "PEC fit done" is in "FitExp_1.log" it works just fine.
 
 ## Usage
 ```bash
-python -m x1fd3 [mode] _[input files]_
+python -m x1fd3 [mode] [input files]
 ```
 Available modes:
 * GUI - TK wrapper for all other modes
