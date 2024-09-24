@@ -33,7 +33,7 @@ Available modes:
 
 No input files required to run GUI. 
 For CLI-based modes 2, 3, or 4 files need to be provided.
-Run any of these modes without no arguments to see help.
+Run any of these modes with no arguments to see help.
 
 ## Mode details
 
