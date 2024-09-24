@@ -13,12 +13,12 @@ fi
 
 rm *.log
 
-python -m x1fd3 PecApprox  input/init_emo.txt        input/pw_pec.txt          
-python -m x1fd3 LevelsPW   input/params_levels.txt   input/pw_pec.txt
-python -m x1fd3 LevelsAn   input/params_levels.txt   input/fitted_emo.txt
-python -m x1fd3 SpectrumPW input/params_spectrum.txt input/pw_pec.txt     input/pw_dm.txt
-python -m x1fd3 SpectrumAn input/params_spectrum.txt input/fitted_emo.txt input/pw_dm.txt
-python -m x1fd3 FitExp     input/params_fit.txt      input/fitted_emo.txt input/pw_pec.txt input/exp_levels.txt
+python -m x1fd3 PecApprox  input/init_emo.txt        input/pw_pec.txt >> test.log
+python -m x1fd3 LevelsPW   input/params_levels.txt   input/pw_pec.txt >> test.log
+python -m x1fd3 LevelsAn   input/params_levels.txt   input/fitted_emo.txt >> test.log
+python -m x1fd3 SpectrumPW input/params_spectrum.txt input/pw_pec.txt     input/pw_dm.txt >> test.log
+python -m x1fd3 SpectrumAn input/params_spectrum.txt input/fitted_emo.txt input/pw_dm.txt >> test.log
+python -m x1fd3 FitExp     input/params_fit.txt      input/fitted_emo.txt input/pw_pec.txt input/exp_levels.txt >> test.log
 
 $CMD PecApprox_1.log  test/PecApprox.ref
 $CMD LevelsPW_1.log   test/LevelsPW.ref

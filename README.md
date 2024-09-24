@@ -13,6 +13,7 @@ On *nix systems run
 ```bash
 test/test.sh test
 ```
+Zero output is OK
 
 Note that last test could fail since it's slightly system-dependent.
 If "PEC fit done:" is in "FitExp_1.log" it works just fine.
