@@ -8,9 +8,18 @@ A program to deal with the adiabatic $X^1\Sigma^+$ state of diatomic molecules.
 * scipy
 * tkinter
 
+## Test
+On *nix systems run 
+```bash
+test/test.sh test
+```
+
+Note that last test could fail since it's slightly system-dependent.
+If "PEC fit done:" is in "FitExp_1.log" it works just fine.
+
 ## Usage
 ```bash
-python -m x1fd3 [mode] [input files]
+python -m x1fd3 [mode] [*input files*]
 ```
 Available modes:
 * GUI - TK wrapper for all other modes
@@ -20,6 +29,10 @@ Available modes:
 * SpectrumPW - Vibrational-rotational spectrum calculation for given point-wise PEC and point-wise dipole moment (DM)
 * SpectrumAn - Vibrational-rotational spectrum calculation for given analytic PEC and point-wise DM
 * FitExp - fit analytic PEC to reproduce given experimental vibrational-rotational levels
+
+No input files required to run GUI. 
+For CLI-based modes 2, 3, or 4 files need to be provided.
+Run any of these modes without no arguments to see help.
 
 ## Mode details
 
