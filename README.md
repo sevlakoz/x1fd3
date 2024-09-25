@@ -15,8 +15,8 @@ test/test.sh test
 ```
 Zero output is OK.
 
-Note that the last test ("FitExp_1.log" vs "test/FitExp.ref") could fail since it's slightly system-dependent.
-If "PEC fit done" is in "FitExp_1.log" it works just fine.
+Note that the first and last tests ("PecApprox_1.log" vs "test/PecApprox.ref" and "FitExp_1.log" vs "test/FitExp.ref") could fail since they are slightly system-dependent.
+If "PEC fit done" is in "PecApprox_1.log" and "FitExp_1.log" they works just fine.
 
 ## Usage
 ```bash
@@ -32,7 +32,7 @@ Available modes:
 * FitExp - fit analytic PEC to reproduce given experimental vibrational-rotational levels
 
 No input files required to run GUI. 
-For CLI-based modes 2, 3, or 4 files need to be provided.
+For CLI-based modes 2, 3, or 4 files should to be provided.
 Run any of these modes with no arguments to see help.
 
 ## Mode details
