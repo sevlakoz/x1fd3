@@ -11,7 +11,7 @@ class MatrixElements:
     class for matrix elements
     '''
     # Scale factor for A, \frac{8 \pi^2}{3 \hbar \epsilon_0} [1 / s / D^2 / (cm-1)^3]
-    SCALE_A: ClassVar[float] = 3.13618932e-7
+    SCALE_A: ClassVar[float] = 3.137e-7
     # Boltzmann constant  [cm-1 / K]
     K_B = 0.695
     # Temperature [K]
