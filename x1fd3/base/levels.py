@@ -68,7 +68,7 @@ class Levels:
         for j in jrange:
 
             # diagonal elements (ngrid)
-            diagonal = u_grid / scale + j * (j + 1) / r_grid**2 + 2 * step**-2
+            diagonal = u_grid / scale + j * (j + 1) * r_grid**-2 + 2 * step**-2
 
             # off-diagonal elements (ngrid-1)
             off_diag = np.full(self.NGRID - 1, -step**-2)
