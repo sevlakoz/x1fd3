@@ -1,5 +1,6 @@
 from x1fd3.base import PWCurve, \
                        Levels, \
+                       ExpData, \
                        MatrixElements
 from .driver import Driver
 
@@ -18,6 +19,6 @@ class DriverSpectrumAn(Driver):
         self
     ) -> None:
         # calc vr levels
-        levels = Levels('an', self.params)
+        levels = Levels(self.params, PWCurve(), ExpData())
         # calc and print integrals
         MatrixElements(self.params, levels, self.dm).print(self.out)

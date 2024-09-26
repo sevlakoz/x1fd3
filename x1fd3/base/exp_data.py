@@ -29,7 +29,7 @@ class ExpData:
         v E(v,J)
         ...
         '''
-        input_parser = ConfigParser(delimiters=(' ', '\t'))
+        input_parser = ConfigParser(delimiters = (' ', '\t'))
         input_parser.read(fname)
 
         # read levels

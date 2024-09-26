@@ -24,9 +24,9 @@ class Levels:
 
     def __init__(
         self,
-        ptype: str,
         params: Parameters,
-        pec: PWCurve = PWCurve()
+        pec: PWCurve,
+        expdata: ExpData
     ) -> None:
         '''
         init = calculate vib-rot levels for given set of parameters / point-wise pec
@@ -46,23 +46,26 @@ class Levels:
         step = (params['rmax'] - params['rmin']) / (self.NGRID - 1)
         r_grid = np.linspace(params['rmin'], params['rmax'], self.NGRID)
 
-        if ptype == 'pw':
-            # cubic spline for pec
+        if pec.npoint > 0:
+            # cubic spline for pw pec
             u_grid = pec.spline(r_grid)
             emax = u_grid[-1]
-        elif ptype == 'an':
+        else:
             # analytic
             u_grid = AnPec(params).calc(r_grid)
             if params['ptype'] in ('EMO', 'MLR', 'DELR'):
                 emax = params['de']
             else:
                 raise RuntimeError(f'Cant calculate energy range for \"{params["ptype"]}\"')
+
+        # J range
+        if expdata.nlev > 0:
+            jrange = expdata.energy.keys()
         else:
-            raise RuntimeError(f'Uknown pec type "{ptype}"')
+            jrange = range(params['jmax'] + 1) #type: ignore
 
         # loop over J to calculate level energies
-
-        for j in range(params['jmax'] + 1):
+        for j in jrange:
 
             # diagonal elements (ngrid)
             diagonal = u_grid / scale + j * (j + 1) / r_grid**2 + 2 * step**-2
@@ -70,12 +73,20 @@ class Levels:
             # off-diagonal elements (ngrid-1)
             off_diag = np.full(self.NGRID - 1, -step**-2)
 
+            # eigenvalues search range
+            if expdata.nlev > 0:
+                select = 'i'
+                select_range = (min(expdata.energy[j]), max(expdata.energy[j]))
+            else:
+                select = 'v'
+                select_range = (0., emax / scale) #type: ignore
+
             # SciPy routine to calculate eigenvalues and eigenvectors
             results = eigh_tridiagonal(
                 diagonal,
                 off_diag,
-                select = 'v',
-                select_range = (0., emax / scale)
+                select = select,
+                select_range = select_range
             )
 
             self.energy[j] = {}
@@ -119,7 +130,6 @@ class Levels:
         out.print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
         for j, en_jv in self.energy.items():
             for v, en_cal in en_jv.items():
-                if j in expdata.energy and v in expdata.energy[j]:
-                    en_exp = expdata.energy[j][v]
-                    out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
+                en_exp = expdata.energy[j][v]
+                out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
         out.print()

@@ -39,7 +39,7 @@ class Fit:
         '''
         # print initial guess
         out.print('Initial guess\n')
-        self._print_pec_n_levels(out)
+        self._print_pecs_n_levels(out)
 
         # init params
         guess = [self.params['de'], self.params['re']]
@@ -59,7 +59,7 @@ class Fit:
 
         # print final
         out.print('Fit results\n')
-        self._print_pec_n_levels(out)
+        self._print_pecs_n_levels(out)
         out.print('\nFitted parameters\n')
         self.params.print_pec_params(out)
 
@@ -83,11 +83,10 @@ class Fit:
 
         # exp levels
         if self.expdata.nlev > 0:
-            levels = Levels('an', tmp, self.pec)
+            levels = Levels(tmp, PWCurve(), self.expdata)
             for j, en_jv in self.expdata.energy.items():
                 for v, en_v in en_jv.items():
-                    if j in levels.energy and v in levels.energy[j]:
-                        res.append((levels.energy[j][v] - en_v) / 0.1)
+                    res.append((levels.energy[j][v] - en_v) / 0.1)
 
         # pec
         pec_an = AnPec(tmp).calc(self.pec.rval)
@@ -95,7 +94,7 @@ class Fit:
 
         return res
 
-    def _print_pec_n_levels(
+    def _print_pecs_n_levels(
         self,
         out: Logger
     ) -> None:
@@ -103,6 +102,6 @@ class Fit:
         print pec and exp levels if provided
         '''
         if self.expdata.nlev > 0:
-            levels = Levels('an', self.params)
+            levels = Levels(self.params, PWCurve(), self.expdata)
             levels.print_with_expdata(out, self.expdata)
         self.pec.print_with_an(self.params, out)

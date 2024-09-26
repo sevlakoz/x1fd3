@@ -1,4 +1,6 @@
-from x1fd3.base import Levels
+from x1fd3.base import Levels, \
+                       PWCurve, \
+                       ExpData
 from .driver import Driver
 
 class DriverLevelsAn(Driver):
@@ -15,4 +17,4 @@ class DriverLevelsAn(Driver):
         self
     ) -> None:
         # calc and print vr levels
-        Levels('an', self.params).print(self.out)
+        Levels(self.params, PWCurve(), ExpData()).print(self.out)

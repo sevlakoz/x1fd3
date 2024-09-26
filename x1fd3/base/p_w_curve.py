@@ -19,6 +19,8 @@ class PWCurve:
         '''
         init = read data if file provided 
         '''
+        self.npoint = 0
+
         self.rval: Float64Array = np.array([])
         self.cval: Float64Array = np.array([])
         self.eval: Float64Array = np.array([])
@@ -50,6 +52,8 @@ class PWCurve:
             self.eval = data[2]
         else:
             raise RuntimeError(f'found {ncol} columns in {fname}, only 2 or 3 supported')
+
+        self.npoint = len(self.rval)
 
     def spline(
         self,
