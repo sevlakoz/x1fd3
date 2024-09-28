@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import ClassVar, Any
 import numpy as np
 import numpy.typing as npt
 from scipy.linalg import eigh_tridiagonal     # type: ignore
@@ -33,6 +33,7 @@ class Levels:
         '''
         # save exp levels
         self.energy_exp = expdata.energy
+        self.nlev_exp = expdata.nlev
 
         # empty vars for calc levels
         self.energy: dict[int, dict[int, float]] = {}
@@ -53,70 +54,67 @@ class Levels:
         if pec.npoint > 0:
             # cubic spline for pw pec
             u_grid = pec.spline(r_grid)
-            emax = u_grid[-1]
+            emax = u_grid[-1] / scale
         else:
             # analytic
             if 'ptype' in params.keys():
                 u_grid = AnPec(params).calc(r_grid)
                 if params['ptype'] in ('EMO', 'MLR', 'DELR'):
-                    emax = params['de']
+                    emax = params['de'] / scale
                 else:
                     raise RuntimeError(f'cant calculate energy range for \"{params["ptype"]}\"')
             else:
-                raise RuntimeError('"ptype" not in Parameters.key()')
+                raise RuntimeError('"ptype" not in Parameters.keys()')
 
-        # J range
-        if expdata.nlev > 0:
+        # J and eigenvalues search ranges
+        select_range: dict[int, tuple[Any, Any]] = {}
+        if self.nlev_exp > 0:
             jrange = self.energy_exp.keys()
+            select = 'i'
+            for j in jrange:
+                select_range[j] = (
+                    min(self.energy_exp[j].keys()),
+                    max(self.energy_exp[j].keys())
+                )
         else:
             jrange = range(params['jmax'] + 1) #type: ignore
+            select = 'v'
 
         # loop over J to calculate level energies
         for j in jrange:
-
             # diagonal elements (ngrid)
             diagonal = u_grid / scale + j * (j + 1) * r_grid**-2 + 2 * step**-2
 
             # off-diagonal elements (ngrid-1)
             off_diag = np.full(self.NGRID - 1, -step**-2)
 
-            # eigenvalues search range
-            if expdata.nlev > 0:
-                select = 'i'
-                select_range = (
-                    min(self.energy_exp[j].keys()),
-                    max(self.energy_exp[j].keys())
-                )
-            else:
-                select = 'v'
-                select_range = (
-                    0.,
-                    emax / scale
-                ) #type: ignore
-
             # SciPy routine to calculate eigenvalues and eigenvectors
             results = eigh_tridiagonal(
                 diagonal,
                 off_diag,
                 select = select,
-                select_range = select_range
+                select_range = select_range.get(j, (0., emax))
             )
 
+            # dicts for results
             self.energy[j] = {}
             self.rot_const[j] = {}
             self.wavef_grid[j] = {}
 
+            # calc correction for E(v,J) and store results
             for v, en in enumerate(results[0]):
                 wf = results[1][:, v]
-
                 # correction for fd3 scheme
                 fd_cor = step**2 / scale / 12 * np.sum(
                     (wf * (u_grid - en * scale))**2
                 )
 
+                # E, Bv, WF
                 self.energy[j][v] = en * scale + fd_cor
-                self.rot_const[j][v] = scale * np.sum(wf**2 / r_grid**2)
+                self.rot_const[j][v] = scale * np.sum(wf**2 * r_grid**-2)
                 self.wavef_grid[j][v] = wf
+
+        # grid for R
         self.r_grid = r_grid
 
     def print(
@@ -139,9 +137,12 @@ class Levels:
         '''
         print cal and exp vib-rot levels in custom format
         '''
-        out.print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
-        for j, en_jv in self.energy.items():
-            for v, en_cal in en_jv.items():
-                en_exp = self.energy_exp[j][v]
-                out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
-        out.print()
+        if self.nlev_exp > 0:
+            out.print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
+            for j, en_jv in self.energy.items():
+                for v, en_cal in en_jv.items():
+                    en_exp = self.energy_exp[j][v]
+                    out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
+            out.print()
+        else:
+            raise RuntimeError('No experimental levels provided')
