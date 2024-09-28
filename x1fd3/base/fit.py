@@ -103,4 +103,4 @@ class Fit:
         '''
         if self.expdata.nlev > 0:
             Levels(self.params, PWCurve(), self.expdata).print_with_expdata(out)
-        self.pec.print_with_an(self.params, out)
+        self.pec.print_with_anpec(self.params, out)

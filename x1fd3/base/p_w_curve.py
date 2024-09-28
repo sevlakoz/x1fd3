@@ -71,7 +71,7 @@ class PWCurve:
         c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
         return c_grid
 
-    def print_with_an(
+    def print_with_anpec(
         self,
         params: Parameters,
         out: Logger
