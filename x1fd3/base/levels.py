@@ -31,6 +31,8 @@ class Levels:
         '''
         init = calculate vib-rot levels for given set of parameters / point-wise pec
         '''
+        self.expdata = expdata
+
         self.energy: dict[int, dict[int, float]] = {}
         self.rot_const: dict[int, dict[int, float]] = {}
         self.wavef_grid: dict[int, dict[int, Float64Array]] = {}
@@ -121,8 +123,7 @@ class Levels:
 
     def print_with_expdata(
         self,
-        out: Logger,
-        expdata: ExpData
+        out: Logger
     ) -> None:
         '''
         print cal and exp vib-rot levels in custom format
@@ -130,6 +131,6 @@ class Levels:
         out.print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
         for j, en_jv in self.energy.items():
             for v, en_cal in en_jv.items():
-                en_exp = expdata.energy[j][v]
+                en_exp = self.expdata.energy[j][v]
                 out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
         out.print()

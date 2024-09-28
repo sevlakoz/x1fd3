@@ -1,5 +1,6 @@
 from x1fd3.base import PWCurve, \
-                       Fit
+                       Fit, \
+                       ExpData
 from .driver import Driver
 
 class DriverPecApprox(Driver):
@@ -17,4 +18,4 @@ class DriverPecApprox(Driver):
     ) -> None:
         self.out.print('=== Point-wise PEC approximation ===\n')
         # fit and print
-        Fit(self.pec, self.params).fit_n_print(self.out)
+        Fit(self.params, self.pec, ExpData()).fit_n_print(self.out)

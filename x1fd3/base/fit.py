@@ -16,9 +16,9 @@ class Fit:
     '''
     def __init__(
         self,
-        pec: PWCurve,
         params: Parameters,
-        expdata: ExpData = ExpData()
+        pec: PWCurve,
+        expdata: ExpData
     ) -> None:
         '''
         set input data, empty exp lelels list by default
@@ -102,6 +102,5 @@ class Fit:
         print pec and exp levels if provided
         '''
         if self.expdata.nlev > 0:
-            levels = Levels(self.params, PWCurve(), self.expdata)
-            levels.print_with_expdata(out, self.expdata)
+            Levels(self.params, PWCurve(), self.expdata).print_with_expdata(out)
         self.pec.print_with_an(self.params, out)
