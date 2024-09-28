@@ -31,8 +31,10 @@ class Levels:
         '''
         init = calculate vib-rot levels for given set of parameters / point-wise pec
         '''
-        self.expdata = expdata
+        # save exp levels
+        self.energy_exp = expdata.energy
 
+        # empty vars for calc levels
         self.energy: dict[int, dict[int, float]] = {}
         self.rot_const: dict[int, dict[int, float]] = {}
         self.wavef_grid: dict[int, dict[int, Float64Array]] = {}
@@ -54,15 +56,18 @@ class Levels:
             emax = u_grid[-1]
         else:
             # analytic
-            u_grid = AnPec(params).calc(r_grid)
-            if params['ptype'] in ('EMO', 'MLR', 'DELR'):
-                emax = params['de']
+            if 'ptype' in params.keys():
+                u_grid = AnPec(params).calc(r_grid)
+                if params['ptype'] in ('EMO', 'MLR', 'DELR'):
+                    emax = params['de']
+                else:
+                    raise RuntimeError(f'cant calculate energy range for \"{params["ptype"]}\"')
             else:
-                raise RuntimeError(f'Cant calculate energy range for \"{params["ptype"]}\"')
+                raise RuntimeError('"ptype" not in Parameters.key()')
 
         # J range
         if expdata.nlev > 0:
-            jrange = expdata.energy.keys()
+            jrange = self.energy_exp.keys()
         else:
             jrange = range(params['jmax'] + 1) #type: ignore
 
@@ -78,10 +83,16 @@ class Levels:
             # eigenvalues search range
             if expdata.nlev > 0:
                 select = 'i'
-                select_range = (min(expdata.energy[j]), max(expdata.energy[j]))
+                select_range = (
+                    min(self.energy_exp[j].keys()),
+                    max(self.energy_exp[j].keys())
+                )
             else:
                 select = 'v'
-                select_range = (0., emax / scale) #type: ignore
+                select_range = (
+                    0.,
+                    emax / scale
+                ) #type: ignore
 
             # SciPy routine to calculate eigenvalues and eigenvectors
             results = eigh_tridiagonal(
@@ -131,6 +142,6 @@ class Levels:
         out.print(f'\n{"J":>4}{"v":>4}{"Eexp,cm-1":>15}{"Ecalc,cm-1":>15}{"delta,cm-1":>15}')
         for j, en_jv in self.energy.items():
             for v, en_cal in en_jv.items():
-                en_exp = self.expdata.energy[j][v]
+                en_exp = self.energy_exp[j][v]
                 out.print(f'{j:4d}{v:4d}{en_exp:15.3f}{en_cal:15.3f}{en_exp - en_cal:15.3f}')
         out.print()
