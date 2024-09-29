@@ -484,17 +484,6 @@ class CalcWindow:
         obj.delete(0, 'end')
         obj.insert(0, fname)
 
-    def check_input_file_list(
-        self,
-        input_files: list[str]
-    ) -> None:
-        '''
-        raise error if file name empty
-        '''
-        for fname in input_files:
-            if not fname:
-                raise RuntimeError('one or more input files not specified')
-
     def set_n_check_out(
         self,
     ) -> Logger:
@@ -553,11 +542,10 @@ class CalcWindow:
             return
 
         # check input files
-        try:
-            self.check_input_file_list(input_files)
-        except BaseException as ex: # pylint: disable = W0718
-            self.print_message(f'RuntimeError: {ex}\n', Logger())
-            return
+        for fname in input_files:
+            if not fname:
+                self.print_message('RuntimeError: one or more input files not specified\n', Logger())
+                return
 
         # set and check out
         try:
