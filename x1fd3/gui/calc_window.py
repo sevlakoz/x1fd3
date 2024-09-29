@@ -484,19 +484,6 @@ class CalcWindow:
         obj.delete(0, 'end')
         obj.insert(0, fname)
 
-    def set_n_check_out(
-        self,
-    ) -> Logger:
-        '''
-        set and check out
-        '''
-        fname = self.file_out.get()
-        if fname:
-            if isfile(fname) and getsize(fname) > 0:
-                raise RuntimeError(f'non-empty out file "{fname}" already exists')
-            return Logger(fname, False)
-        raise RuntimeError('out file not specified')
-
     def run_calc(
         self
     ) -> None:
@@ -542,17 +529,19 @@ class CalcWindow:
             return
 
         # check input files
-        for fname in input_files:
-            if not fname:
-                self.print_message('RuntimeError: one or more input files not specified\n', Logger())
-                return
-
-        # set and check out
-        try:
-            out = self.set_n_check_out()
-        except BaseException as ex: # pylint: disable = W0718
-            self.print_message(f'RuntimeError: {ex}\n', Logger())
+        if not all(input_files):
+            self.print_message('RuntimeError: one or more input files not specified\n', Logger())
             return
+
+        # set out if possible
+        fname = self.file_out.get()
+        if not fname:
+            self.print_message('RuntimeError: out file not specified\n', Logger())
+            return
+        if isfile(fname) and getsize(fname) > 0:
+            self.print_message(f'RuntimeError: non-empty out file "{fname}" already exists\n', Logger())
+            return
+        out = Logger(fname, False)
 
         # run calc for mode
         try:
