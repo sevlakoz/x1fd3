@@ -11,8 +11,8 @@ from .logger import Logger
 class Fit:
     '''
     least square fit 
-    a)
-    b) 
+    a) pec approximation if no exp. levels provided
+    b) fit pec pec to exp. levels otherwise
     '''
     def __init__(
         self,
