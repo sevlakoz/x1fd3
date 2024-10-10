@@ -73,7 +73,7 @@ beta  1.
 
 === Point-wise PEC approximation ===
 
-Initial guess
+Initial PEC
 
        R,A         U(p-w),cm-1         U(EMO),cm-1          delta,cm-1
    0.70000          158516.200           21986.226          136529.974
@@ -121,9 +121,22 @@ Initial guess
    4.90000           36547.610           35300.735            1246.875
    5.00000           36549.260           35483.977            1065.283
 
+Initial parameters
+
+[EMO]
+de    37250.000
+re    1.270000
+rref  1.500000
+q     3
+beta  1.00000e+00
+      0.00000e+00
+      0.00000e+00
+      0.00000e+00
+      0.00000e+00
+
 PEC fit done: `ftol` termination condition is satisfied.
 
-Fit results
+Fitted PEC
 
        R,A         U(p-w),cm-1         U(EMO),cm-1          delta,cm-1
    0.70000          158516.200          158518.395              -2.195

@@ -144,8 +144,7 @@ beta  1.88807e+00
 
 === Fit PEC to reproduce exp. data ===
 
-Initial guess
-
+Initial levels
 
    J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1
    0   0       1483.881       1473.010         10.870
@@ -188,6 +187,8 @@ Initial guess
    3   7      19617.733      19500.519        117.214
    3   8      21776.288      21646.406        129.882
    3   9      23828.057      23682.610        145.447
+
+Initial PEC
 
        R,A         U(p-w),cm-1         U(EMO),cm-1          delta,cm-1
    0.70000          158516.200          158518.298              -2.098
@@ -235,10 +236,22 @@ Initial guess
    4.90000           36547.610           36553.239              -5.629
    5.00000           36549.260           36554.210              -4.950
 
+Initial parameters
+
+[EMO]
+de    36556.989
+re    1.277091
+rref  1.500000
+q     3
+beta  1.88807e+00
+      1.38902e-01
+      3.39605e-01
+      2.72179e-01
+      2.20685e-01
+
 PEC fit done: `xtol` termination condition is satisfied.
 
-Fit results
-
+Fitted levels
 
    J   v      Eexp,cm-1     Ecalc,cm-1     delta,cm-1
    0   0       1483.881       1484.716         -0.836
@@ -281,6 +294,8 @@ Fit results
    3   7      19617.733      19618.479         -0.746
    3   8      21776.288      21776.983         -0.695
    3   9      23828.057      23826.858          1.200
+
+Fitted PEC
 
        R,A         U(p-w),cm-1         U(EMO),cm-1          delta,cm-1
    0.70000          158516.200          158437.090              79.110

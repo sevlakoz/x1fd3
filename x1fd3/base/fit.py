@@ -28,7 +28,7 @@ class Fit:
         self.expdata = expdata
 
 
-    def fit_n_print(
+    def fit(
         self,
         out: Logger
     ) -> None:
@@ -37,9 +37,6 @@ class Fit:
         b) perform least square fit
         c) print fit results
         '''
-        # print initial guess
-        out.print('Initial guess\n')
-        self._print_pecs_n_levels(out)
 
         # init params
         guess = [self.params['de'], self.params['re']]
@@ -57,11 +54,6 @@ class Fit:
         self.params['re'] = res_1.x[1]
         self.params['beta'] = np.array(list(res_1.x[2:]))
 
-        # print final
-        out.print('Fit results\n')
-        self._print_pecs_n_levels(out)
-        out.print('\nFitted parameters\n')
-        self.params.print_pec_params(out)
 
     def _res(
         self,
@@ -94,13 +86,19 @@ class Fit:
 
         return res
 
-    def _print_pecs_n_levels(
+
+    def print_state(
         self,
+        label: str,
         out: Logger
     ) -> None:
         '''
-        print pec and exp levels if provided
+        print pec and exp levels if provided at init
         '''
         if self.expdata.nlev > 0:
+            out.print(f'{label} levels')
             Levels(self.params, PWCurve(), self.expdata).print_with_expdata(out)
+        out.print(f'{label} PEC\n')
         self.pec.print_with_anpec(self.params, out)
+        out.print(f'\n{label} parameters\n')
+        self.params.print_pec_params(out)

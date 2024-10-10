@@ -20,4 +20,7 @@ class DriverFitExp(Driver):
     ) -> None:
         self.out.print('=== Fit PEC to reproduce exp. data ===\n')
         # fit
-        Fit(self.params, self.pec, self.expdata).fit_n_print(self.out)
+        fit = Fit(self.params, self.pec, self.expdata)
+        fit.print_state('Initial', self.out)
+        fit.fit(self.out)
+        fit.print_state('Fitted', self.out)
