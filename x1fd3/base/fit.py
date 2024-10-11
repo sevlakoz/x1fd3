@@ -21,7 +21,7 @@ class Fit:
         expdata: ExpData
     ) -> None:
         '''
-        set input data, empty exp lelels list by default
+        set input data
         '''
         self.params = params
         self.pec = pec
@@ -33,12 +33,9 @@ class Fit:
         out: Logger
     ) -> None:
         '''
-        a) print initial guess
-        b) perform least square fit
-        c) print fit results
+        perform least square fit
         '''
-
-        # init params
+        # params -> guess
         guess = [self.params['de'], self.params['re']]
         guess.extend(self.params['beta'])
 
@@ -49,10 +46,27 @@ class Fit:
         else:
             raise RuntimeError(f'\nfit FAILED: {res_1.message}')
 
-        # fitted params
+        # fit result -> params
         self.params['de'] = res_1.x[0]
         self.params['re'] = res_1.x[1]
         self.params['beta'] = np.array(list(res_1.x[2:]))
+
+
+    def print_state(
+        self,
+        label: str,
+        out: Logger
+    ) -> None:
+        '''
+        print pec and exp levels if provided at init
+        '''
+        if self.expdata.nlev > 0:
+            out.print(f'{label} levels')
+            Levels(self.params, PWCurve(), self.expdata).print_with_expdata(out)
+        out.print(f'{label} PEC\n')
+        self.pec.print_with_anpec(self.params, out)
+        out.print(f'\n{label} parameters\n')
+        self.params.print_pec_params(out)
 
 
     def _res(
@@ -85,20 +99,3 @@ class Fit:
         res.extend((self.pec.cval - pec_an) / self.pec.eval)
 
         return res
-
-
-    def print_state(
-        self,
-        label: str,
-        out: Logger
-    ) -> None:
-        '''
-        print pec and exp levels if provided at init
-        '''
-        if self.expdata.nlev > 0:
-            out.print(f'{label} levels')
-            Levels(self.params, PWCurve(), self.expdata).print_with_expdata(out)
-        out.print(f'{label} PEC\n')
-        self.pec.print_with_anpec(self.params, out)
-        out.print(f'\n{label} parameters\n')
-        self.params.print_pec_params(out)
