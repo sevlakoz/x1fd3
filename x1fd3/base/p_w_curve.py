@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.typing as npt
-from scipy.interpolate import splrep, splev   # type: ignore
+from scipy.interpolate import CubicSpline   # type: ignore
 
 from .parameters import Parameters
 from .logger import Logger
@@ -67,8 +67,8 @@ class PWCurve:
         if rng_inp[0] < rng_self[0] or rng_inp[-1] > rng_self[-1]:
             raise RuntimeError(f'grid for spline out of range - {rng_inp} not in {rng_self}')
 
-        spl_pec = splrep(self.rval, self.cval)
-        c_grid: npt.NDArray[np.float_] = splev(r_grid, spl_pec)   # type: ignore
+        spl_pec = CubicSpline(self.rval, self.cval)
+        c_grid: npt.NDArray[np.float_] = spl_pec(r_grid)   # type: ignore
         return c_grid
 
     def print_with_anpec(
