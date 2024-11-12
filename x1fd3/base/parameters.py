@@ -11,7 +11,7 @@ class Parameters(UserDict[str, Any]):
     '''
     def read_pec_params(
             self,
-            fname: str
+            fname:str
         ) -> None:
         '''
         read params for PEC from file
@@ -57,8 +57,8 @@ class Parameters(UserDict[str, Any]):
 
     def read_vr_calc_params(
             self,
-            fname: str,
-            rtype: str
+            fname:str,
+            rtype:str
         ) -> None:
         '''
         read params for vib-rot level calculation from file
@@ -98,7 +98,7 @@ class Parameters(UserDict[str, Any]):
 
     def print_pec_params(
             self,
-            out: Logger
+            out:Logger
         ) -> None:
         '''
         print params from dict in custom format

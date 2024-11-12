@@ -20,8 +20,8 @@ class CalcWindow:
     '''
     def __init__(
         self,
-        main_root: tk.Tk,
-        mode: str,
+        main_root:tk.Tk,
+        mode:str,
     ) -> None:
         '''
         draw stuff, mode dependent
@@ -29,7 +29,7 @@ class CalcWindow:
         self.root = tk.Toplevel(main_root)
         self.root.title(mode)
         self.root.resizable(False, False)
-        self.root.columnconfigure(0, minsize = 600)
+        self.root.columnconfigure(0, minsize=600)
 
         self.mode = mode
 
@@ -39,24 +39,24 @@ class CalcWindow:
         # input files
         ttk.Label(
             self.root,
-            text = 'Select input files',
-            font = ('bold', 16)
+            text='Select input files',
+            font=('bold', 16)
         ).grid(
-            row = row,
-            column = 0,
-            columnspan = 4
+            row=row,
+            column=0,
+            columnspan=4
         )
 
         row += 1
 
         ttk.Separator(
             self.root,
-            orient = 'horizontal'
+            orient='horizontal'
         ).grid(
-            row = row,
-            column = 0,
-            columnspan = 4,
-            sticky = 'ew'
+            row=row,
+            column=0,
+            columnspan=4,
+            sticky='ew'
         )
 
         row += 1
@@ -69,30 +69,30 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text = 'Parameters for vib.-rot. levels calculation, example: input/params_levels.txt'
+                text='Parameters for vib.-rot. levels calculation, example: input/params_levels.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_lev_calc = ttk.Entry(
                 self.root,
-                width = 110
+                width=110
             )
             self.file_lev_calc.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_lev_calc = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_lev_calc)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_lev_calc)
             )
             self.open_lev_calc.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -105,30 +105,30 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text = 'Parameters for vib.-rot. spectrum calculation, example: input/params_spectrum.txt'
+                text='Parameters for vib.-rot. spectrum calculation, example: input/params_spectrum.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_sp_calc = ttk.Entry(
                 self.root,
-                width = 110
+                width=110
             )
             self.file_sp_calc.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_sp_calc = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_sp_calc)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_sp_calc)
             )
             self.open_sp_calc.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -140,30 +140,30 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text = 'Parameters for vib.-rot. levels calculation, example: input/params_fit.txt'
+                text='Parameters for vib.-rot. levels calculation, example: input/params_fit.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_fit_calc = ttk.Entry(
                 self.root,
-                width = 110
+                width=110
             )
             self.file_fit_calc.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_fit_calc = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_fit_calc)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_fit_calc)
             )
             self.open_fit_calc.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -174,30 +174,30 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Initial parameters for PEC approxomation, example: input/init_emo.txt'
+                text='Initial parameters for PEC approxomation, example: input/init_emo.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_init_params = ttk.Entry(
                 self.root,
-                width = 110
+                width=110
             )
             self.file_init_params.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_init_params = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_init_params)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_init_params)
             )
             self.open_init_params.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -210,30 +210,30 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Fitted PEC parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
+                text='Fitted PEC parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_fitted_params = ttk.Entry(
                 self.root,
-                width = 110
+                width=110
             )
             self.file_fitted_params.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_fitted_params = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_fitted_params)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_fitted_params)
             )
             self.open_fitted_params.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -247,30 +247,30 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Point-wise PEC, example: input/pw_pec.txt'
+                text='Point-wise PEC, example: input/pw_pec.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_pw_pec = ttk.Entry(
                 self.root,
-                width = 110,
+                width=110,
             )
             self.file_pw_pec.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_pw_pec = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_pw_pec)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_pw_pec)
             )
             self.open_pw_pec.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -282,30 +282,30 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Point-wise dipole moment, example: input/pw_dm.txt'
+                text='Point-wise dipole moment, example: input/pw_dm.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_pw_dip = ttk.Entry(
                 self.root,
-                width = 110
+                width=110
             )
             self.file_pw_dip.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_pw_dip = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_pw_dip)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_pw_dip)
             )
             self.open_pw_dip.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -316,30 +316,30 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text = 'Experimental vib.-rot. levels, example: input/exp_levels.txt'
+                text='Experimental vib.-rot. levels, example: input/exp_levels.txt'
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'e'
+                row=row,
+                column=0,
+                sticky='e'
             )
 
             self.file_exp = ttk.Entry(
                 self.root,
-                width = 110
+                width=110
             )
             self.file_exp.grid(
-                row = row,
-                column = 1
+                row=row,
+                column=1
             )
 
             self.open_exp = ttk.Button(
                 self.root,
-                text = 'Open a file',
-                command = lambda: self.select_file(self.file_exp)
+                text='Open a file',
+                command=lambda: self.select_file(self.file_exp)
             )
             self.open_exp.grid(
-                row = row,
-                column = 2
+                row=row,
+                column=2
             )
 
             row += 1
@@ -347,54 +347,54 @@ class CalcWindow:
         # out file
         ttk.Label(
             self.root,
-            text = 'Select out file',
-            font = ('bold', 16)
+            text='Select out file',
+            font=('bold', 16)
         ).grid(
-            row = row,
-            column = 0,
-            columnspan = 4
+            row=row,
+            column=0,
+            columnspan=4
         )
 
         row += 1
 
         ttk.Separator(
             self.root,
-            orient = 'horizontal'
+            orient='horizontal'
         ).grid(
-            row = row,
-            column = 0,
-            columnspan = 4,
-            sticky = 'ew'
+            row=row,
+            column=0,
+            columnspan=4,
+            sticky='ew'
         )
 
         row += 1
 
         tk.Label(
             self.root,
-            text = 'Output file:'
+            text='Output file:'
         ).grid(
-            row = row,
-            column = 0,
-            sticky = 'e'
+            row=row,
+            column=0,
+            sticky='e'
         )
 
-        self.file_out = ttk.Entry(
+        self.file_out=ttk.Entry(
             self.root,
-            width = 110
+            width=110
         )
         self.file_out.grid(
-            row = row,
-            column = 1
+            row=row,
+            column=1
         )
 
         self.open_out = ttk.Button(
             self.root,
-            text = 'Open a file',
-            command = lambda: self.select_file(self.file_out)
+            text='Open a file',
+            command=lambda: self.select_file(self.file_out)
         )
         self.open_out.grid(
-            row = row,
-            column = 2
+            row=row,
+            column=2
         )
 
         row += 1
@@ -402,43 +402,43 @@ class CalcWindow:
         # window for messages
         self.vscroll = tk.Scrollbar(
             self.root,
-            orient = 'vertical'
+            orient='vertical'
         )
         self.vscroll.grid(
-            row = row,
-            column = 3,
-            sticky = tk.N + tk.S
+            row=row,
+            column=3,
+            sticky=tk.N + tk.S
         )
 
         self.message_window = tk.Text(
             self.root,
-            width = 160,
-            height = 20,
-            state = 'disabled',
-            yscrollcommand = self.vscroll.set
+            width=160,
+            height=20,
+            state='disabled',
+            yscrollcommand=self.vscroll.set
         )
         self.message_window.grid(
-            row = row,
-            column = 0,
-            columnspan = 3,
-            sticky = tk.W + tk.E
+            row=row,
+            column=0,
+            columnspan=3,
+            sticky=tk.W + tk.E
         )
 
         row += 1
 
         # run
-        ttk.Style().configure('my.TButton', font = ('bold', 16), foreground = 'red')
+        ttk.Style().configure('my.TButton', font=('bold', 16), foreground='red')
 
         ttk.Button(
             self.root,
-            text = 'RUN',
-            width = 50,
-            style = 'my.TButton',
-            command = self.run_calc
+            text='RUN',
+            width=50,
+            style='my.TButton',
+            command=self.run_calc
         ).grid(
-            row = row,
-            column = 0,
-            columnspan = 4
+            row=row,
+            column=0,
+            columnspan=4
         )
 
         # lock main
@@ -448,22 +448,22 @@ class CalcWindow:
 
     def print_message(
         self,
-        string: str,
-        out: Logger
+        string:str,
+        out:Logger
     ) -> None:
         '''
         print to window and to out file if opened
         '''
-        self.message_window.configure(state = 'normal')
+        self.message_window.configure(state='normal')
         self.message_window.insert('end', string)
-        self.message_window.configure(state = 'disabled')
+        self.message_window.configure(state='disabled')
 
         if out.fname:
             out.print(string)
 
     def select_file(
             self,
-            obj: ttk.Entry
+            obj:ttk.Entry
         ) -> None:
         '''
         function for tk open file dialog
@@ -474,8 +474,8 @@ class CalcWindow:
         )
 
         fname = filedialog.askopenfilename(
-            title = 'Open a file',
-            filetypes = filetypes
+            title='Open a file',
+            filetypes=filetypes
         )
 
         if fname:

@@ -14,23 +14,23 @@ class PWCurve:
     '''
     def __init__(
         self,
-        fname: str = ''
+        fname:str=''
     ) -> None:
         '''
         init = read data if file provided 
         '''
         self.npoint = 0
 
-        self.rval: Float64Array = np.array([])
-        self.cval: Float64Array = np.array([])
-        self.eval: Float64Array = np.array([])
+        self.rval:Float64Array = np.array([])
+        self.cval:Float64Array = np.array([])
+        self.eval:Float64Array = np.array([])
 
         if fname:
             self.read_file(fname)
 
     def read_file(
         self,
-        fname: str
+        fname:str
     ) -> None:
         '''
         read points from file
@@ -57,7 +57,7 @@ class PWCurve:
 
     def spline(
         self,
-        r_grid: Float64Array
+        r_grid:Float64Array
     ) -> Float64Array:
         '''
         cubic spline with range check
@@ -68,13 +68,13 @@ class PWCurve:
             raise RuntimeError(f'grid for spline out of range - {rng_inp} not in {rng_self}')
 
         spl_pec = CubicSpline(self.rval, self.cval)
-        c_grid: npt.NDArray[np.float_] = spl_pec(r_grid)   # type: ignore
+        c_grid:npt.NDArray[np.float_] = spl_pec(r_grid)   # type: ignore
         return c_grid
 
     def print_with_anpec(
         self,
-        params: Parameters,
-        out: Logger
+        params:Parameters,
+        out:Logger
     ) -> None:
         '''
         print point-wise and approximated pec

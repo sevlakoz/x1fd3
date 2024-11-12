@@ -11,27 +11,27 @@ class MatrixElements:
     class for matrix elements
     '''
     # Scale factor for A, \frac{8 \pi^2}{3 \hbar \epsilon_0} [1 / s / D^2 / (cm-1)^3]
-    SCALE_A: ClassVar[float] = 3.137e-7
+    SCALE_A:ClassVar[float] = 3.137e-7
     # Boltzmann constant  [cm-1 / K]
-    K_B = 0.695
+    K_B:ClassVar[float] = 0.695
     # Temperature [K]
-    T = 298.0
+    T:ClassVar[float] = 298.0
 
     def __init__(
         self,
-        params: Parameters,
-        levels: Levels,
-        dm: PWCurve
+        params:Parameters,
+        levels:Levels,
+        dm:PWCurve
     ) -> None:
         '''
         init = calculate matrix elements of given dipole function
         '''
-        self.v1: int = params['v1']
-        self.v2: int = params['v2']
+        self.v1:int = params['v1']
+        self.v2:int = params['v2']
 
-        self.energy1: dict[int, dict[int, float]] = {}
-        self.freq: dict[int, dict[int, float]] = {}
-        self.matrix_elements: dict[int, dict[int, np.float64]] = {}
+        self.energy1:dict[int, dict[int, float]] = {}
+        self.freq:dict[int, dict[int, float]] = {}
+        self.matrix_elements:dict[int, dict[int, np.float64]] = {}
 
         # cubic spline to find DM values
         d_grid = dm.spline(levels.r_grid)
@@ -52,7 +52,7 @@ class MatrixElements:
 
     def print(
         self,
-        out: Logger
+        out:Logger
     ) -> None:
         '''
         print calculated matrix elements in custom format
@@ -66,13 +66,13 @@ class MatrixElements:
             out.print(f'''{"J''":>4}{"freq,cm-1":>15}{"E'',cm-1":>15}{"<f'|d|f''>,D":>15}''')
             for j1, me in me_j2j1.items():
                 en1 = self.energy1[j2][j1]
-                frq  = self.freq[j2][j1]
+                frq = self.freq[j2][j1]
                 out.print(f"{j1:4d}{frq:15.3f}{en1:15.3f}{me:15.5e}")
             out.print()
 
     def _ht(
         self,
-        out: Logger
+        out:Logger
     ) -> None:
         '''
         ht comp
@@ -92,7 +92,7 @@ class MatrixElements:
         fts  = ['',       'd',  'd',  '.3f',  '.5e','.5f','.3f', '.5e', '.5e', '.5f','.5e']
 
         for wd, hdr in zip(wds, hdrs):
-            out.print(f'{hdr:>{wd}}', end = '')
+            out.print(f'{hdr:>{wd}}', end='')
         out.print()
 
         for j2, j1 in jlist:
@@ -118,5 +118,5 @@ class MatrixElements:
 
             vals = [lbl, j2, j1, frq, me, sa, en1, pop, inten, se, a]
             for val, wd, ft in zip(vals, wds, fts):
-                out.print(f'{val:{wd}{ft}}', end = '')
+                out.print(f'{val:{wd}{ft}}', end='')
             out.print()

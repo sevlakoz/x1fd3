@@ -13,8 +13,8 @@ class Driver(ABC):
     '''
     def __init__(
         self,
-        input_files: list[str],
-        out: Logger
+        input_files:list[str],
+        out:Logger
     ):
         '''
         set empty vars
@@ -22,9 +22,9 @@ class Driver(ABC):
         print error message if not enough for chosen run mode
         '''
         self.mode:str = type(self).__name__.replace('Driver', '')
-        self.input_files: list[str] = input_files
+        self.input_files:list[str] = input_files
 
-        input_error_message: dict[str, tuple[int, str]] = {
+        input_error_message:dict[str, tuple[int, str]] = {
             'PecApprox': (
                 2,
                 'Usage: python -m x1fd3 PecApprox <1> <2>\n' + 
@@ -83,7 +83,7 @@ class Driver(ABC):
         '''
         print input files one by one
         '''
-        input_file_types: dict[str, tuple[str, ...]] = {
+        input_file_types:dict[str, tuple[str, ...]] = {
             'PecApprox': (
                 'Init PEC parameters',
                 'Point-wise PEC'
@@ -119,9 +119,9 @@ class Driver(ABC):
             if isfile(fname):
                 self.out.print(f'* {ftype} *')
                 self.out.print(f'\n=== Input file: {fname} ===\n')
-                with open(fname, encoding="utf-8") as inp:
+                with open(fname, encoding='utf-8') as inp:
                     for line in inp:
-                        self.out.print(line, end = '')
+                        self.out.print(line, end='')
                 self.out.print(f'\n=== End of input file: {fname} ===\n')
             else:
                 raise FileNotFoundError(f'No such file: {fname}')

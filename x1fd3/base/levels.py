@@ -16,17 +16,17 @@ class Levels:
     class for vib-rot level
     '''
     # physical constants
-    AU_TO_DA: ClassVar[float] = 5.48579909065e-4
-    AU_TO_CM: ClassVar[float] = 219474.63067
-    A0_TO_ANG: ClassVar[float] = 0.529177210903
+    AU_TO_DA:ClassVar[float] = 5.48579909065e-4
+    AU_TO_CM:ClassVar[float] = 219474.63067
+    A0_TO_ANG:ClassVar[float] = 0.529177210903
     # grid point number
-    NGRID: ClassVar[int] = 50000
+    NGRID:ClassVar[int] = 50000
 
     def __init__(
         self,
-        params: Parameters,
-        pec: PWCurve,
-        expdata: ExpData
+        params:Parameters,
+        pec:PWCurve,
+        expdata:ExpData
     ) -> None:
         '''
         init = calculate vib-rot levels for given set of parameters / point-wise pec
@@ -36,10 +36,10 @@ class Levels:
         self.nlev_exp = expdata.nlev
 
         # empty vars for calc levels
-        self.energy: dict[int, dict[int, float]] = {}
-        self.rot_const: dict[int, dict[int, float]] = {}
-        self.wavef_grid: dict[int, dict[int, Float64Array]] = {}
-        self.r_grid: Float64Array = np.array([])
+        self.energy:dict[int, dict[int, float]] = {}
+        self.rot_const:dict[int, dict[int, float]] = {}
+        self.wavef_grid:dict[int, dict[int, Float64Array]] = {}
+        self.r_grid:Float64Array = np.array([])
 
         # reduced mass
         mu = params['mass1'] * params['mass2'] / (params['mass1'] + params['mass2'])
@@ -67,7 +67,7 @@ class Levels:
                 raise RuntimeError('"ptype" not in Parameters.keys()')
 
         # J and eigenvalues search ranges
-        select_range: dict[int, tuple[Any, Any]] = {}
+        select_range:dict[int, tuple[Any, Any]] = {}
         if self.nlev_exp > 0:
             jrange = self.energy_exp.keys()
             select = 'i'
@@ -92,8 +92,8 @@ class Levels:
             results = eigh_tridiagonal(
                 diagonal,
                 off_diag,
-                select = select,
-                select_range = select_range.get(j, (0., emax))
+                select=select,
+                select_range=select_range.get(j, (0., emax))
             )
 
             # dicts for results
@@ -119,7 +119,7 @@ class Levels:
 
     def print(
         self,
-        out: Logger
+        out:Logger
     ) -> None:
         '''
         print vib-rot levels from dict in custom format
@@ -132,7 +132,7 @@ class Levels:
 
     def print_with_expdata(
         self,
-        out: Logger
+        out:Logger
     ) -> None:
         '''
         print cal and exp vib-rot levels in custom format

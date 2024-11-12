@@ -8,14 +8,14 @@ class Logger:
     '''
     def __init__(
         self,
-        fname: str = '',
-        auto_name_adjust: bool = True
+        fname:str='',
+        auto_name_adjust:bool=True
     ) -> None:
         '''
         open file for results if name provided,
         automatic adjust file name by default
         '''
-        self.fname: str = fname
+        self.fname:str = fname
         if fname:
             if auto_name_adjust:
                 n = 1
@@ -25,12 +25,12 @@ class Logger:
                         n += 1
                     else:
                         break
-            self.out: TextIO = open(self.fname, 'w', encoding = 'utf-8')
+            self.out:TextIO = open(self.fname, 'w', encoding='utf-8')
 
     def print(
         self,
-        *args: Any,
-        **kwargs: Any
+        *args:Any,
+        **kwargs:Any
     ) -> None:
         '''
         print-like write to file
@@ -79,6 +79,6 @@ class Logger:
         reopen
         '''
         if hasattr(self, 'out'):
-            self.out = open(self.fname, 'w', encoding = 'utf-8')
+            self.out = open(self.fname, 'w', encoding='utf-8')
         else:
             warn('Initialized with empty file name, skipping', RuntimeWarning)

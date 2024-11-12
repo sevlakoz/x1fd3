@@ -16,9 +16,9 @@ class Fit:
     '''
     def __init__(
         self,
-        params: Parameters,
-        pec: PWCurve,
-        expdata: ExpData
+        params:Parameters,
+        pec:PWCurve,
+        expdata:ExpData
     ) -> None:
         '''
         set input data
@@ -30,7 +30,7 @@ class Fit:
 
     def fit(
         self,
-        out: Logger
+        out:Logger
     ) -> None:
         '''
         perform least square fit
@@ -54,8 +54,8 @@ class Fit:
 
     def print_state(
         self,
-        label: str,
-        out: Logger
+        label:str,
+        out:Logger
     ) -> None:
         '''
         print pec and exp levels if provided at init
@@ -71,7 +71,7 @@ class Fit:
 
     def _res(
         self,
-        guess: list[float]
+        guess:list[float]
     ) -> list[float]:
         '''
         residual for fit

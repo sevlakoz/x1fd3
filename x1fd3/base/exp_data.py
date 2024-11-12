@@ -6,12 +6,12 @@ class ExpData:
     '''
     def __init__(
         self,
-        fname: str = ''
+        fname:str=''
     ) -> None:
         '''
         init = read data if file provided 
         '''
-        self.energy: dict[int, dict[int, float]] = {}
+        self.energy:dict[int, dict[int, float]] = {}
 
         self.nlev = 0
 
@@ -20,7 +20,7 @@ class ExpData:
 
     def read_file(
         self,
-        fname: str
+        fname:str
     ) -> None:
         '''
         read exp vib-rot levels from file
@@ -29,7 +29,7 @@ class ExpData:
         v E(v,J)
         ...
         '''
-        input_parser = ConfigParser(delimiters = (' ', '\t'))
+        input_parser = ConfigParser(delimiters=(' ', '\t'))
         input_parser.read(fname)
 
         # read levels

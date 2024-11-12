@@ -13,8 +13,6 @@ class MainWindow:
         '''
         draw buttons for mode selection
         '''
-        #self.input_files = input_files
-
         self.root = tk.Tk()
 
         self.root.title('x1fd3')
@@ -23,30 +21,30 @@ class MainWindow:
         self.mode = tk.StringVar()
 
         ttk.Label(
-            text = 'Mode',
-            font = ('bold', 16)
+            text='Mode',
+            font=('bold', 16)
         ).grid(
-            row = 0,
-            column = 0,
-            sticky = 'w'
+            row=0,
+            column=0,
+            sticky='w'
         )
 
         ttk.Label(
-            text = 'Description',
-            font = ('bold', 16)
+            text='Description',
+            font=('bold', 16)
         ).grid(
-            row = 0,
-            column = 1,
-            sticky = 'w'
+            row=0,
+            column=1,
+            sticky='w'
         )
 
         ttk.Separator(
-            orient = 'horizontal'
+            orient='horizontal'
         ).grid(
-            row = 1,
-            column = 0,
-            columnspan = 2,
-            sticky = 'ew'
+            row=1,
+            column=0,
+            columnspan=2,
+            sticky='ew'
         )
 
         modes = {
@@ -58,29 +56,29 @@ class MainWindow:
             'FitExp': 'Fit PEC to reproduce experimental vib.-rot. levels'
         }
 
-        ttk.Style().configure('my.TRadiobutton', font = ('bold'), foreground = 'red')
+        ttk.Style().configure('my.TRadiobutton', font=('bold'), foreground='red')
 
         row = 2
 
         for mode, descr in modes.items():
             ttk.Radiobutton(
-                text = mode,
-                style = 'my.TRadiobutton',
-                value = mode,
-                variable = self.mode,
-                command = self.select_mode
+                text=mode,
+                style='my.TRadiobutton',
+                value=mode,
+                variable=self.mode,
+                command=self.select_mode
             ).grid(
-                row = row,
-                column = 0,
-                sticky = 'w'
+                row=row,
+                column=0,
+                sticky='w'
             )
 
             tk.Label(
-                text = descr
+                text=descr
             ).grid(
-                row = row,
-                column = 1,
-                sticky = 'w'
+                row=row,
+                column=1,
+                sticky='w'
             )
 
             row += 1
