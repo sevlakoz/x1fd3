@@ -19,8 +19,8 @@ class Levels:
     AU_TO_DA:ClassVar[float] = 5.48579909065e-4
     AU_TO_CM:ClassVar[float] = 219474.63067
     A0_TO_ANG:ClassVar[float] = 0.529177210903
-    # grid point number
-    NGRID:ClassVar[int] = 50000
+    # grid step
+    STEP:ClassVar[float] = 1e-4
 
     def __init__(
         self,
@@ -48,8 +48,11 @@ class Levels:
         scale = self.AU_TO_DA * self.AU_TO_CM * self.A0_TO_ANG**2 / (2 * mu)
 
         # grid
-        step = (params['rmax'] - params['rmin']) / (self.NGRID - 1)
-        r_grid = np.linspace(params['rmin'], params['rmax'], self.NGRID)
+        step = self.STEP
+        r_grid = np.arange(params['rmin'], params['rmax'] + step / 2, step)
+        n_grid = r_grid.size
+        if n_grid < 1000:
+            raise RuntimeError('range ["rmin", "rmax"] seems to be too small')
 
         if pec.npoint > 0:
             # cubic spline for pw pec
@@ -86,7 +89,7 @@ class Levels:
             diagonal = u_grid / scale + j * (j + 1) * r_grid**-2 + 2 * step**-2
 
             # off-diagonal elements (ngrid-1)
-            off_diag = np.full(self.NGRID - 1, -step**-2)
+            off_diag = np.full(n_grid - 1, -step**-2)
 
             # SciPy routine to calculate eigenvalues and eigenvectors
             results = eigh_tridiagonal(
