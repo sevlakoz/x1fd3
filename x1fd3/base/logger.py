@@ -33,33 +33,19 @@ class Logger:
         **kwargs:Any
     ) -> None:
         '''
-        print-like write to file
-        print to stdout if no file opened on init
+        print to file opened on init
+        print to stdout/file set by "file=" otherwise
+        forced "flush=True"
         '''
-        if hasattr(self, 'out') and not self.out.closed:
-            def_kwargs = {
-                'sep': ' ',
-                'end': '\n',
-                'flush': True
-            }
-            for key, val in def_kwargs.items():
-                if key not in kwargs:
-                    kwargs[key] = val
+        if 'file' not in kwargs and hasattr(self, 'out'):
+            if self.out.closed:
+                warn('File opened on init is closed, "file" kwarg not provided, print to stdout', RuntimeWarning)
+            else:
+                kwargs['file'] = self.out
 
-            if 'file' in kwargs:
-                warn('Writing to file opened on init, "file" option ignored', RuntimeWarning)
+        kwargs['flush'] = True
 
-            if len(args) > 0:
-                self.out.write(str(args[0]))
-                for arg in args[1:]:
-                    self.out.write(kwargs['sep'])
-                    self.out.write(str(arg))
-            self.out.write(kwargs['end'])
-
-            if kwargs['flush']:
-                self.out.flush()
-        else:
-            print(*args, **kwargs)
+        print(*args, **kwargs)
 
     def close(
         self
