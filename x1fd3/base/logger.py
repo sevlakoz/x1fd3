@@ -33,9 +33,13 @@ class Logger:
         **kwargs:Any
     ) -> None:
         '''
-        print to file opened on init
-        print to stdout/file set by "file=" otherwise
-        forced "flush=True"
+        print to 
+         - file set by "file="
+          or
+         - file opened on init
+          or
+         - stdout
+        * forced "flush=True"
         '''
         if 'file' not in kwargs and hasattr(self, 'out'):
             if self.out.closed:
