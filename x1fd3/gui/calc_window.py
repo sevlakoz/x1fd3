@@ -29,7 +29,6 @@ class CalcWindow:
         self.root = tk.Toplevel(main_root)
         self.root.title(mode)
         self.root.resizable(False, False)
-        #self.root.columnconfigure(0, minsize=600)
 
         self.mode = mode
 
