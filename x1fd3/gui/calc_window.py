@@ -29,7 +29,7 @@ class CalcWindow:
         self.root = tk.Toplevel(main_root)
         self.root.title(mode)
         self.root.resizable(False, False)
-        self.root.columnconfigure(0, minsize=600)
+        #self.root.columnconfigure(0, minsize=600)
 
         self.mode = mode
 
@@ -69,7 +69,7 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text='Parameters for vib.-rot. levels calculation, example: input/params_levels.txt'
+                text='Parameters levels calculation, example: input/params_levels.txt'
             ).grid(
                 row=row,
                 column=0,
@@ -78,7 +78,7 @@ class CalcWindow:
 
             self.file_lev_calc = ttk.Entry(
                 self.root,
-                width=110
+                width=50
             )
             self.file_lev_calc.grid(
                 row=row,
@@ -105,7 +105,7 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text='Parameters for vib.-rot. spectrum calculation, example: input/params_spectrum.txt'
+                text='Parameters for spectrum calculation, example: input/params_spectrum.txt'
             ).grid(
                 row=row,
                 column=0,
@@ -114,7 +114,7 @@ class CalcWindow:
 
             self.file_sp_calc = ttk.Entry(
                 self.root,
-                width=110
+                width=50
             )
             self.file_sp_calc.grid(
                 row=row,
@@ -140,7 +140,7 @@ class CalcWindow:
 
             tk.Label(
                 self.root,
-                text='Parameters for vib.-rot. levels calculation, example: input/params_fit.txt'
+                text='Parameters for fit procedure, example: input/params_fit.txt'
             ).grid(
                 row=row,
                 column=0,
@@ -149,7 +149,7 @@ class CalcWindow:
 
             self.file_fit_calc = ttk.Entry(
                 self.root,
-                width=110
+                width=50
             )
             self.file_fit_calc.grid(
                 row=row,
@@ -174,7 +174,7 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text='Initial parameters for PEC approxomation, example: input/init_emo.txt'
+                text='Initial PEC parameters, example: input/init_emo.txt'
             ).grid(
                 row=row,
                 column=0,
@@ -183,7 +183,7 @@ class CalcWindow:
 
             self.file_init_params = ttk.Entry(
                 self.root,
-                width=110
+                width=50
             )
             self.file_init_params.grid(
                 row=row,
@@ -210,7 +210,7 @@ class CalcWindow:
         ]:
             tk.Label(
                 self.root,
-                text='Fitted PEC parameters for levels/spectrum calculation, example: input/fitted_emo.txt'
+                text='Fitted PEC parameters, example: input/fitted_emo.txt'
             ).grid(
                 row=row,
                 column=0,
@@ -219,7 +219,7 @@ class CalcWindow:
 
             self.file_fitted_params = ttk.Entry(
                 self.root,
-                width=110
+                width=50
             )
             self.file_fitted_params.grid(
                 row=row,
@@ -256,7 +256,7 @@ class CalcWindow:
 
             self.file_pw_pec = ttk.Entry(
                 self.root,
-                width=110,
+                width=50,
             )
             self.file_pw_pec.grid(
                 row=row,
@@ -291,7 +291,7 @@ class CalcWindow:
 
             self.file_pw_dip = ttk.Entry(
                 self.root,
-                width=110
+                width=50
             )
             self.file_pw_dip.grid(
                 row=row,
@@ -325,7 +325,7 @@ class CalcWindow:
 
             self.file_exp = ttk.Entry(
                 self.root,
-                width=110
+                width=50
             )
             self.file_exp.grid(
                 row=row,
@@ -380,7 +380,7 @@ class CalcWindow:
 
         self.file_out=ttk.Entry(
             self.root,
-            width=110
+            width=50
         )
         self.file_out.grid(
             row=row,
@@ -412,7 +412,7 @@ class CalcWindow:
 
         self.message_window = tk.Text(
             self.root,
-            width=160,
+            #width=100,
             height=20,
             state='disabled',
             yscrollcommand=self.vscroll.set
