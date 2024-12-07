@@ -1,4 +1,6 @@
-Input files: input/params_levels.txt input/fitted_emo.txt
+Mode: LevelsAn
+Input files: input/params_levels.txt input/fitted_emo.txt 
+
 * Parameter for levels calculation *
 
 === Input file: input/params_levels.txt ===

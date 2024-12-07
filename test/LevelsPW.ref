@@ -1,4 +1,6 @@
-Input files: input/params_levels.txt input/pw_pec.txt
+Mode: LevelsPW
+Input files: input/params_levels.txt input/pw_pec.txt 
+
 * Parameter for levels calculation *
 
 === Input file: input/params_levels.txt ===

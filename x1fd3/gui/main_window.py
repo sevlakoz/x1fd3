@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from .calc_window import CalcWindow
+from .plot_window import PlotWindow
 
 class MainWindow:
     '''
@@ -53,7 +54,8 @@ class MainWindow:
             'LevelsAn': 'Vib.-rot. levels calculation with analytic PEC',
             'SpectrumPW': 'Vib.-rot. spectrum calculation with point-wise PEC',
             'SpectrumAn': 'Vib.-rot. spectrum calculation with analytic PEC',
-            'FitExp': 'Fit PEC to reproduce experimental vib.-rot. levels'
+            'FitExp': 'Fit PEC to reproduce experimental vib.-rot. levels',
+            'Plot':'Visualize results from out file'
         }
 
         ttk.Style().configure('my.TRadiobutton', font=('bold'), foreground='red')
@@ -89,5 +91,9 @@ class MainWindow:
         '''
         draw sub window for calculation
         '''
-        CalcWindow(self.root, self.mode.get())
+        mode = self.mode.get()
+        if mode == 'Plot':
+            PlotWindow(self.root, mode)
+        else:
+            CalcWindow(self.root, mode)
         self.mode.set('')

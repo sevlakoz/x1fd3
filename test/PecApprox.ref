@@ -1,4 +1,6 @@
-Input files: input/init_emo.txt input/pw_pec.txt
+Mode: PecApprox
+Input files: input/init_emo.txt input/pw_pec.txt 
+
 * Init PEC parameters *
 
 === Input file: input/init_emo.txt ===

@@ -1,4 +1,6 @@
-Input files: input/params_spectrum.txt input/fitted_emo.txt input/pw_dm.txt
+Mode: SpectrumAn
+Input files: input/params_spectrum.txt input/fitted_emo.txt input/pw_dm.txt 
+
 * Parameter for spectrum calculation *
 
 === Input file: input/params_spectrum.txt ===

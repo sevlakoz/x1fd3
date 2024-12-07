@@ -1,4 +1,6 @@
-Input files: input/params_spectrum.txt input/pw_pec.txt input/pw_dm.txt
+Mode: SpectrumPW
+Input files: input/params_spectrum.txt input/pw_pec.txt input/pw_dm.txt 
+
 * Parameter for spectrum calculation *
 
 === Input file: input/params_spectrum.txt ===

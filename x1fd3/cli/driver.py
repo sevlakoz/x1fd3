@@ -114,7 +114,8 @@ class Driver(ABC):
             )
         }
 
-        self.out.print('Input files:', *self.input_files)
+        self.out.print('Mode:', self.mode)
+        self.out.print('Input files:', *self.input_files, '\n')
         for fname, ftype in zip(self.input_files, input_file_types[self.mode]):
             if isfile(fname):
                 self.out.print(f'* {ftype} *')

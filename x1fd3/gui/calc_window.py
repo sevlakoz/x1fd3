@@ -377,7 +377,7 @@ class CalcWindow:
             sticky='e'
         )
 
-        self.file_out=ttk.Entry(
+        self.file_out = ttk.Entry(
             self.root,
             width=50
         )

@@ -95,7 +95,7 @@ class Fit:
                     res.append((levels.energy[j][v] - en_v) / 0.1)
 
         # pec
-        pec_an = AnPec(tmp).calc(self.pec.rval)
-        res.extend((self.pec.cval - pec_an) / self.pec.eval)
+        pec_an = AnPec(tmp).calc(self.pec.rvs)
+        res.extend((self.pec.cvs - pec_an) / self.pec.evs)
 
         return res

@@ -1,4 +1,6 @@
-Input files: input/params_fit.txt input/fitted_emo.txt input/pw_pec.txt input/exp_levels.txt
+Mode: FitExp
+Input files: input/params_fit.txt input/fitted_emo.txt input/pw_pec.txt input/exp_levels.txt 
+
 * Parameters for fit *
 
 === Input file: input/params_fit.txt ===
