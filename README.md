@@ -7,6 +7,7 @@ A program to deal with the adiabatic $X^1\Sigma^+$ state of diatomic molecules.
 * numpy
 * scipy
 * tkinter
+* matplotlib
 
 ## Test
 On *nix systems run:
