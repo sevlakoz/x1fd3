@@ -230,6 +230,7 @@ class PlotWindow:
                 plt.grid()
                 plt.scatter(e_exp, d_init, label='fit init', c='blue')
                 plt.scatter(e_exp, d_final, label='fit final', c='red')
+                plt.legend(loc='upper left')
                 plt.axhline(y=0, lw=1, color='black')
                 plt.xlabel('E, cm${}^{-1}$')
                 plt.ylabel(r'$\Delta$E, cm${}^{-1}$')
