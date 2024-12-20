@@ -468,7 +468,8 @@ class CalcWindow:
         function for tk open file dialog
         '''
         filetypes = (
-            ('text files', '*.txt'),
+            ('Text files', '*.txt'),
+            ('Text files', '*.dat'),
             ('All files', '*.*')
         )
 

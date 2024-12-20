@@ -55,7 +55,7 @@ class MainWindow:
             'SpectrumPW': 'Vib.-rot. spectrum calculation with point-wise PEC',
             'SpectrumAn': 'Vib.-rot. spectrum calculation with analytic PEC',
             'FitExp': 'Fit PEC to reproduce experimental vib.-rot. levels',
-            'Plot':'Visualize results from out file'
+            'Plot': 'Visualize results from out file'
         }
 
         ttk.Style().configure('my.TRadiobutton', font=('bold'), foreground='red')
@@ -63,6 +63,19 @@ class MainWindow:
         row = 2
 
         for mode, descr in modes.items():
+
+            if mode in ['Plot']:
+                ttk.Separator(
+                    orient='horizontal'
+                ).grid(
+                    row=row,
+                    column=0,
+                    columnspan=2,
+                    sticky='ew'
+                )
+
+                row += 1
+
             ttk.Radiobutton(
                 text=mode,
                 style='my.TRadiobutton',

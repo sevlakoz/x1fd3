@@ -136,9 +136,9 @@ class PlotWindow:
         function for tk open file dialog
         '''
         filetypes = (
-            ('text files', '*.out'),
-            ('text files', '*.log'),
-            ('text files', '*.ref'),
+            ('Text files', '*.out'),
+            ('Text files', '*.log'),
+            ('Text files', '*.ref'),
             ('All files', '*.*')
         )
 
