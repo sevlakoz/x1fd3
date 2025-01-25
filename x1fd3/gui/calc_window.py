@@ -1,4 +1,5 @@
 import traceback
+from time import time
 from os.path import isfile, \
                     getsize, \
                     relpath
@@ -491,42 +492,41 @@ class CalcWindow:
         run selected calculation
         '''
         # input files for mode
-        if self.mode == 'PecApprox':
-            input_files = [
-                self.file_init_params.get(),
-                self.file_pw_pec.get()
-            ]
-        elif self.mode == 'LevelsPW':
-            input_files = [
-                self.file_lev_calc.get(),
-                self.file_pw_pec.get()
-            ]
-        elif self.mode == 'LevelsAn':
-            input_files = [
-                self.file_lev_calc.get(),
-                self.file_fitted_params.get()
-            ]
-        elif self.mode == 'SpectrumPW':
-            input_files = [
-                self.file_sp_calc.get(),
-                self.file_pw_pec.get(),
-                self.file_pw_dip.get()
-            ]
-        elif self.mode == 'SpectrumAn':
-            input_files = [
-                self.file_sp_calc.get(),
-                self.file_fitted_params.get(),
-                self.file_pw_dip.get(),
-            ]
-        elif self.mode == 'FitExp':
-            input_files = [
-                self.file_fit_calc.get(),
-                self.file_fitted_params.get(),
-                self.file_pw_pec.get(),
-                self.file_exp.get()
-            ]
-        else:
-            return
+        match self.mode:
+            case 'PecApprox':
+                input_files = [
+                    self.file_init_params.get(),
+                    self.file_pw_pec.get()
+                ]
+            case 'LevelsPW':
+                input_files = [
+                    self.file_lev_calc.get(),
+                    self.file_pw_pec.get()
+                ]
+            case 'LevelsAn':
+                input_files = [
+                    self.file_lev_calc.get(),
+                    self.file_fitted_params.get()
+                ]
+            case 'SpectrumPW':
+                input_files = [
+                    self.file_sp_calc.get(),
+                    self.file_pw_pec.get(),
+                    self.file_pw_dip.get()
+                ]
+            case 'SpectrumAn':
+                input_files = [
+                    self.file_sp_calc.get(),
+                    self.file_fitted_params.get(),
+                    self.file_pw_dip.get(),
+                ]
+            case 'FitExp':
+                input_files = [
+                    self.file_fit_calc.get(),
+                    self.file_fitted_params.get(),
+                    self.file_pw_pec.get(),
+                    self.file_exp.get()
+                ]
 
         # check input files
         if not all(input_files):
@@ -543,26 +543,32 @@ class CalcWindow:
             return
         out = Logger(fname, False)
 
+        start = time()
+
         # run calc for mode
         try:
-            if self.mode == 'PecApprox':
-                DriverPecApprox(input_files, out).run()
-            elif self.mode == 'LevelsPW':
-                DriverLevelsPW(input_files, out).run()
-            elif self.mode == 'LevelsAn':
-                DriverLevelsAn(input_files, out).run()
-            elif self.mode == 'SpectrumPW':
-                DriverSpectrumPW(input_files, out).run()
-            elif self.mode == 'SpectrumAn':
-                DriverSpectrumAn(input_files, out).run()
-            elif self.mode == 'FitExp':
-                DriverFitExp(input_files, out).run()
-            else:
-                return
+            match self.mode:
+                case 'PecApprox':
+                    DriverPecApprox(input_files, out).run()
+                case 'LevelsPW':
+                    DriverLevelsPW(input_files, out).run()
+                case 'LevelsAn':
+                    DriverLevelsAn(input_files, out).run()
+                case 'SpectrumPW':
+                    DriverSpectrumPW(input_files, out).run()
+                case 'SpectrumAn':
+                    DriverSpectrumAn(input_files, out).run()
+                case 'FitExp':
+                    DriverFitExp(input_files, out).run()
+            self.print_message('Success!\n', Logger())
         except BaseException as ex: # pylint: disable = W0718
+            self.print_message('Error!', Logger())
             self.print_message(f'RuntimeError: {ex}\n', Logger())
             out.print(traceback.format_exc())
-            return
+
+        finish = time()
 
         out.close()
-        self.print_message(f'SUCCESS! See "{out.fname}" for results\n', Logger())
+
+        self.print_message(f'Execution time, s: {finish - start:.3f}\n', Logger())
+        self.print_message(f'Results stored in {out.fname}', Logger())
