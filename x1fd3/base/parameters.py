@@ -114,7 +114,7 @@ class Parameters(UserDict[str, Any]):
 
         lbl = 'beta  '
         for beta in self['beta']:
-            out.print(f'{lbl}{beta:<10.5g}')
+            out.print(f'{lbl}{beta:<15.10g}')
             lbl = ' '*6
 
         if self['ptype'] in ('MLR', 'DELR'):
@@ -124,7 +124,7 @@ class Parameters(UserDict[str, Any]):
                 lbl = ' '*6
             lbl = 'cnval '
             for cn in self['cnval']:
-                out.print(f'{lbl}{cn:<10.5g}')
+                out.print(f'{lbl}{cn:<15.10g}')
                 lbl = ' '*6
             out.print(f"dampf {self['dampf']}")
             out.print(f"s     {self['s']}")
