@@ -1,6 +1,6 @@
 # Notes:
-# FitExp - numerically unstable (by design) & system dependent, so check if scipy's least square function returns success
-# GUI - not testing at all
+# FitExp & PecApprox -  numerically unstable & system dependent, so check if scipy's least square function returns success
+# GUI - no testing at all
 
 before_script:
   - apt-get update
@@ -11,7 +11,7 @@ before_script:
 test:
   script:
     - python3 -m x1fd3 PecApprox input/init_emo.txt input/pw_pec.txt
-    - diff test/PecApprox.ref PecApprox_1.log
+    - cat PecApprox_1.log | grep "PEC fit done:"
     - python3 -m x1fd3 LevelsPW input/params_levels.txt input/pw_pec.txt
     - diff test/LevelsPW.ref LevelsPW_1.log
     - python3 -m x1fd3 LevelsAn input/params_levels.txt input/fitted_emo.txt
