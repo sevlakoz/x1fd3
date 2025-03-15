@@ -1,5 +1,5 @@
 # Notes:
-# FitExp & PecApprox -  numerically unstable & system dependent, so check if scipy's least square function returns success
+# PecApprox & FitExp -  numerically unstable & system dependent, so check if scipy's least square function returns success
 # GUI - no testing at all
 
 before_script:

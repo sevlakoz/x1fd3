@@ -104,9 +104,9 @@ class Parameters(UserDict[str, Any]):
         print params from dict in custom format
         '''
         out.print(f"[{self['ptype']}]")
-        out.print(f"de    {self['de']:.3f}")
-        out.print(f"re    {self['re']:.6f}")
-        out.print(f"rref  {self['rref']:.6f}")
+        out.print(f"de    {self['de']:.6f}")
+        out.print(f"re    {self['re']:.9f}")
+        out.print(f"rref  {self['rref']:.9f}")
         out.print(f"q     {self['q']}")
 
         if self['ptype'] == 'MLR':

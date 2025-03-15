@@ -126,9 +126,9 @@ Initial PEC
 Initial parameters
 
 [EMO]
-de    37250.000
-re    1.270000
-rref  1.500000
+de    37250.000000
+re    1.270000000
+rref  1.500000000
 q     3
 beta  1              
       0              
@@ -189,9 +189,9 @@ Fitted PEC
 Fitted parameters
 
 [EMO]
-de    36556.989
-re    1.277091
-rref  1.500000
+de    36556.988779
+re    1.277091102
+rref  1.500000000
 q     3
 beta  1.888069443    
       0.1389015418   
