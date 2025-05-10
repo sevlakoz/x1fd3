@@ -27,27 +27,27 @@ class AnPec:
         calculate pec vals for grid of Rs
         '''
         p = self.params
-        s = 0.
+
+        match p['ptype']:
+            case 'EMO':
+                res = self._emo(r_inp)
+            case 'MLR':
+                res = self._mlr(r_inp)
+            case 'DELR':
+                res = self._delr(r_inp)
+            case _:
+                raise RuntimeError(f"{p['ptype']} not implemented")
 
         if p['te'] is not None and p['td'] is not None:
             raise RuntimeError('Both Te and Td given')
 
         if p['te'] is not None:
-            s = p['te']
+            res += p['te']
 
         if p['td'] is not None:
-            s = p['td'] - p['de']
+            res += (p['td'] - p['de'])
 
-        match p['ptype']:
-            case 'EMO':
-                return self._emo(r_inp) + s
-            case 'MLR':
-                return self._mlr(r_inp) + s
-            case 'DELR':
-                return self._delr(r_inp) + s
-            case _:
-                raise RuntimeError(f"{p['ptype']} not implemented")
-
+        return res
 
     def _emo(
         self,
