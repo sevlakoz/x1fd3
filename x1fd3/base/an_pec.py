@@ -52,6 +52,12 @@ class AnPec:
 
         val:Float64Array = p['de'] * (1 - np.exp(- beta_pol * (r_inp - p['re'])))**2
 
+        if p['te'] is not None:
+            val += p['te']
+
+        if p['td'] is not None:
+            val += (p['td'] - p['de'])
+
         return val
 
     def _mlr(
@@ -77,6 +83,12 @@ class AnPec:
         beta_pol += binf * yp
 
         val:Float64Array = p['de'] * (1 - ulr / ulr_re * np.exp(- beta_pol * yp_eq))**2
+
+        if p['te'] is not None:
+            val += p['te']
+
+        if p['td'] is not None:
+            val += (p['td'] - p['de'])
 
         return val
 
@@ -106,6 +118,12 @@ class AnPec:
 
         val:Float64Array = p['de'] - ulr + a * np.exp(- 2 * beta_pol * (r_inp - p['re'])) \
                                           - b * np.exp(- beta_pol * (r_inp - p['re']))
+
+        if p['te'] is not None:
+            val += p['te']
+
+        if p['td'] is not None:
+            val += (p['td'] - p['de'])
 
         return val
 

@@ -25,29 +25,35 @@ class Parameters(UserDict[str, Any]):
         ptype = input_parser.sections()[0]
 
         params_check = {
-            'EMO': {'re', 'de', 'rref', 'q', 'beta'},
-            'MLR': {'re', 'de', 'rref', 'q', 'p', 'beta', 'cnpow', 'cnval', 'dampf', 'rho', 's'},
-            'DELR': {'re', 'de', 'rref', 'q', 'beta', 'cnpow', 'cnval', 'dampf', 'rho', 's'}
+            'EMO':  {'re', 'de', 'te', 'td', 'rref', 'q', 'beta'},
+            'MLR':  {'re', 'de', 'te', 'td', 'rref', 'q', 'p', 'beta', 'cnpow', 'cnval', 'dampf', 'rho', 's'},
+            'DELR': {'re', 'de', 'te', 'td', 'rref', 'q', 'beta', 'cnpow', 'cnval', 'dampf', 'rho', 's'}
         }
 
         if not ptype in params_check:
             raise RuntimeError(f'Uknown potential type "{ptype}"')
 
-        tmp = {}
+        tmp:dict[str, Any] = {}
+
+        tmp['te'] = None
+        tmp['td'] = None
 
         for keyword, value in input_parser[ptype].items():
             if keyword in ('q', 'p', 's'):
                 tmp[keyword] = int(value)
-            elif keyword in ('re', 'de', 'rref', 'rho'):
-                tmp[keyword] = float(value)                              # type: ignore
+            elif keyword in ('re', 'de', 'te', 'td', 'rref', 'rho'):
+                tmp[keyword] = float(value)
             elif keyword in ('beta', 'cnval'):
-                tmp[keyword] = np.array(list(map(float, value.split()))) # type: ignore
+                tmp[keyword] = np.array(list(map(float, value.split())), dtype=float)
             elif keyword in ('cnpow'):
-                tmp[keyword] = np.array(list(map(int, value.split()))) # type: ignore
+                tmp[keyword] = np.array(list(map(int, value.split())), dtype=int)
             elif keyword in ('dampf'):
-                tmp[keyword] = value # type: ignore
+                tmp[keyword] = value
             else:
                 raise RuntimeError(f'Unknown keyword "{keyword}"')
+
+        if tmp['te'] is not None and tmp['td']  is not None:
+            raise RuntimeError('Both Te and Td given')
 
         if tmp.keys() != params_check[ptype]:
             raise RuntimeError(f'For {ptype} the following parameters must be given: {params_check[ptype]}')
@@ -105,6 +111,10 @@ class Parameters(UserDict[str, Any]):
         '''
         out.print(f"[{self['ptype']}]")
         out.print(f"de    {self['de']:.6f}")
+        if self['te'] is not None:
+            out.print(f"te    {self['te']:.6f}")
+        if self['td'] is not None:
+            out.print(f"td    {self['td']:.6f}")
         out.print(f"re    {self['re']:.9f}")
         out.print(f"rref  {self['rref']:.9f}")
         out.print(f"q     {self['q']}")
