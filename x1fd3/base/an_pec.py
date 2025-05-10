@@ -26,15 +26,27 @@ class AnPec:
         '''
         calculate pec vals for grid of Rs
         '''
-        match self.params['ptype']:
+        p = self.params
+        s = 0.
+
+        if p['te'] is not None and p['td'] is not None:
+            raise RuntimeError('Both Te and Td given')
+
+        if p['te'] is not None:
+            s = p['te']
+
+        if p['td'] is not None:
+            s = p['td'] - p['de']
+
+        match p['ptype']:
             case 'EMO':
-                return self._emo(r_inp)
+                return self._emo(r_inp) + s
             case 'MLR':
-                return self._mlr(r_inp)
+                return self._mlr(r_inp) + s
             case 'DELR':
-                return self._delr(r_inp)
+                return self._delr(r_inp) + s
             case _:
-                raise RuntimeError(f"{self.params['ptype']} not implemented")
+                raise RuntimeError(f"{p['ptype']} not implemented")
 
 
     def _emo(
@@ -51,12 +63,6 @@ class AnPec:
         beta_pol = self._beta(yq)
 
         val:Float64Array = p['de'] * (1 - np.exp(- beta_pol * (r_inp - p['re'])))**2
-
-        if p['te'] is not None:
-            val += p['te']
-
-        if p['td'] is not None:
-            val += (p['td'] - p['de'])
 
         return val
 
@@ -83,12 +89,6 @@ class AnPec:
         beta_pol += binf * yp
 
         val:Float64Array = p['de'] * (1 - ulr / ulr_re * np.exp(- beta_pol * yp_eq))**2
-
-        if p['te'] is not None:
-            val += p['te']
-
-        if p['td'] is not None:
-            val += (p['td'] - p['de'])
 
         return val
 
@@ -118,12 +118,6 @@ class AnPec:
 
         val:Float64Array = p['de'] - ulr + a * np.exp(- 2 * beta_pol * (r_inp - p['re'])) \
                                           - b * np.exp(- beta_pol * (r_inp - p['re']))
-
-        if p['te'] is not None:
-            val += p['te']
-
-        if p['td'] is not None:
-            val += (p['td'] - p['de'])
 
         return val
 
