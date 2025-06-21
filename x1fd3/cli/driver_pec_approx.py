@@ -20,5 +20,6 @@ class DriverPecApprox(Driver):
         # fit and print
         fit = Fit(self.params, self.pec, ExpData())
         fit.print_state('Initial', self.out)
-        fit.fit(self.out)
+        mes = fit.fit()
+        self.out.print('\n' + mes + '\n')
         fit.print_state('Fitted', self.out)

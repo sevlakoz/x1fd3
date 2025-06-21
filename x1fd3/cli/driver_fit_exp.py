@@ -22,5 +22,6 @@ class DriverFitExp(Driver):
         # fit
         fit = Fit(self.params, self.pec, self.expdata)
         fit.print_state('Initial', self.out)
-        fit.fit(self.out)
+        mes = fit.fit()
+        self.out.print('\n' + mes + '\n')
         fit.print_state('Fitted', self.out)

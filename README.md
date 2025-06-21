@@ -14,10 +14,15 @@ On *nix systems run:
 ```bash
 test/test.sh test
 ```
+for integration testing.
 Zero output is OK.
-
 Note that the first and last tests ("PecApprox_1.log" vs "test/PecApprox.ref" and "FitExp_1.log" vs "test/FitExp.ref") could fail since they are slightly system-dependent.
 If "PEC fit done" is in "PecApprox_1.log" and "FitExp_1.log" they works just fine.
+
+For unit testing run:
+```bash
+python test/tests.py
+```
 
 ## Usage
 ```bash

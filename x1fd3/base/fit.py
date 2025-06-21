@@ -26,12 +26,12 @@ class Fit:
         self.params = params
         self.pec = pec
         self.expdata = expdata
+        self.mes = 'not fitted'
 
 
     def fit(
-        self,
-        out:Logger
-    ) -> None:
+        self
+    ) -> str:
         '''
         perform least square fit
         '''
@@ -42,7 +42,7 @@ class Fit:
         # scipy least squares
         res_1 = least_squares(self._res, guess)
         if res_1.success:
-            out.print(f'\nPEC fit done: {res_1.message}\n')
+            self.mes = f'PEC fit done: {res_1.message}'
         else:
             raise RuntimeError(f'\nfit FAILED: {res_1.message}')
 
@@ -50,6 +50,8 @@ class Fit:
         self.params['de'] = res_1.x[0]
         self.params['re'] = res_1.x[1]
         self.params['beta'] = np.array(list(res_1.x[2:]))
+
+        return self.mes
 
 
     def print_state(

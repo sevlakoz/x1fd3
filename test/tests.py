@@ -5,18 +5,18 @@ from x1fd3.base import Parameters, \
                        PWCurve, \
                        AnPec, \
                        Levels, \
-                       ExpData
-                       #Fit
-                       #
+                       ExpData, \
+                       MatrixElements, \
+                       Fit
 
 
 class TestBase(unittest.TestCase):
 
-#    def setUp(
-#        self
-#    ) -> None:
-#
-#        pass
+    def setUp(
+        self
+    ) -> None:
+
+        pass
 
 
     def test_01_parameters(
@@ -166,27 +166,48 @@ class TestBase(unittest.TestCase):
             delta=1e-5
         )
 
+        self.assertAlmostEqual(
+            expdata.energy[3][9],
+            23828.05726,
+            delta=1e-5
+        )
+
     def test_05_levels(
         self
     ):
 
         params = Parameters()
         params.read_vr_calc_params('input/params_levels.txt', 'ENERGY')
-        params['jmax'] = 0
+        params['jmax'] = 1
 
         pec = PWCurve('input/pw_pec.txt')
 
         levels = Levels(params, pec, ExpData())
+
         self.assertAlmostEqual(
             levels.energy[0][0],
             1416.86703,
             delta=1e-5
         )
 
+        self.assertAlmostEqual(
+            levels.energy[1][0],
+            1437.65647,
+            delta=1e-5
+        )
+
         expdata = ExpData('input/exp_levels.txt')
 
         params.read_pec_params('input/fitted_emo.txt')
+
         levels = Levels(params, PWCurve(), expdata)
+
+        self.assertAlmostEqual(
+            levels.energy[0][0],
+            1473.01005,
+            delta=1e-5
+        )
+
         self.assertAlmostEqual(
             levels.energy[3][0],
             1597.70224,
@@ -194,6 +215,52 @@ class TestBase(unittest.TestCase):
         )
 
 
+    def test_06_matrix_elements(
+        self
+    ) -> None:
+
+        params = Parameters()
+        params.read_vr_calc_params('input/params_spectrum.txt', 'SPECTRUM')
+        params['jmax'] = 1
+
+        pec = PWCurve('input/pw_pec.txt')
+        dm = PWCurve('input/pw_dm.txt')
+
+        levels = Levels(params, pec, ExpData())
+
+        melems = MatrixElements(params, levels, dm)
+
+        self.assertAlmostEqual(
+            melems.freq[0][1],
+            2859.64817,
+            delta=1e-5
+        )
+
+        self.assertAlmostEqual(
+            melems.matrix_elements[0][1],
+            0.071644,
+            delta=1e-6
+        )
+
+
+    def test_07_fit(
+        self
+    ) -> None:
+
+        params = Parameters()
+        params.read_vr_calc_params('input/params_fit.txt', 'FIT')
+        params.read_pec_params('input/fitted_emo.txt')
+        pec = PWCurve('input/pw_pec.txt')
+        expdata = ExpData('input/exp_levels.txt')
+
+        fit = Fit(params, pec, expdata)
+        fit.fit()
+
+        self.assertAlmostEqual(
+            fit.params['re'],
+            1.27,
+            delta=0.01
+        )
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
