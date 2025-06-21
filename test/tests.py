@@ -1,12 +1,16 @@
 import unittest
+import numpy as np
 
-from x1fd3.base import Parameters
-                       #PWCurve
+from x1fd3.base import Parameters, \
+                       PWCurve, \
+                       AnPec, \
+                       Levels, \
+                       ExpData
                        #Fit
-                       #ExpData
+                       #
 
 
-class TestOnlineInference(unittest.TestCase):
+class TestBase(unittest.TestCase):
 
     def setUp(
         self
@@ -22,8 +26,13 @@ class TestOnlineInference(unittest.TestCase):
             'fitted_emo.txt'
         ]
 
+        self.pw_data_files = [
+            'pw_pec.txt',
+            'pw_dm.txt'
+        ]
 
-    def test_parameters(
+
+    def test_01_parameters(
         self
     ) -> None:
         for rtype, fname in self.params_vr_files.items():
@@ -35,16 +44,19 @@ class TestOnlineInference(unittest.TestCase):
                 1.007825,
                 delta=1e-15
             )
+
             self.assertAlmostEqual(
                 params['mass2'],
                 34.968852,
                 delta=1e-15
             )
+
             self.assertAlmostEqual(
                 params['rmin'],
                 0.7,
                 delta=1e-15
             )
+
             self.assertAlmostEqual(
                 params['rmax'],
                 5.0,
@@ -101,5 +113,61 @@ class TestOnlineInference(unittest.TestCase):
             )
 
 
+    def test_02_p_w_curve(
+        self
+    ) -> None:
+
+        ref = [38.00497, 1.14716]
+
+        for fname in self.pw_data_files:
+            pec = PWCurve(f'input/{fname}')
+            self.assertAlmostEqual(
+                pec.spline(np.array([1.25]))[0],
+                ref.pop(0),
+                delta=1e-5
+            )
+
+
+    def test_03_an_pec(
+        self
+    ) -> None:
+
+        ref = [15.20151, 98.84192]
+
+        for fname in self.params_emo_files:
+            params = Parameters()
+            params.read_pec_params(f'input/{fname}')
+            pec = AnPec(params)
+            self.assertAlmostEqual(
+                pec.calc(np.array([1.25]))[0],
+                ref.pop(0),
+                delta=1e-5
+            )
+
+
+    def test_04_levels(
+        self
+    ):
+        params = Parameters()
+        params.read_vr_calc_params('input/params_levels.txt', 'ENERGY')
+        params['jmax'] = 0
+
+        pec = PWCurve('input/pw_pec.txt')
+
+        levels = Levels(params, pec, ExpData())
+        self.assertAlmostEqual(
+            levels.energy[0][0],
+            1416.86703,
+            delta=1e-5
+        )
+
+        params.read_pec_params('input/fitted_emo.txt')
+        levels = Levels(params, PWCurve(), ExpData())
+        self.assertAlmostEqual(
+            levels.energy[0][0],
+            1473.01005,
+            delta=1e-5
+        )
+
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main(verbosity=2)
