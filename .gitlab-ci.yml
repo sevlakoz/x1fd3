@@ -9,13 +9,14 @@ before_script:
 #  - apt-get install -y python3-matplotlib
   - apt-get install -y python3-pip
   - apt-get install -y python3-venv
+  - python3 -m venv env
+  - virtualenv venv
+  - source ./venv/bin/activate
+  - pip install -r requirements.txt
+  - pip install -e .
 
 test:
   script:
-    - python3 -m venv env
-    - source env/bin/activate
-    - pip -r requirements.txt
-    - pip install -e .
     - python3 test/unittests.py
     - python3 -m x1fd3 PecApprox input/init_emo.txt input/pw_pec.txt
     - cat PecApprox_1.log | grep "PEC fit done:"
