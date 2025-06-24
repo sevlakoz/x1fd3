@@ -21,7 +21,7 @@ If "PEC fit done" is in "PecApprox_1.log" and "FitExp_1.log" they works just fin
 
 For unit testing run:
 ```bash
-python test/tests.py
+python test/unittests.py
 ```
 
 ## Usage
