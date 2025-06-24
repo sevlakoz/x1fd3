@@ -174,7 +174,7 @@ class TestBase(unittest.TestCase):
 
     def test_05_levels(
         self
-    ):
+    ) -> None:
 
         params = Parameters()
         params.read_vr_calc_params('input/params_levels.txt', 'ENERGY')

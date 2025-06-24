@@ -10,6 +10,7 @@ before_script:
 
 test:
   script:
+    - python test/tests.py
     - python3 -m x1fd3 PecApprox input/init_emo.txt input/pw_pec.txt
     - cat PecApprox_1.log | grep "PEC fit done:"
     - python3 -m x1fd3 LevelsPW input/params_levels.txt input/pw_pec.txt
