@@ -5,7 +5,7 @@
 before_script:
   - apt-get update
 #  - apt-get install -y python3-scipy
-#  - apt-get install -y python3-tk
+  - apt-get install -y python3-tk
 #  - apt-get install -y python3-matplotlib
   - apt-get install -y python3-pip
   - apt-get install -y python3-venv
