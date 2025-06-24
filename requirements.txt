@@ -1,4 +1,4 @@
 scipy
 matplotlib
-python3-tk
+tkinter
 setuptools
