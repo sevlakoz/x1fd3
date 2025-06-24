@@ -9,8 +9,7 @@ before_script:
 #  - apt-get install -y python3-matplotlib
   - apt-get install -y python3-pip
   - apt-get install -y python3-venv
-  - python3 -m venv env
-  - virtualenv venv
+  - python3 -m venv venv
   - source ./venv/bin/activate
   - pip install -r requirements.txt
   - pip install -e .
