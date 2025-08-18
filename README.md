@@ -46,7 +46,7 @@ Run any of these modes with no arguments to see help.
 ### PecApprox
 Point-wise PEC is approximated with Extended Morse Oscillator (EMO) function:
 ```math
-U_{EMO} = D_e  \left( 1 - e^{-\beta(R) \cdot (R-R_e)} \right)^2 
+U_{EMO} = D_e  \left[ 1 - e^{-\beta(R) \cdot (R-R_e)} \right]^2 
 ```
 where
 ```math
